@@ -166,49 +166,35 @@
 #endif
 
 #include <string>
-#include <set>
-#include <list>
-#include <vector>
-
-// credit:stlplus library.
-//#include "containers/simple_ptr.hpp"
 
 #include <stdint.h>
 
-#include <OTPassword.h>
-#include <OTData.h>
-
 
 class OT_API;
-class OTServerContract;
-class OTEnvelope;
-class OTAPI_Wrap;
+class OTAPI_Exec;
 
 
 class OTAPI_Wrap
 {
-private:
-	static bool bInitOTApp;
-	static bool bCleanupOTApp;
 
-	static OTAPI_Wrap * p_Wrap;
-    
-	OT_API * p_OTAPI;
-	OTAPI_Wrap();
-	// --------------------------------------------------------------------
+private :
+
+	// cannot instantiate this class
+	OTAPI_Wrap() { }
+	~OTAPI_Wrap() { }
+
 public :
-    ~OTAPI_Wrap();
 
-	EXPORT static OTAPI_Wrap *  It();
-	EXPORT static OT_API     *  OTAPI();
-	// --------------------------------------------------------------------
+	EXPORT static OTAPI_Exec * SetExecutor(OTAPI_Exec * exec);
+
+	EXPORT static OTAPI_Exec * Exec();
+
+	EXPORT static OT_API * OTAPI();
+
 //	EXPORT static bool & Cleanup();
 
 	EXPORT static int64_t     StringToLong(const std::string & strNumber);
 	EXPORT static std::string LongToString(const int64_t     & lNumber);
-
-    EXPORT static uint64_t    StringToUlong(const std::string &strNumber);
-    EXPORT static std::string UlongToString(const uint64_t & lNumber);
 
 	// --------------------------------------------------------------------
 	/**
@@ -220,36 +206,6 @@ public :
      */
 	EXPORT static bool AppInit();    // Call this ONLY ONCE, when your App first starts up.
 	EXPORT static bool AppCleanup(); // Call this ONLY ONCE, when your App is shutting down.
-    
-	// --------------------------------------------------------------------
-    // SetAppBinaryFolder
-    // OPTIONAL. Used in Android and Qt.
-    //
-    // Certain platforms use this to override the Prefix folder.
-    // Basically /usr/local is the prefix folder by default, meaning
-    // /usr/local/lib/opentxs will be the location of the scripts. But
-    // if you override AppBinary folder to, say, "res/raw/files"
-    // (Android does something like that) then even though the prefix remains
-    // as /usr/local, the scripts folder will be res/raw/lib/opentxs
-    //
-    //
-    EXPORT static void SetAppBinaryFolder(const std::string & strFolder);
-    
-	// --------------------------------------------------------------------
-    // SetHomeFolder
-    // OPTIONAL. Used in Android.
-    //
-    // The AppDataFolder, such as /Users/au/.ot, is constructed from the home
-    // folder, such as /Users/au.
-    //
-    // Normally the home folder is auto-detected, but certain platforms, such as
-    // Android, require us to explicitly set this folder from the Java code. Then
-    // the AppDataFolder is constructed from it. (It's the only way it can be done.)
-    //
-    // In Android, you would SetAppBinaryFolder to the path to "/data/app/packagename/res/raw",
-    // and you would SetHomeFolder to "/data/data/[app package]/files/"
-    //
-    EXPORT static void SetHomeFolder(const std::string & strFolder);
     
 	// --------------------------------------------------------------------
     // Then:
@@ -3817,6 +3773,10 @@ public :
                             const std::string & SERVER_ID,
                             const std::string & USER_ID,
                             const std::string & THE_MESSAGE);
+
+
+
+
 	/** -----------------------------------------------------------
 	// GET MESSAGE COMMAND TYPE
 	//
@@ -3826,6 +3786,9 @@ public :
 	// and if you send "getMint" the reply is "@getMint", and so on.
 	*/
 	EXPORT static std::string Message_GetCommand(const std::string & THE_MESSAGE);
+
+
+
 	/** -----------------------------------------------------------
 	// GET MESSAGE SUCCESS (True or False)
 	//
@@ -3833,6 +3796,11 @@ public :
     // Returns -1 for Error condition.
 	*/
 	EXPORT static int32_t Message_GetSuccess(const std::string & THE_MESSAGE);
+
+
+
+
+
 	/** -----------------------------------------------------------
 	// QUERY ASSET TYPES (server message)
 	//
@@ -3850,6 +3818,10 @@ public :
 	EXPORT static int32_t queryAssetTypes(const std::string & SERVER_ID,
                                           const std::string & USER_ID,
                                           const std::string & ENCODED_MAP);
+
+
+
+
 	/** -----------------------------------------------------------
 	// GET MESSAGE PAYLOAD
 	//
@@ -3859,6 +3831,9 @@ public :
 	// use the m_ascPayload field to transport it.
 	*/
 	EXPORT static std::string Message_GetPayload(const std::string & THE_MESSAGE);
+
+
+
 	/** -----------------------------------------------------------
 	// GET MESSAGE "DEPTH" (USED FOR MARKET-SPECIFIC MESSAGES.)
 	//
@@ -3882,6 +3857,9 @@ public :
 	*/
 	EXPORT static int32_t Message_GetDepth(const std::string & THE_MESSAGE);
 
+
+
+
 	/** -----------------------------------------------------------
 	// GET MESSAGE TRANSACTION SUCCESS (True or False)
 	// 
@@ -3901,6 +3879,9 @@ public :
                                                         const std::string & ACCOUNT_ID,
                                                         const std::string & THE_MESSAGE
                                                         );
+    
+
+
 	/** -----------------------------------------------------------
 	// GET BALANCE AGREEMENT SUCCESS (From a MESSAGE.)
 	// 
@@ -3913,6 +3894,7 @@ public :
                                                              const std::string & ACCOUNT_ID,
                                                              const std::string & THE_MESSAGE
                                                              );
+
 	/** -----------------------------------------------------------
 	// GET MESSAGE LEDGER 
 	//
@@ -3923,6 +3905,8 @@ public :
 	EXPORT static std::string Message_GetLedger(const std::string & THE_MESSAGE);
 
 
+
+
 	/** -----------------------------------------------------------
 	// GET NEW ASSET TYPE ID 
 	//
@@ -3931,6 +3915,7 @@ public :
 	// Otherwise how will you ever open accounts in that new type?
 	*/
 	EXPORT static std::string Message_GetNewAssetTypeID(const std::string & THE_MESSAGE);
+
 
 
 	/** -----------------------------------------------------------
@@ -3955,6 +3940,7 @@ public :
 	EXPORT static std::string Message_GetNewAcctID(const std::string & THE_MESSAGE);
 
 
+
 	/** -----------------------------------------------------------
 	// GET NYMBOX HASH 
 	//
@@ -3967,6 +3953,11 @@ public :
 
 
 	// ------------------------------------------------------------
+
+
+
+
+
 
 
 	// --------------------------------------------------------------------
@@ -3986,6 +3977,10 @@ public :
 
 	EXPORT static bool ProcessSockets();	// Not necessary in ZMQ mode.
 	// --------------------------------------------------------------------
+
+
+
+
 };
 
 

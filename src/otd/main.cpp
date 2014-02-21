@@ -680,7 +680,7 @@ int main(int argc, char* argv[])
 	// -------------------------------------------------------------------
     //
 
-	if (NULL == OTAPI_Wrap::It()) return -1;  // error out if we don't have the API.
+	if (NULL == OTAPI_Wrap::OTAPI()) return -1;  // error out if we don't have the API.
 
 	OTString strConfigPath(OTPaths::AppDataFolder());
 	bool bConfigPathFound = strConfigPath.Exists() && 3 < strConfigPath.GetLength();
@@ -1108,7 +1108,7 @@ int main(int argc, char* argv[])
         // and to a different server.)
         //
 		if ((NULL != pServerContract) && (NULL != pMyNym))
-			OTAPI_Wrap::OTAPI()->GetClient()->SetFocusToServerAndNym(*pServerContract, *pMyNym, OTAPI_Wrap::It()->OTAPI()->GetTransportCallback());
+			OTAPI_Wrap::OTAPI()->GetClient()->SetFocusToServerAndNym(*pServerContract, *pMyNym, OTAPI_Wrap::OTAPI()->GetTransportCallback());
 		// NOTE -- This MAY be unnecessary for ProcessUserCommand (since these args are passed
 		// in there already) but it's definitely necessary soon after for ProcessServerReply()
 		// (which comes next.)
@@ -1717,7 +1717,7 @@ int main(int argc, char* argv[])
 			theEnvelope.Seal(*pServerNym, strEnvelopeContents);
 			// -----------------------------------
 
-			OTAPI_Wrap::It()->OTAPI()->GetTransportCallback()->operator()(*pServerContract, theEnvelope);
+			OTAPI_Wrap::OTAPI()->GetTransportCallback()->operator()(*pServerContract, theEnvelope);
 
 		} // if bSendCommand		
 
@@ -2176,7 +2176,7 @@ int main(int argc, char* argv[])
 		// are in place (since in RPC mode, each message could be from a different nym 
 		// and to a different server.)
 		//
-		OTAPI_Wrap::OTAPI()->GetClient()->SetFocusToServerAndNym(*pServerContract, *pMyNym, OTAPI_Wrap::It()->OTAPI()->GetTransportCallback());
+		OTAPI_Wrap::OTAPI()->GetClient()->SetFocusToServerAndNym(*pServerContract, *pMyNym, OTAPI_Wrap::OTAPI()->GetTransportCallback());
 		// NOTE -- This MAY be unnecessary for ProcessUserCommand (since these args are passed
 		// in there already) but it's definitely necessary soon after for ProcessServerReply()
 		// (which comes next.)
@@ -2857,7 +2857,7 @@ int main(int argc, char* argv[])
 			theEnvelope.Seal(*pServerNym, strEnvelopeContents);							  
 			// -----------------------------------
 
-			OTAPI_Wrap::It()->OTAPI()->GetTransportCallback()->operator()(*pServerContract, theEnvelope);
+			OTAPI_Wrap::OTAPI()->GetTransportCallback()->operator()(*pServerContract, theEnvelope);
             
 		} // if bSendCommand
 	} // for

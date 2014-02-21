@@ -42,6 +42,12 @@
     <ClInclude Include="..\..\include\otapi\OTMadeEasy.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\include\otapi\OTAPI_Exec.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\otapi\Mock_OTAPI_Exec.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\otapi\OpenTransactions.cpp">
@@ -75,6 +81,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="stdafx.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\otapi\OTAPI _Exec.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
