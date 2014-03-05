@@ -53,6 +53,8 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Use</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="..\..\src\otapi\ot_commands_ot.cpp" />
+    <ClCompile Include="..\..\src\otapi\ot_made_easy_ot.cpp" />
     <ClCompile Include="..\..\src\otapi\OT_ME.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Use</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Use</PrecompiledHeader>
@@ -83,6 +85,10 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Use</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="..\..\src\otapi\OT_ME_NEW.cpp" />
+    <ClCompile Include="..\..\src\otapi\ot_opentxs_ot.cpp" />
+    <ClCompile Include="..\..\src\otapi\ot_otapi_ot.cpp" />
+    <ClCompile Include="..\..\src\otapi\ot_utility_ot.cpp" />
     <ClCompile Include="..\..\src\otapi\testclient.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
