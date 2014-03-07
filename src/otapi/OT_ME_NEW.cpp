@@ -1,6 +1,6 @@
 /************************************************************************************
 
-OT_ME.cpp   --	"OT Made Easy"
+OT_ME.cpp   -- "OT Made Easy"
 
 This adds functionality to OTAPI.h
 
@@ -187,9 +187,9 @@ OT_ME::~OT_ME()
 }
 
 
-typedef std::map<std::string, std::string>		mapOfArguments;
+typedef std::map<std::string, std::string>  mapOfArguments;
 
-//int		  OT_CLI_GetArgsCount     (const std::string str_Args);
+//int    OT_CLI_GetArgsCount     (const std::string str_Args);
 //std::string OT_CLI_GetValueByKey    (const std::string str_Args, const std::string str_key);
 //std::string OT_CLI_GetValueByIndex  (const std::string str_Args, const int nIndex);
 //std::string OT_CLI_GetKeyByIndex    (const std::string str_Args, const int nIndex);
@@ -204,15 +204,11 @@ typedef std::map<std::string, std::string>		mapOfArguments;
 int OT_CLI_GetArgsCount(const std::string str_Args)
 {
     const OTString strArgs(str_Args);
-    // ---------------------------------------
     int nRetVal = 0;
     mapOfArguments map_values;
-    // ---------------------------------------
     const bool bTokenized = strArgs.TokenizeIntoKeyValuePairs(map_values);
-    // ---------------------------------------
     if (bTokenized)
         nRetVal = static_cast<int> (map_values.size());
-    // ---------------------------------------
     return nRetVal;
 }
 
@@ -224,21 +220,17 @@ int OT_CLI_GetArgsCount(const std::string str_Args)
 std::string OT_CLI_GetValueByKey(const std::string str_Args, const std::string str_key)
 {
     const OTString strArgs(str_Args);
-    // ---------------------------------------
     std::string str_retval = "";
     mapOfArguments map_values;
-    // ---------------------------------------
     const bool bTokenized = strArgs.TokenizeIntoKeyValuePairs(map_values);
-    // ---------------------------------------
     if (bTokenized && (map_values.size() > 0))
     {
         // Okay we now have key/value pairs -- let's look it up!
         mapOfArguments::iterator it = map_values.find(str_key);
 
-        if (map_values.end() != it)	// found it
+        if (map_values.end() != it) // found it
             str_retval = (*it).second;
     }
-    // ---------------------------------------
     return str_retval;
 }
 
@@ -250,21 +242,17 @@ std::string OT_CLI_GetValueByKey(const std::string str_Args, const std::string s
 std::string OT_CLI_GetValueByIndex(const std::string str_Args, const int nIndex)
 {
     const OTString strArgs(str_Args);
-    // ---------------------------------------
     std::string str_retval = "";
     mapOfArguments map_values;
-    // ---------------------------------------
     const bool bTokenized = strArgs.TokenizeIntoKeyValuePairs(map_values);
-    // ---------------------------------------
     if (bTokenized && (nIndex < static_cast<int>(map_values.size())))
     {
         int nMapIndex = (-1);
         FOR_EACH(mapOfArguments, map_values)
         {
             ++nMapIndex;
-            //			const std::string str_key = (*it).first;
-            //			const std::string str_val = (*it).second;
-            // -------------------------------------
+            //   const std::string str_key = (*it).first;
+            //   const std::string str_val = (*it).second;
             // BY this point, nMapIndex contains the index we're at on map_values
             // (compare to nIndex.) And str_key and str_val contain the key/value
             // pair for THAT index.
@@ -276,7 +264,6 @@ std::string OT_CLI_GetValueByIndex(const std::string str_Args, const int nIndex)
             }
         }
     }
-    // ---------------------------------------
     return str_retval;
 }
 
@@ -288,21 +275,17 @@ std::string OT_CLI_GetValueByIndex(const std::string str_Args, const int nIndex)
 std::string OT_CLI_GetKeyByIndex(const std::string str_Args, const int nIndex)
 {
     const OTString strArgs(str_Args);
-    // ---------------------------------------
     std::string str_retval = "";
     mapOfArguments map_values;
-    // ---------------------------------------
     const bool bTokenized = strArgs.TokenizeIntoKeyValuePairs(map_values);
-    // ---------------------------------------
     if (bTokenized && (nIndex < static_cast<int>(map_values.size())))
     {
         int nMapIndex = (-1);
         FOR_EACH(mapOfArguments, map_values)
         {
             ++nMapIndex;
-            //			const std::string str_key = (*it).first;
-            //			const std::string str_val = (*it).second;
-            // -------------------------------------
+            //   const std::string str_key = (*it).first;
+            //   const std::string str_val = (*it).second;
             // BY this point, nMapIndex contains the index we're at on map_values
             // (compare to nIndex.) And str_key and str_val contain the key/value
             // pair for THAT index.
@@ -314,7 +297,6 @@ std::string OT_CLI_GetKeyByIndex(const std::string str_Args, const int nIndex)
             }
         }
     }
-    // ---------------------------------------
     return str_retval;
 }
 
@@ -338,21 +320,21 @@ std::string OT_CLI_ReadLine()
 std::string OT_CLI_ReadUntilEOF()
 {
     // don't skip the whitespace while reading
-    //	std::cin >> std::noskipws;
+    // std::cin >> std::noskipws;
 
-    //	std::ostringstream oss;
+    // std::ostringstream oss;
     //
-    //	oss << std::cin;   // Convert value into a string.
-    //	s = outs.str();
+    // oss << std::cin;   // Convert value into a string.
+    // s = outs.str();
 
     // use stream iterators to copy the stream to a string
-    //	std::istream_iterator<std::string> it(std::cin);
-    //	std::istream_iterator<std::string> end;
-    //	std::istream_iterator<char> it(std::cin);
-    //	std::istream_iterator<char> end;
-    //	std::string results(it, end);
+    // std::istream_iterator<std::string> it(std::cin);
+    // std::istream_iterator<std::string> end;
+    // std::istream_iterator<char> it(std::cin);
+    // std::istream_iterator<char> end;
+    // std::string results(it, end);
 
-    //	int onechar;
+    // int onechar;
 
     std::string result("");
 
@@ -360,7 +342,6 @@ std::string OT_CLI_ReadUntilEOF()
     {
         std::string input_line("");
 
-        // -----
         //      int n;
         ////    std::string sn;
         //      std::stringstream ssn;
@@ -368,9 +349,8 @@ std::string OT_CLI_ReadUntilEOF()
         //      std::getline(std::cin, input_line);
         //      ssn << input_line;
         //      ssn >> n;
-        // -----
 
-        //		    std::getline(std::cin, input_line, '\n');
+        //      std::getline(std::cin, input_line, '\n');
         if (std::getline(std::cin, input_line, '\n'))
         {
             input_line += "\n";
@@ -385,7 +365,6 @@ std::string OT_CLI_ReadUntilEOF()
             OTLog::Error("OT_CLI_ReadUntilEOF: getline() was unable to read a string from std::cin\n");
             break;
         }
-        // ---------------------------------
         if (std::cin.eof())
         {
             //          cout << "IT WAS EOF\n";
@@ -404,7 +383,6 @@ std::string OT_CLI_ReadUntilEOF()
             std::cin.clear();
             break;
         }
-        // ---------------------------------
         //      std::cin.clear();
         //      std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 
@@ -441,7 +419,7 @@ bool OT_ME::make_sure_enough_trans_nums(const int32_t nNumberNeeded,
 }
 
 
-//	REGISTER NYM AT SERVER (or download nymfile, if nym already registered.)
+// REGISTER NYM AT SERVER (or download nymfile, if nym already registered.)
 //
 string OT_ME::register_nym(const string & SERVER_ID,
     const string & NYM_ID)
@@ -451,7 +429,7 @@ string OT_ME::register_nym(const string & SERVER_ID,
 }
 
 
-//	CHECK USER (download a public key)
+// CHECK USER (download a public key)
 //
 string OT_ME::check_user(const string & SERVER_ID,
     const string & NYM_ID,
@@ -663,13 +641,13 @@ int32_t OT_ME::accept_from_paymentbox(const std::string & ACCOUNT_ID, // This ac
 //
 // Load a public key from local storage, and return it (or null).
 //
-string OT_ME::load_public_encryption_key(const string & NYM_ID)	// from local storage.
+string OT_ME::load_public_encryption_key(const string & NYM_ID) // from local storage.
 {
     MadeEasy madeEasy;
     return madeEasy.load_public_encryption_key(NYM_ID);
 }
 
-string OT_ME::load_public_signing_key(const string & NYM_ID)	// from local storage.
+string OT_ME::load_public_signing_key(const string & NYM_ID) // from local storage.
 {
     MadeEasy madeEasy;
     return madeEasy.load_public_signing_key(NYM_ID);
@@ -1534,7 +1512,6 @@ bool OT_ME::Register_OTDB_With_Script_Chai(OTScriptChai & theScript)
         theScript.chai.add_global_const(const_var(OTDB::STORED_OBJ_TRADE_LIST_NYM), "STORED_OBJ_TRADE_LIST_NYM");
 
         // ADD OBJECT TYPES
-        // ----------------------------------------------------------------------
         theScript.chai.add(user_type<OTDB::Storage>(), "OTDB_Storage");
         theScript.chai.add(user_type<OTDB::Storable>(), "OTDB_Storable");
         theScript.chai.add(user_type<OTDB::OTDBString>(), "OTDB_String");
@@ -1567,7 +1544,6 @@ bool OT_ME::Register_OTDB_With_Script_Chai(OTScriptChai & theScript)
         //      theScript.chai.add(user_type<OTDB::AddressBook>(),        "OTDB_AddressBook");
 
 
-        // ----------------------------------------------------------------------
         // SHOW INHERITANCE
         theScript.chai.add(chaiscript::base_class<OTDB::Storable, OTDB::OTDBString>());
         theScript.chai.add(chaiscript::base_class<OTDB::Storable, OTDB::Blob>());
@@ -1599,7 +1575,6 @@ bool OT_ME::Register_OTDB_With_Script_Chai(OTScriptChai & theScript)
         //      theScript.chai.add(chaiscript::base_class<OTDB::Storable,         OTDB::AddressBook>());
 
 
-        // ----------------------------------------------------------------------
 
 
         // ADD STORAGE FUNCTIONS
@@ -1683,7 +1658,6 @@ bool OT_ME::Register_OTDB_With_Script_Chai(OTScriptChai & theScript)
         theScript.chai.add(fun(&OTDB::OfferListNym::ot_dynamic_cast), "OTDB_CAST_OFFER_LIST_NYM");
         theScript.chai.add(fun(&OTDB::TradeDataNym::ot_dynamic_cast), "OTDB_CAST_TRADE_DATA_NYM");
         theScript.chai.add(fun(&OTDB::TradeListNym::ot_dynamic_cast), "OTDB_CAST_TRADE_LIST_NYM");
-        // ----------------------------------------------------------------------
 
 
         //      theScript.chai.add(fun(&OTDB::MarketList::GetMarketDataCount), "GetMarketDataCount");
@@ -1696,31 +1670,25 @@ bool OT_ME::Register_OTDB_With_Script_Chai(OTScriptChai & theScript)
         //      theScript.chai.add(fun(&OTDB::MarketList::Remove##name),   "Remove" #name);
         //      theScript.chai.add(fun(&OTDB::MarketList::Add##name),      "Add" #name);
         //
-        //      EXPORT	size_t Get##name##Count(); \
-        //      EXPORT	name * Get##name(size_t nIndex); \
-        //      EXPORT	bool Remove##name(size_t nIndex##name); \
-        //      EXPORT	bool Add##name(name & disownObject)
+        //      EXPORT size_t Get##name##Count(); \
+                //      EXPORT name * Get##name(size_t nIndex); \
+                //      EXPORT bool Remove##name(size_t nIndex##name); \
+                //      EXPORT bool Add##name(name & disownObject)
 
-        // ----------------------------------------------------------------------
 #define OT_CHAI_CONTAINER(container, name) \
     theScript.chai.add(fun(&OTDB::container::Get##name##Count), "Get" #name "Count"); \
     theScript.chai.add(fun(&OTDB::container::Get##name), "Get" #name); \
     theScript.chai.add(fun(&OTDB::container::Remove##name), "Remove" #name); \
     theScript.chai.add(fun(&OTDB::container::Add##name), "Add" #name)
-        // ----------------------------------------------------------------------
 
         // ADD MEMBERS OF THE VARIOUS OBJECTS
 
         theScript.chai.add(fun(&OTDB::OTDBString::m_string), "m_string");
-        // ----------------------------------------------------------------------
         theScript.chai.add(fun(&OTDB::Blob::m_memBuffer), "m_memBuffer");
-        // ----------------------------------------------------------------------
         theScript.chai.add(fun(&OTDB::StringMap::the_map), "the_map");
         theScript.chai.add(fun(&OTDB::StringMap::SetValue), "SetValue");
         theScript.chai.add(fun(&OTDB::StringMap::GetValue), "GetValue");
-        // ----------------------------------------------------------------------
         theScript.chai.add(fun(&OTDB::Displayable::gui_label), "gui_label");
-        // ----------------------------------------------------------------------
         //      theScript.chai.add(fun(&OTDB::MarketData::gui_label),         "gui_label");
         theScript.chai.add(fun(&OTDB::MarketData::server_id), "server_id");
         theScript.chai.add(fun(&OTDB::MarketData::market_id), "market_id");
@@ -1736,7 +1704,6 @@ bool OT_ME::Register_OTDB_With_Script_Chai(OTScriptChai & theScript)
         theScript.chai.add(fun(&OTDB::MarketData::current_ask), "current_ask");
 
         OT_CHAI_CONTAINER(MarketList, MarketData);
-        // ----------------------------------------------------------------------
         //      theScript.chai.add(fun(&OTDB::OfferDataMarket::gui_label),         "gui_label");
         theScript.chai.add(fun(&OTDB::OfferDataMarket::transaction_id), "transaction_id");
         theScript.chai.add(fun(&OTDB::OfferDataMarket::price_per_scale), "price_per_scale");
@@ -1758,7 +1725,6 @@ bool OT_ME::Register_OTDB_With_Script_Chai(OTScriptChai & theScript)
 
         OT_CHAI_CONTAINER(OfferListMarket, BidData);
         OT_CHAI_CONTAINER(OfferListMarket, AskData);
-        // ----------------------------------------------------------------------
         //      theScript.chai.add(fun(&OTDB::TradeDataMarket::gui_label),      "gui_label");
         theScript.chai.add(fun(&OTDB::TradeDataMarket::transaction_id), "transaction_id");
         theScript.chai.add(fun(&OTDB::TradeDataMarket::date), "date");
@@ -1766,7 +1732,6 @@ bool OT_ME::Register_OTDB_With_Script_Chai(OTScriptChai & theScript)
         theScript.chai.add(fun(&OTDB::TradeDataMarket::amount_sold), "amount_sold");
 
         OT_CHAI_CONTAINER(TradeListMarket, TradeDataMarket);
-        // ----------------------------------------------------------------------
         //      theScript.chai.add(fun(&OTDB::OfferDataNym::gui_label),      "gui_label");
         theScript.chai.add(fun(&OTDB::OfferDataNym::valid_from), "valid_from");
         theScript.chai.add(fun(&OTDB::OfferDataNym::valid_to), "valid_to");
@@ -1787,7 +1752,6 @@ bool OT_ME::Register_OTDB_With_Script_Chai(OTScriptChai & theScript)
         theScript.chai.add(fun(&OTDB::OfferDataNym::date), "date");
 
         OT_CHAI_CONTAINER(OfferListNym, OfferDataNym);
-        // ----------------------------------------------------------------------
         //      theScript.chai.add(fun(&OTDB::TradeDataNym::gui_label),       "gui_label");
         theScript.chai.add(fun(&OTDB::TradeDataNym::transaction_id), "transaction_id");
         theScript.chai.add(fun(&OTDB::TradeDataNym::completed_count), "completed_count");
@@ -1802,7 +1766,6 @@ bool OT_ME::Register_OTDB_With_Script_Chai(OTScriptChai & theScript)
         theScript.chai.add(fun(&OTDB::TradeDataNym::currency_paid), "currency_paid");
 
         OT_CHAI_CONTAINER(TradeListNym, TradeDataNym);
-        // ----------------------------------------------------------------------
         return true; // Success (hopefully!)
     }
 }
@@ -1816,16 +1779,13 @@ bool OT_ME::Register_CLI_With_Script_Chai(OTScriptChai & theScript)
 
     {
         // ADD THE OT CLI FUNCTIONS
-        // ------------------------------------------------------------------
-        theScript.chai.add(fun(&OT_CLI_ReadLine), "OT_CLI_ReadLine");			// String OT_CLI_ReadLine()		// Reads from cin until Newline.
-        theScript.chai.add(fun(&OT_CLI_ReadUntilEOF), "OT_CLI_ReadUntilEOF");	// String OT_CLI_ReadUntilEOF()	// Reads from cin until EOF or ~ on a line by itself.
-        // ------------------------------------------------------------------
+        theScript.chai.add(fun(&OT_CLI_ReadLine), "OT_CLI_ReadLine");   // String OT_CLI_ReadLine()  // Reads from cin until Newline.
+        theScript.chai.add(fun(&OT_CLI_ReadUntilEOF), "OT_CLI_ReadUntilEOF"); // String OT_CLI_ReadUntilEOF() // Reads from cin until EOF or ~ on a line by itself.
         // For command-line option (for SCRIPTS):  ot --script <filename> [--args "key value key value ..."]
-        theScript.chai.add(fun(&OT_CLI_GetArgsCount), "OT_CLI_GetArgsCount");	// Get a count of key/value pairs from a string. Returns int.
-        theScript.chai.add(fun(&OT_CLI_GetValueByKey), "OT_CLI_GetValueByKey");	// Returns a VALUE as string, BY KEY, from a map of key/value pairs (stored in a string.)
-        theScript.chai.add(fun(&OT_CLI_GetValueByIndex), "OT_CLI_GetValueByIndex");	// Returns a VALUE as string, BY INDEX, from a map of key/value pairs (stored in a string.)
-        theScript.chai.add(fun(&OT_CLI_GetKeyByIndex), "OT_CLI_GetKeyByIndex");	// Returns a KEY as string, BY INDEX, from a map of key/value pairs (stored in a string.)
-        // ------------------------------------------------------------------
+        theScript.chai.add(fun(&OT_CLI_GetArgsCount), "OT_CLI_GetArgsCount"); // Get a count of key/value pairs from a string. Returns int.
+        theScript.chai.add(fun(&OT_CLI_GetValueByKey), "OT_CLI_GetValueByKey"); // Returns a VALUE as string, BY KEY, from a map of key/value pairs (stored in a string.)
+        theScript.chai.add(fun(&OT_CLI_GetValueByIndex), "OT_CLI_GetValueByIndex"); // Returns a VALUE as string, BY INDEX, from a map of key/value pairs (stored in a string.)
+        theScript.chai.add(fun(&OT_CLI_GetKeyByIndex), "OT_CLI_GetKeyByIndex"); // Returns a KEY as string, BY INDEX, from a map of key/value pairs (stored in a string.)
         return true; // Success (hopefully!)
     }
 }
@@ -1841,7 +1801,6 @@ bool OT_ME::Register_API_With_Script_Chai(OTScriptChai & theScript)
         theScript.chai.add(fun(&OTAPI_Wrap::Output), "OT_API_Output");
         theScript.chai.add(fun(&OTAPI_Wrap::GetTime), "OT_API_GetTime");
 
-        // ------------------------------------------------------------------
 
         theScript.chai.add(fun(&OTAPI_Wrap::NumList_Add), "OT_API_NumList_Add");
         theScript.chai.add(fun(&OTAPI_Wrap::NumList_Remove), "OT_API_NumList_Remove");
@@ -1849,14 +1808,12 @@ bool OT_ME::Register_API_With_Script_Chai(OTScriptChai & theScript)
         theScript.chai.add(fun(&OTAPI_Wrap::NumList_VerifyAll), "OT_API_NumList_VerifyAll");
         theScript.chai.add(fun(&OTAPI_Wrap::NumList_Count), "OT_API_NumList_Count");
 
-        // ------------------------------------------------------------------
 
         theScript.chai.add(fun(&OTAPI_Wrap::Encode), "OT_API_Encode");
         theScript.chai.add(fun(&OTAPI_Wrap::Decode), "OT_API_Decode");
         theScript.chai.add(fun(&OTAPI_Wrap::Encrypt), "OT_API_Encrypt");
         theScript.chai.add(fun(&OTAPI_Wrap::Decrypt), "OT_API_Decrypt");
 
-        // ------------------------------------------------------------------		
 
         theScript.chai.add(fun(&OTAPI_Wrap::CreateSymmetricKey), "OT_API_CreateSymmetricKey");
         theScript.chai.add(fun(&OTAPI_Wrap::SymmetricEncrypt), "OT_API_SymmetricEncrypt");
@@ -1869,14 +1826,12 @@ bool OT_ME::Register_API_With_Script_Chai(OTScriptChai & theScript)
         theScript.chai.add(fun(&OTAPI_Wrap::FormatAmount), "OT_API_FormatAmount");
         theScript.chai.add(fun(&OTAPI_Wrap::StringToAmount), "OT_API_StringToAmount");
 
-        // ------------------------------------------------------------------		
 
         theScript.chai.add(fun(&OTAPI_Wrap::FlatSign), "OT_API_FlatSign");
         theScript.chai.add(fun(&OTAPI_Wrap::SignContract), "OT_API_SignContract");
         theScript.chai.add(fun(&OTAPI_Wrap::AddSignature), "OT_API_AddSignature");
         theScript.chai.add(fun(&OTAPI_Wrap::VerifySignature), "OT_API_VerifySignature");
 
-        // ------------------------------------------------------------------		
         theScript.chai.add(fun(&OTAPI_Wrap::CreateNym), "OT_API_CreateNym");
 
         theScript.chai.add(fun(&OTAPI_Wrap::GetNym_SourceForID), "OT_API_GetNym_SourceForID");
@@ -2186,8 +2141,8 @@ bool OT_ME::Register_API_With_Script_Chai(OTScriptChai & theScript)
 
         theScript.chai.add(fun(&OTAPI_Wrap::Msg_HarvestTransactionNumbers), "OT_API_Msg_HarvestTransactionNumbers");
 
-        //		theScript.chai.add(fun(&OTAPI_Wrap::HarvestClosingNumbers), "OT_API_HarvestClosingNumbers");
-        //		theScript.chai.add(fun(&OTAPI_Wrap::HarvestAllNumbers), "OT_API_HarvestAllNumbers");
+        //  theScript.chai.add(fun(&OTAPI_Wrap::HarvestClosingNumbers), "OT_API_HarvestClosingNumbers");
+        //  theScript.chai.add(fun(&OTAPI_Wrap::HarvestAllNumbers), "OT_API_HarvestAllNumbers");
 
         theScript.chai.add(fun(&OTAPI_Wrap::Smart_AreAllPartiesConfirmed), "OT_API_Smart_AreAllPartiesConfirmed");
         theScript.chai.add(fun(&OTAPI_Wrap::Smart_IsPartyConfirmed), "OT_API_Smart_IsPartyConfirmed");
@@ -2254,7 +2209,7 @@ bool NewScriptExists(const OTString & strScriptFilename, bool bIsHeader, OTStrin
         OT_FAIL;
     }
 
-    OTString strScriptsFolder(OTPaths::ScriptsFolder()); //	/usr/local   /   lib    /  opentxs
+    OTString strScriptsFolder(OTPaths::ScriptsFolder()); // /usr/local   /   lib    /  opentxs
     { bool bGetFolderSuccess = strScriptsFolder.Exists() && 3 < strScriptsFolder.GetLength();
     OT_ASSERT_MSG(bGetFolderSuccess, "NewScriptHeaderExists: Unalbe to Get Scripts Path"); }
 
@@ -2299,7 +2254,6 @@ bool NewScriptExists(const OTString & strScriptFilename, bool bIsHeader, OTStrin
 bool OT_ME::Register_Headers_With_Script_Chai(OTScriptChai & theScript)
 {
     using namespace chaiscript;
-    // --------------------------------------------------------
     {
         /// What does it do?  First, ot_utility.ot adds some much-needed utility functions for
         /// commonly repeated actions while using the OTAPI, such as for grabbing the request
@@ -2346,16 +2300,16 @@ bool OT_ME::Register_Headers_With_Script_Chai(OTScriptChai & theScript)
 
         OTLog::vOutput(1, "\n%s: Using Script Headers:\n", __FUNCTION__);
 
-        if (NewScriptExists(strHeaderFilename_01, true, strHeaderFilePath_01)) { OTLog::vOutput(1, "	%s\n", strHeaderFilePath_01.Get()); }
+        if (NewScriptExists(strHeaderFilename_01, true, strHeaderFilePath_01)) { OTLog::vOutput(1, " %s\n", strHeaderFilePath_01.Get()); }
         else { OTLog::vError("%s: Header script not found: %s\n", __FUNCTION__, strHeaderFilePath_01.Get()); return false; }
 
-        if (NewScriptExists(strHeaderFilename_02, true, strHeaderFilePath_02)) { OTLog::vOutput(1, "	%s\n", strHeaderFilePath_02.Get()); }
+        if (NewScriptExists(strHeaderFilename_02, true, strHeaderFilePath_02)) { OTLog::vOutput(1, " %s\n", strHeaderFilePath_02.Get()); }
         else { OTLog::vError("%s: Header script not found: %s\n", __FUNCTION__, strHeaderFilePath_02.Get()); return false; }
 
-        if (NewScriptExists(strHeaderFilename_03, true, strHeaderFilePath_03)) { OTLog::vOutput(1, "	%s\n", strHeaderFilePath_03.Get()); }
+        if (NewScriptExists(strHeaderFilename_03, true, strHeaderFilePath_03)) { OTLog::vOutput(1, " %s\n", strHeaderFilePath_03.Get()); }
         else { OTLog::vError("%s: Header script not found: %s\n", __FUNCTION__, strHeaderFilePath_03.Get()); return false; }
 
-        if (NewScriptExists(strHeaderFilename_04, true, strHeaderFilePath_04)) { OTLog::vOutput(1, "	%s\n\n", strHeaderFilePath_04.Get()); }
+        if (NewScriptExists(strHeaderFilename_04, true, strHeaderFilePath_04)) { OTLog::vOutput(1, " %s\n\n", strHeaderFilePath_04.Get()); }
         else { OTLog::vError("%s: Header script not found: %s\n", __FUNCTION__, strHeaderFilePath_04.Get()); return false; }
 
 
@@ -2369,7 +2323,6 @@ bool OT_ME::Register_Headers_With_Script_Chai(OTScriptChai & theScript)
                 __FUNCTION__,
                 str_UseFile1.c_str(), str_UseFile2.c_str(), str_UseFile3.c_str(), str_UseFile4.c_str());
 
-            // --------------------------------
             try
             {
                 theScript.chai.use(str_UseFile1);
@@ -2377,7 +2330,6 @@ bool OT_ME::Register_Headers_With_Script_Chai(OTScriptChai & theScript)
                 theScript.chai.use(str_UseFile3);
                 theScript.chai.use(str_UseFile4);
             }
-            // --------------------------------
             catch (const chaiscript::exception::eval_error &ee)
             {
                 // Error in script parsing / execution
@@ -2396,7 +2348,6 @@ bool OT_ME::Register_Headers_With_Script_Chai(OTScriptChai & theScript)
                 }
                 std::cout << std::endl << std::endl;
 
-                // ----------------------
                 //              std::cout << ee.what();
 
                 if (ee.call_stack.size() > 0)
