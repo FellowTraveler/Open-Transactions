@@ -33,11 +33,15 @@
     <ClInclude Include="..\..\include\otapi\OpenTransactions.h" />
     <ClInclude Include="..\..\include\otapi\OTAPI.h" />
     <ClInclude Include="..\..\include\otapi\OTAPI_Exec.h" />
+    <ClInclude Include="..\..\include\otapi\ot_command_ot.hpp" />
+    <ClInclude Include="..\..\include\otapi\ot_made_easy_ot.hpp" />
     <ClInclude Include="..\..\include\otapi\OT_ME.h" />
     <ClInclude Include="..\..\include\otapi\OTAPI_Basic.h" />
     <ClInclude Include="..\..\include\otapi\OTMadeEasy.h" />
     <ClInclude Include="..\..\include\otapi\OTClient.h" />
     <ClInclude Include="..\..\include\otapi\OTServerConnection.h" />
+    <ClInclude Include="..\..\include\otapi\ot_otapi_ot.hpp" />
+    <ClInclude Include="..\..\include\otapi\ot_utility_ot.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\otapi\OpenTransactions.cpp">
