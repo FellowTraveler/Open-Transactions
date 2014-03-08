@@ -256,11 +256,9 @@ typedef std::auto_ptr<OTScript>            OTScript_AutoPtr;
 
 // -----------------------------------
 
-EXPORT OTScript_SharedPtr OTScriptFactory(const std::string & script_contents,
-                                          const std::string * p_script_type=NULL);
-
-EXPORT OTScript_SharedPtr OTScriptFactory(const std::string * p_script_type=NULL);
-
+EXPORT OTScript_SharedPtr OTScriptFactory(const std::string & script_type = "");
+EXPORT OTScript_SharedPtr OTScriptFactory(const std::string & script_type,
+                                          const std::string & script_contents);
 
 
 // ********************************************************************
