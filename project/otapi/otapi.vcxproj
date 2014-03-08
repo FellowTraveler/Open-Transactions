@@ -40,6 +40,7 @@
     <ClInclude Include="..\..\include\otapi\OTMadeEasy.h" />
     <ClInclude Include="..\..\include\otapi\OTClient.h" />
     <ClInclude Include="..\..\include\otapi\OTServerConnection.h" />
+    <ClInclude Include="..\..\include\otapi\ot_me_switch.hpp" />
     <ClInclude Include="..\..\include\otapi\ot_otapi_ot.hpp" />
     <ClInclude Include="..\..\include\otapi\ot_utility_ot.hpp" />
   </ItemGroup>

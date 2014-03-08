@@ -216,6 +216,7 @@ void OT_Sleep(int nMS);
 
 #include "OTScript.h"
 
+#include "ot_me_switch.hpp"
 
 //  Just Include OTAPI_Wrapper, as it is now our pure C++ api.
 //
@@ -989,7 +990,7 @@ int main(int argc, char* argv[])
                 pHisNym->GetIdentifier(strTemp);
                 
                 str_HisNym = strTemp.Get();
-                OTLog::vOutput(0, "Using as 'his' nym: %s\n", str_HisNym.c_str());
+                OTLog::vOutput(0, "Using as hisnym: %s\n", str_HisNym.c_str());
             }
         }
 
@@ -1131,10 +1132,6 @@ int main(int argc, char* argv[])
 		if( ( opt->getValue( "script" ) != NULL ) ||
 			( opt->getArgc() > 0) )
 		{
-			int nReturnValue = 0; // This is what gets returned back to the caller. The Script has a chance to change this.
-
-			// ----------------------------------------
-
 			OTAPI_Wrap::OTAPI()->GetClient()->SetRunningAsScript(); // This way it won't go firing off messages automatically based on receiving certain server replies to previous requests.
 			// Todo: Research whether the above call is still necessary. (OTAPI no longer fires off ANY auto messages based on server replies. API CLIENT MUST do those things itself now.)
 
@@ -1403,10 +1400,12 @@ int main(int argc, char* argv[])
             OTLog::Output(1, "Script output:\n\n");
 
             // OT SCRIPT PROMPT --------------------------------------------
+#if USE_OLD_CODE == 0
             if (strFilename.find("scripts\\opentxs") >= 0 || strFilename.find("scripts/opentxs") >= 0)
             {
                 return OT_ME::opentxs_main_loop();
             }
+#endif
             return madeEasy.ExecuteScript_ReturnInt(results, strFilename);
 		}
         // ------------------------------------------------------------------------
