@@ -186,6 +186,7 @@
 #endif
 
 // --------------------------------------
+#include "OTASCIIArmor.h"
 
 
 class OTString;
