@@ -211,6 +211,10 @@ class OTPayment;
 class OTNym_or_SymmetricKey;
 class OTToken;
 class OT_API;
+class OTNumList;
+class OTPassword;
+class OTPasswordData;
+class OTSettings;
 
 // --------------------------------------------------------------------
 // Client-side only. 
