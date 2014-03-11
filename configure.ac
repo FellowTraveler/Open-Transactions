@@ -512,6 +512,9 @@ AC_CONFIG_FILES([Makefile
 			src/otlib/otext/Makefile
 			src/otlib/Makefile
 			src/otapi/Makefile
+                        src/otapitest/Makefile
+			src/gtest/Makefile
+			src/gmock/Makefile
 			src/Makefile
 			src/opentxs.pc])
 
