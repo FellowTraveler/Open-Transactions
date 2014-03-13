@@ -1,5 +1,4 @@
 #include "stdafx.h"
-#include "OtMeTest.hpp"
 
 
 TEST_MOCK(load_or_retrieve_mint)

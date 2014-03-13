@@ -195,6 +195,7 @@ extern "C"
 #include "OTMessage.h"
 #include "OTCachedKey.h"
 #include "OTEnvelope.h"
+#include "OTClientConnection.h"
 
 #include "OTServer.h"
 

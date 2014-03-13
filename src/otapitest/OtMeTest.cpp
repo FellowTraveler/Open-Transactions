@@ -1,5 +1,4 @@
 #include "stdafx.h"
-#include "OtMeTest.hpp"
 
 
 int noAltPathways = INT_MAX;

@@ -159,6 +159,7 @@ extern "C"
 #include "OTDataCheck.h"
 #include "OTEnvelope.h"
 #include "OTClientConnection.h"
+#include "OTMessage.h"
 #include "OTServer.h"
 #include "OTAsymmetricKey.h"
 

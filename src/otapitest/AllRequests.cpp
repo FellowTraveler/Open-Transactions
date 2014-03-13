@@ -1,5 +1,4 @@
 #include "stdafx.h"
-#include "OtMeTest.hpp"
 
 
 TEST_MOCK(send_user_cash)

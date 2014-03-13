@@ -7,11 +7,6 @@
 
 #define WIN32_LEAN_AND_MEAN             // Exclude rarely-used stuff from Windows headers
 
-#include <stdio.h>
-#ifdef _WIN32
-#include <tchar.h>
-#endif
-
 
 // TODO: reference additional headers your program requires here
 
@@ -21,6 +16,11 @@
 #include <string>
 #include <iostream>
 #include <fstream>
+
+#include <stdio.h>
+#ifdef _WIN32
+#include <tchar.h>
+#endif
 
 // credit:stlplus library.
 #include "containers/simple_ptr.hpp"
@@ -81,9 +81,11 @@ using namespace tthread;
 // ----------------------------
 
 #include "OTAPI.h"
-#include "OT_ME.h"
 
 #include "gtest/gtest.h"
 #include "gmock/gmock.h"
 
 #include "otapi/Mock_OTAPI_Exec.h"
+
+#include "OtMeTest.hpp"
+

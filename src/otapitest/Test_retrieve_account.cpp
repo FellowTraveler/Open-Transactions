@@ -1,5 +1,4 @@
 #include "stdafx.h"
-#include "OtMeTest.hpp"
 
 
 TEST_F(OtMeTest, retrieve_account_DefaultUnforced)
