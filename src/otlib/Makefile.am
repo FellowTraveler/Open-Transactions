@@ -1,232 +1,246 @@
-SUBDIRS = otprotob bigint irrxml lucre otext
+lib_LTLIBRARIES             =   libotlib.la
 
-lib_LTLIBRARIES		=	libot.la
+SUBDIRS                     =   otprotob bigint irrxml lucre otext
 
-opentxs_include_dir 	=	$(top_srcdir)/include
-opentxs_source_dir 	=	$(top_srcdir)/src
+########################## STANDARD FOLDERS #########################
 
-## COMMON FLAGS ###
+opentxs_incdir              =   $(top_srcdir)/include
+opentxs_srcdir              =   $(top_srcdir)/src
 
-common_includes		=	$(AM_CXXFLAGS)				\
-				-I$(top_builddir)/include/otlib 	\
-				-I$(opentxs_include_dir)		\
-				-I$(opentxs_include_dir)/otlib		\
-				-I$(opentxs_include_dir)/containers	\
-				-DOT_PREFIX_PATH="\"${prefix}\""	\
-				-DOT_VERSION="\"${VERSION}\""
+gmock_incdir                =   $(opentxs_incdir)/gmock
+gmock_srcdir                =   $(opentxs_srcdir)/gmock
+gtest_incdir                =   $(opentxs_incdir)/gtest
+gtest_srcdir                =   $(opentxs_srcdir)/gtest
+ot_incdir                   =   $(opentxs_incdir)/otd
+ot_srcdir                   =   $(opentxs_srcdir)/otd
+otapi_incdir                =   $(opentxs_incdir)/otapi
+otapi_srcdir                =   $(opentxs_srcdir)/otapi
+otapitest_incdir            =   $(opentxs_incdir)/otapitest
+otapitest_srcdir            =   $(opentxs_srcdir)/otapitest
+otlib_incdir                =   $(opentxs_incdir)/otlib
+otlib_srcdir                =   $(opentxs_srcdir)/otlib
+otmint_incdir               =   $(opentxs_incdir)/otmint
+otmint_srcdir               =   $(opentxs_srcdir)/otmint
+otserver_incdir             =   $(opentxs_incdir)/ots
+otserver_srcdir             =   $(opentxs_srcdir)/ots
+
+swig_dir                    =   $(top_srcdir)/swig
+
+common_includes             =   -I$(otapi_incdir) \
+                                -I$(otlib_incdir) \
+                                -I$(opentxs_incdir)
+
+common_libraries            =   $(otapi_srcdir)/libotapi.la \
+                                $(otlib_incdir)/libotlib.la
+                                        
+######################## BUILD COMMANDS #############################
 
 
-#### Lib OT build calls
+libotlib_la_SOURCES         =   $(otlib_sources) $(otlib_headers)
 
-libot_la_SOURCES	=	$(otlib_sources)		\
-				$(otlib_headers)		\
-				$(containers_headers)
+libotapi_la_CXXFLAGS        =   $(AM_CXXFLAGS) $(common_includes)
 
-libot_la_CXXFLAGS	=	$(common_includes)
+libotlib_la_LIBADD          =   bigint/libbigint.la \
+                                irrxml/libirrxml.la \
+                                lucre/liblucre.la \
+                                otprotob/libotprotob.la \
+                                otext/libotext.la \
+                                $(DEPS_LIBS)
 
-libot_la_LIBADD		=	bigint/libbigint.la		\
-				irrxml/libirrxml.la		\
-				lucre/liblucre.la		\
-				otprotob/libotprotob.la		\
-				otext/libotext.la		\
-				$(DEPS_LIBS)
+libotlib_la_DEPENDENCIES    =   bigint/libbigint.la \
+                                irrxml/libirrxml.la \
+                                lucre/liblucre.la \
+                                otprotob/libotprotob.la \
+                                otext/libotext.la
 
-libot_la_DEPENDENCIES	=	bigint/libbigint.la		\
-				irrxml/libirrxml.la		\
-				lucre/liblucre.la		\
-				otprotob/libotprotob.la		\
-				otext/libotext.la
-
-libot_la_LDFLAGS	=	--no-undefined
+libotlib_la_LDFLAGS         =   --no-undefined
 
 
 #### KEYRING Options
 
 if KEYRING_WINDOWS
-libot_la_CXXFLAGS		+=	-DOT_KEYRING_WINDOWS
+libot_la_CXXFLAGS          +=   -DOT_KEYRING_WINDOWS
 endif
 
 if KEYRING_MAC
-libot_la_CXXFLAGS		+=	-DOT_KEYRING_MAC
+libot_la_CXXFLAGS          +=   -DOT_KEYRING_MAC
 endif
 
 if KEYRING_GNOME
-libot_la_CXXFLAGS		+=	-DOT_KEYRING_GNOME
+libot_la_CXXFLAGS          +=   -DOT_KEYRING_GNOME
 endif
 
 if KEYRING_KWALLET
-libot_la_CXXFLAGS		+=	-DOT_KEYRING_KWALLET
+libot_la_CXXFLAGS          +=   -DOT_KEYRING_KWALLET
 endif
 
-####################################################################
+######################## DEPENDENCIES ###############################
 
 
-otlib_sources     =		OTAccount.cpp			\
-				OTAgreement.cpp			\
-				OTASCIIArmor.cpp		\
-				OTAssetContract.cpp		\
-				OTAsymmetricKey.cpp		\
-				OTBasket.cpp			\
-				OTBylaw.cpp			\
-				OTCachedKey.cpp			\
-				OTCheque.cpp			\
-				OTContract.cpp			\
-				OTCredential.cpp		\
-				OTCron.cpp			\
-				OTCronItem.cpp			\
-				OTCrypto.cpp			\
-				OTData.cpp			\
-				OTDataCheck.cpp			\
-				OTDigitalCash.cpp		\
-				OTEnvelope.cpp			\
-				OTKeyring.cpp			\
-				OTIdentifier.cpp		\
-				OTInstrument.cpp		\
-				OTItem.cpp			\
-				OTLedger.cpp			\
-				OTLog.cpp			\
-				OTMarket.cpp			\
-				OTMessage.cpp			\
-				OTMessageBuffer.cpp		\
-				OTMint.cpp			\
-				OTOffer.cpp			\
-				OTPassword.cpp			\
-				OTPaths.cpp			\
-				OTPayload.cpp			\
-				OTPayment.cpp			\
-				OTPaymentPlan.cpp		\
-				OTPseudonym.cpp			\
-				OTPurse.cpp			\
-				OTScript.cpp			\
-				OTScriptable.cpp		\
-				OTServerContract.cpp		\
-				OTSettings.cpp			\
-				OTSignature.cpp			\
-				OTSignedFile.cpp		\
-				OTSmartContract.cpp		\
-				OTStorage.cpp			\
-				OTString.cpp			\
-				OTStringXML.cpp			\
-				OTSymmetricKey.cpp		\
-				OTToken.cpp			\
-				OTTrackable.cpp			\
-				OTTrade.cpp			\
-				OTTransaction.cpp		\
-				OTTransactionType.cpp		\
-				OTWallet.cpp
+otlib_sources               =   $(otlib_srcdir)/OTAccount.cpp \
+                                $(otlib_srcdir)/OTAgreement.cpp \
+                                $(otlib_srcdir)/OTASCIIArmor.cpp \
+                                $(otlib_srcdir)/OTAssetContract.cpp \
+                                $(otlib_srcdir)/OTAsymmetricKey.cpp \
+                                $(otlib_srcdir)/OTBasket.cpp \
+                                $(otlib_srcdir)/OTBylaw.cpp \
+                                $(otlib_srcdir)/OTCachedKey.cpp \
+                                $(otlib_srcdir)/OTCheque.cpp \
+                                $(otlib_srcdir)/OTContract.cpp \
+                                $(otlib_srcdir)/OTCredential.cpp \
+                                $(otlib_srcdir)/OTCron.cpp \
+                                $(otlib_srcdir)/OTCronItem.cpp \
+                                $(otlib_srcdir)/OTCrypto.cpp \
+                                $(otlib_srcdir)/OTData.cpp \
+                                $(otlib_srcdir)/OTDataCheck.cpp \
+                                $(otlib_srcdir)/OTDigitalCash.cpp \
+                                $(otlib_srcdir)/OTEnvelope.cpp \
+                                $(otlib_srcdir)/OTKeyring.cpp \
+                                $(otlib_srcdir)/OTIdentifier.cpp \
+                                $(otlib_srcdir)/OTInstrument.cpp \
+                                $(otlib_srcdir)/OTItem.cpp \
+                                $(otlib_srcdir)/OTLedger.cpp \
+                                $(otlib_srcdir)/OTLog.cpp \
+                                $(otlib_srcdir)/OTMarket.cpp \
+                                $(otlib_srcdir)/OTMessage.cpp \
+                                $(otlib_srcdir)/OTMessageBuffer.cpp \
+                                $(otlib_srcdir)/OTMint.cpp \
+                                $(otlib_srcdir)/OTOffer.cpp \
+                                $(otlib_srcdir)/OTPassword.cpp \
+                                $(otlib_srcdir)/OTPaths.cpp \
+                                $(otlib_srcdir)/OTPayload.cpp \
+                                $(otlib_srcdir)/OTPayment.cpp \
+                                $(otlib_srcdir)/OTPaymentPlan.cpp \
+                                $(otlib_srcdir)/OTPseudonym.cpp \
+                                $(otlib_srcdir)/OTPurse.cpp \
+                                $(otlib_srcdir)/OTScript.cpp \
+                                $(otlib_srcdir)/OTScriptable.cpp \
+                                $(otlib_srcdir)/OTServerContract.cpp \
+                                $(otlib_srcdir)/OTSettings.cpp \
+                                $(otlib_srcdir)/OTSignature.cpp \
+                                $(otlib_srcdir)/OTSignedFile.cpp \
+                                $(otlib_srcdir)/OTSmartContract.cpp \
+                                $(otlib_srcdir)/OTStorage.cpp \
+                                $(otlib_srcdir)/OTString.cpp \
+                                $(otlib_srcdir)/OTStringXML.cpp \
+                                $(otlib_srcdir)/OTSymmetricKey.cpp \
+                                $(otlib_srcdir)/OTToken.cpp \
+                                $(otlib_srcdir)/OTTrackable.cpp \
+                                $(otlib_srcdir)/OTTrade.cpp \
+                                $(otlib_srcdir)/OTTransaction.cpp \
+                                $(otlib_srcdir)/OTTransactionType.cpp \
+                                $(otlib_srcdir)/OTWallet.cpp
 
-otlib_headers_dir	=	$(opentxs_include_dir)/otlib
+otlib_headers               =   $(otlib_incdir)/constants.h \
+                                $(otlib_incdir)/fast_mutex.h \
+                                $(otlib_incdir)/WinsockWrapper.h \
+                                $(otlib_incdir)/tinythread.h \
+                                $(otlib_incdir)/Timer.h \
+                                $(otlib_headers_ext)
 
-otlib_headers		=	$(otlib_headers_dir)/constants.h		\
-				$(otlib_headers_dir)/fast_mutex.h		\
-				$(otlib_headers_dir)/WinsockWrapper.h		\
-				$(otlib_headers_dir)/tinythread.h		\
-				$(otlib_headers_dir)/Timer.h			\
-				$(otlib_headers_ext)
-
-otlib_headers_ext	=	$(top_builddir)/include/otlib/ot_config.h    \
-                $(otlib_headers_dir)/ExportWrapper.h		\
-				$(otlib_headers_dir)/stacktrace.h		\
-				$(otlib_headers_dir)/stdafx.h		\
-				$(otlib_headers_dir)/OTAccount.h		\
-				$(otlib_headers_dir)/OTAgreement.h		\
-				$(otlib_headers_dir)/OTASCIIArmor.h		\
-				$(otlib_headers_dir)/OTAssetContract.h	\
-				$(otlib_headers_dir)/OTAsymmetricKey.h	\
-				$(otlib_headers_dir)/OTBasket.h		\
-				$(otlib_headers_dir)/OTBylaw.h		\
-				$(otlib_headers_dir)/OTCachedKey.h		\
-				$(otlib_headers_dir)/OTCheque.h		\
-				$(otlib_headers_dir)/OTContract.h		\
-				$(otlib_headers_dir)/OTCredential.h		\
-				$(otlib_headers_dir)/OTCron.h			\
-				$(otlib_headers_dir)/OTCronItem.h		\
-				$(otlib_headers_dir)/OTCrypto.h         	\
-				$(otlib_headers_dir)/OTData.h			\
-				$(otlib_headers_dir)/OTDataCheck.h		\
-				$(otlib_headers_dir)/OTDigitalCash.h		\
-				$(otlib_headers_dir)/OTEnvelope.h		\
-				$(otlib_headers_dir)/OTKeyring.h		\
-				$(otlib_headers_dir)/OTglobal.h			\
-				$(otlib_headers_dir)/OTIdentifier.h		\
-				$(otlib_headers_dir)/OTInstrument.h		\
-				$(otlib_headers_dir)/OTItem.h			\
-				$(otlib_headers_dir)/OTLedger.h			\
-				$(otlib_headers_dir)/OTLib.h			\
-				$(otlib_headers_dir)/OTLibPriv.h		\
-				$(otlib_headers_dir)/OTLog.h			\
-				$(otlib_headers_dir)/OTMarket.h			\
-				$(otlib_headers_dir)/OTMessage.h		\
-				$(otlib_headers_dir)/OTMessageBuffer.h		\
-				$(otlib_headers_dir)/OTMint.h			\
-				$(otlib_headers_dir)/OTOffer.h			\
-				$(otlib_headers_dir)/OTPassword.h		\
-				$(otlib_headers_dir)/OTPaths.h			\
-				$(otlib_headers_dir)/OTPayload.h		\
-				$(otlib_headers_dir)/OTPayment.h		\
-				$(otlib_headers_dir)/OTPaymentPlan.h		\
-				$(otlib_headers_dir)/OTPseudonym.h		\
-				$(otlib_headers_dir)/OTPurse.h			\
-				$(otlib_headers_dir)/OTScript.h			\
-				$(otlib_headers_dir)/OTScriptable.h		\
-				$(otlib_headers_dir)/OTServerContract.h		\
-				$(otlib_headers_dir)/OTSettings.h		\
-				$(otlib_headers_dir)/OTSignature.h		\
-				$(otlib_headers_dir)/OTSignedFile.h		\
-				$(otlib_headers_dir)/OTSmartContract.h		\
-				$(otlib_headers_dir)/OTStorage.h		\
-				$(otlib_headers_dir)/OTString.h			\
-				$(otlib_headers_dir)/OTStringXML.h		\
-				$(otlib_headers_dir)/OTSymmetricKey.h		\
-				$(otlib_headers_dir)/OTToken.h			\
-				$(otlib_headers_dir)/OTTrackable.h		\
-				$(otlib_headers_dir)/OTTrade.h			\
-				$(otlib_headers_dir)/OTTransaction.h		\
-				$(otlib_headers_dir)/OTTransactionType.h	\
-				$(otlib_headers_dir)/OTWallet.h
+otlib_headers_ext           =   $(top_builddir)/include/otlib/ot_config.h \
+                                $(otlib_incdir)/ExportWrapper.h \
+                                $(otlib_incdir)/stacktrace.h \
+                                $(otlib_incdir)/stdafx.h \
+                                $(otlib_incdir)/OTAccount.h \
+                                $(otlib_incdir)/OTAgreement.h \
+                                $(otlib_incdir)/OTASCIIArmor.h \
+                                $(otlib_incdir)/OTAssetContract.h \
+                                $(otlib_incdir)/OTAsymmetricKey.h \
+                                $(otlib_incdir)/OTBasket.h \
+                                $(otlib_incdir)/OTBylaw.h \
+                                $(otlib_incdir)/OTCachedKey.h \
+                                $(otlib_incdir)/OTCheque.h \
+                                $(otlib_incdir)/OTContract.h \
+                                $(otlib_incdir)/OTCredential.h \
+                                $(otlib_incdir)/OTCron.h \
+                                $(otlib_incdir)/OTCronItem.h \
+                                $(otlib_incdir)/OTCrypto.h \
+                                $(otlib_incdir)/OTData.h \
+                                $(otlib_incdir)/OTDataCheck.h \
+                                $(otlib_incdir)/OTDigitalCash.h \
+                                $(otlib_incdir)/OTEnvelope.h \
+                                $(otlib_incdir)/OTKeyring.h \
+                                $(otlib_incdir)/OTglobal.h \
+                                $(otlib_incdir)/OTIdentifier.h \
+                                $(otlib_incdir)/OTInstrument.h \
+                                $(otlib_incdir)/OTItem.h \
+                                $(otlib_incdir)/OTLedger.h \
+                                $(otlib_incdir)/OTLib.h \
+                                $(otlib_incdir)/OTLibPriv.h \
+                                $(otlib_incdir)/OTLog.h \
+                                $(otlib_incdir)/OTMarket.h \
+                                $(otlib_incdir)/OTMessage.h \
+                                $(otlib_incdir)/OTMessageBuffer.h \
+                                $(otlib_incdir)/OTMint.h \
+                                $(otlib_incdir)/OTOffer.h \
+                                $(otlib_incdir)/OTPassword.h \
+                                $(otlib_incdir)/OTPaths.h \
+                                $(otlib_incdir)/OTPayload.h \
+                                $(otlib_incdir)/OTPayment.h \
+                                $(otlib_incdir)/OTPaymentPlan.h \
+                                $(otlib_incdir)/OTPseudonym.h \
+                                $(otlib_incdir)/OTPurse.h \
+                                $(otlib_incdir)/OTScript.h \
+                                $(otlib_incdir)/OTScriptable.h \
+                                $(otlib_incdir)/OTServerContract.h \
+                                $(otlib_incdir)/OTSettings.h \
+                                $(otlib_incdir)/OTSignature.h \
+                                $(otlib_incdir)/OTSignedFile.h \
+                                $(otlib_incdir)/OTSmartContract.h \
+                                $(otlib_incdir)/OTStorage.h \
+                                $(otlib_incdir)/OTString.h \
+                                $(otlib_incdir)/OTStringXML.h \
+                                $(otlib_incdir)/OTSymmetricKey.h \
+                                $(otlib_incdir)/OTToken.h \
+                                $(otlib_incdir)/OTTrackable.h \
+                                $(otlib_incdir)/OTTrade.h \
+                                $(otlib_incdir)/OTTransaction.h \
+                                $(otlib_incdir)/OTTransactionType.h \
+                                $(otlib_incdir)/OTWallet.h
 
 ####   Containers
 
-containers_headers_dir	=	$(opentxs_include_dir)/containers
+containers_headers_dir      =   $(opentxs_incdir)/containers
 
-containers_headers 	=	$(containers_headers_dir)/containers.hpp	\
-				$(containers_headers_dir)/containers_fixes.hpp	\
-				$(containers_headers_dir)/copy_functors.hpp	\
-				$(containers_headers_dir)/digraph.hpp		\
-				$(containers_headers_dir)/digraph.tpp		\
-				$(containers_headers_dir)/exceptions.hpp	\
-				$(containers_headers_dir)/foursome.hpp		\
-				$(containers_headers_dir)/foursome.tpp		\
-				$(containers_headers_dir)/hash.hpp		\
-				$(containers_headers_dir)/hash.tpp		\
-				$(containers_headers_dir)/matrix.hpp		\
-				$(containers_headers_dir)/matrix.tpp		\
-				$(containers_headers_dir)/ntree.hpp		\
-				$(containers_headers_dir)/ntree.tpp		\
-				$(containers_headers_dir)/safe_iterator.hpp	\
-				$(containers_headers_dir)/safe_iterator.tpp	\
-				$(containers_headers_dir)/simple_ptr.hpp	\
-				$(containers_headers_dir)/simple_ptr.tpp	\
-				$(containers_headers_dir)/smart_ptr.hpp		\
-				$(containers_headers_dir)/smart_ptr.tpp		\
-				$(containers_headers_dir)/triple.hpp		\
-				$(containers_headers_dir)/triple.tpp
+containers_headers          =   $(containers_incdir)/containers.hpp \
+                                $(containers_headers_dir)/containers_fixes.hpp \
+                                $(containers_headers_dir)/copy_functors.hpp \
+                                $(containers_headers_dir)/digraph.hpp \
+                                $(containers_headers_dir)/digraph.tpp \
+                                $(containers_headers_dir)/exceptions.hpp \
+                                $(containers_headers_dir)/foursome.hpp \
+                                $(containers_headers_dir)/foursome.tpp \
+                                $(containers_headers_dir)/hash.hpp \
+                                $(containers_headers_dir)/hash.tpp \
+                                $(containers_headers_dir)/matrix.hpp \
+                                $(containers_headers_dir)/matrix.tpp \
+                                $(containers_headers_dir)/ntree.hpp \
+                                $(containers_headers_dir)/ntree.tpp \
+                                $(containers_headers_dir)/safe_iterator.hpp \
+                                $(containers_headers_dir)/safe_iterator.tpp \
+                                $(containers_headers_dir)/simple_ptr.hpp \
+                                $(containers_headers_dir)/simple_ptr.tpp \
+                                $(containers_headers_dir)/smart_ptr.hpp \
+                                $(containers_headers_dir)/smart_ptr.tpp \
+                                $(containers_headers_dir)/triple.hpp \
+                                $(containers_headers_dir)/triple.tpp
 
-####	Global Headers for dist.
+####    Global Headers for dist.
 
-pkginclude_HEADERS	=	$(otlib_headers_ext)
+pkginclude_HEADERS          =   $(otlib_headers_ext)
 
 ## Extra to package containers headers
 
-pkginclude_containersdir	=	$(pkgincludedir)/containers
-pkginclude_containers_HEADERS	=	$(containers_headers)
+pkginclude_containersdir    =   $(pkgincludedir)/containers
+pkginclude_containers_HEADERS   =   $(containers_headers)
 
 ## Extra to package simpleini headers
 
-simpleini_headers_dir	=	$(top_srcdir)/include/simpleini
+simpleini_headers_dir       =   $(top_srcdir)/include/simpleini
 
-simpleini_headers	=	$(simpleini_headers_dir)/ConvertUTF.h  \
-				$(simpleini_headers_dir)/SimpleIni.h
-
-pkginclude_simpleinidir	=	$(pkgincludedir)/simpleini
-pkginclude_simpleini_HEADERS	=	$(simpleini_headers)
+simpleini_headers           =   $(simpleini_headers_dir)/ConvertUTF.h \
+                                $(simpleini_headers_dir)/SimpleIni.h
+    
+pkginclude_simpleinidir     =   $(pkgincludedir)/simpleini
+pkginclude_simpleini_HEADERS    =   $(simpleini_headers)
