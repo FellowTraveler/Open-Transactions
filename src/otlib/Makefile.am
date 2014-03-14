@@ -1,6 +1,6 @@
 lib_LTLIBRARIES             =   libotlib.la
 
-SUBDIRS                     =   otprotob bigint irrxml lucre otext
+SUBDIRS                     =   bigint irrxml lucre otext otprotob
 
 ########################## STANDARD FOLDERS #########################
 
@@ -31,105 +31,100 @@ common_includes             =   -I$(otapi_incdir) \
                                 -I$(opentxs_incdir)
 
 common_libraries            =   $(otapi_srcdir)/libotapi.la \
-                                $(otlib_incdir)/libotlib.la
+                                libotlib.la
                                         
 ######################## BUILD COMMANDS #############################
-
 
 libotlib_la_SOURCES         =   $(otlib_sources) $(otlib_headers)
 
 libotapi_la_CXXFLAGS        =   $(AM_CXXFLAGS) $(common_includes)
 
-libotlib_la_LIBADD          =   bigint/libbigint.la \
-                                irrxml/libirrxml.la \
-                                lucre/liblucre.la \
-                                otprotob/libotprotob.la \
-                                otext/libotext.la \
-                                $(DEPS_LIBS)
-
 libotlib_la_DEPENDENCIES    =   bigint/libbigint.la \
                                 irrxml/libirrxml.la \
                                 lucre/liblucre.la \
-                                otprotob/libotprotob.la \
-                                otext/libotext.la
+                                otext/libotext.la \
+                                otprotob/libotprotob.la
 
-libotlib_la_LDFLAGS         =   --no-undefined
+libotlib_la_LIBADD          =   $(libotlib_la_DEPENDENCIES) \
+                                $(DEPS_LIBS)
+
+libotlib_la_LDFLAGS         =   -g --no-undefined
 
 
 #### KEYRING Options
 
 if KEYRING_WINDOWS
-libot_la_CXXFLAGS          +=   -DOT_KEYRING_WINDOWS
+libotlib_la_CXXFLAGS       +=   -DOT_KEYRING_WINDOWS
 endif
 
 if KEYRING_MAC
-libot_la_CXXFLAGS          +=   -DOT_KEYRING_MAC
+libotlib_la_CXXFLAGS       +=   -DOT_KEYRING_MAC
 endif
 
 if KEYRING_GNOME
-libot_la_CXXFLAGS          +=   -DOT_KEYRING_GNOME
+libotlib_la_CXXFLAGS       +=   -DOT_KEYRING_GNOME
 endif
 
 if KEYRING_KWALLET
-libot_la_CXXFLAGS          +=   -DOT_KEYRING_KWALLET
+libotlib_la_CXXFLAGS       +=   -DOT_KEYRING_KWALLET
 endif
 
 ######################## DEPENDENCIES ###############################
 
 
-otlib_sources               =   $(otlib_srcdir)/OTAccount.cpp \
-                                $(otlib_srcdir)/OTAgreement.cpp \
-                                $(otlib_srcdir)/OTASCIIArmor.cpp \
-                                $(otlib_srcdir)/OTAssetContract.cpp \
-                                $(otlib_srcdir)/OTAsymmetricKey.cpp \
-                                $(otlib_srcdir)/OTBasket.cpp \
-                                $(otlib_srcdir)/OTBylaw.cpp \
-                                $(otlib_srcdir)/OTCachedKey.cpp \
-                                $(otlib_srcdir)/OTCheque.cpp \
-                                $(otlib_srcdir)/OTContract.cpp \
-                                $(otlib_srcdir)/OTCredential.cpp \
-                                $(otlib_srcdir)/OTCron.cpp \
-                                $(otlib_srcdir)/OTCronItem.cpp \
-                                $(otlib_srcdir)/OTCrypto.cpp \
-                                $(otlib_srcdir)/OTData.cpp \
-                                $(otlib_srcdir)/OTDataCheck.cpp \
-                                $(otlib_srcdir)/OTDigitalCash.cpp \
-                                $(otlib_srcdir)/OTEnvelope.cpp \
-                                $(otlib_srcdir)/OTKeyring.cpp \
-                                $(otlib_srcdir)/OTIdentifier.cpp \
-                                $(otlib_srcdir)/OTInstrument.cpp \
-                                $(otlib_srcdir)/OTItem.cpp \
-                                $(otlib_srcdir)/OTLedger.cpp \
-                                $(otlib_srcdir)/OTLog.cpp \
-                                $(otlib_srcdir)/OTMarket.cpp \
-                                $(otlib_srcdir)/OTMessage.cpp \
-                                $(otlib_srcdir)/OTMessageBuffer.cpp \
-                                $(otlib_srcdir)/OTMint.cpp \
-                                $(otlib_srcdir)/OTOffer.cpp \
-                                $(otlib_srcdir)/OTPassword.cpp \
-                                $(otlib_srcdir)/OTPaths.cpp \
-                                $(otlib_srcdir)/OTPayload.cpp \
-                                $(otlib_srcdir)/OTPayment.cpp \
-                                $(otlib_srcdir)/OTPaymentPlan.cpp \
-                                $(otlib_srcdir)/OTPseudonym.cpp \
-                                $(otlib_srcdir)/OTPurse.cpp \
-                                $(otlib_srcdir)/OTScript.cpp \
-                                $(otlib_srcdir)/OTScriptable.cpp \
-                                $(otlib_srcdir)/OTServerContract.cpp \
-                                $(otlib_srcdir)/OTSettings.cpp \
-                                $(otlib_srcdir)/OTSignature.cpp \
-                                $(otlib_srcdir)/OTSignedFile.cpp \
-                                $(otlib_srcdir)/OTSmartContract.cpp \
-                                $(otlib_srcdir)/OTStorage.cpp \
-                                $(otlib_srcdir)/OTString.cpp \
-                                $(otlib_srcdir)/OTStringXML.cpp \
-                                $(otlib_srcdir)/OTSymmetricKey.cpp \
-                                $(otlib_srcdir)/OTToken.cpp \
-                                $(otlib_srcdir)/OTTrackable.cpp \
-                                $(otlib_srcdir)/OTTrade.cpp \
-                                $(otlib_srcdir)/OTTransaction.cpp \
-                                $(otlib_srcdir)/OTTransactionType.cpp \
-                                $(otlib_srcdir)/OTWallet.cpp
+otlib_sources               =   OTAccount.cpp \
+                                OTAgreement.cpp \
+                                OTASCIIArmor.cpp \
+                                OTAssetContract.cpp \
+                                OTAsymmetricKey.cpp \
+                                OTBasket.cpp \
+                                OTBylaw.cpp \
+                                OTCachedKey.cpp \
+                                OTCheque.cpp \
+                                OTContract.cpp \
+                                OTCredential.cpp \
+                                OTCron.cpp \
+                                OTCronItem.cpp \
+                                OTCrypto.cpp \
+                                OTData.cpp \
+                                OTDataCheck.cpp \
+                                OTDigitalCash.cpp \
+                                OTEnvelope.cpp \
+                                OTKeyring.cpp \
+                                OTIdentifier.cpp \
+                                OTInstrument.cpp \
+                                OTItem.cpp \
+                                OTLedger.cpp \
+                                OTLog.cpp \
+                                OTMarket.cpp \
+                                OTMessage.cpp \
+                                OTMessageBuffer.cpp \
+                                OTMint.cpp \
+                                OTOffer.cpp \
+                                OTPassword.cpp \
+                                OTPaths.cpp \
+                                OTPayload.cpp \
+                                OTPayment.cpp \
+                                OTPaymentPlan.cpp \
+                                OTPseudonym.cpp \
+                                OTPurse.cpp \
+                                OTScript.cpp \
+                                OTScriptable.cpp \
+                                OTServerContract.cpp \
+                                OTSettings.cpp \
+                                OTSignature.cpp \
+                                OTSignedFile.cpp \
+                                OTSmartContract.cpp \
+                                OTStorage.cpp \
+                                OTString.cpp \
+                                OTStringXML.cpp \
+                                OTSymmetricKey.cpp \
+                                OTToken.cpp \
+                                OTTrackable.cpp \
+                                OTTrade.cpp \
+                                OTTransaction.cpp \
+                                OTTransactionType.cpp \
+                                OTWallet.cpp
 
 otlib_headers               =   $(otlib_incdir)/constants.h \
                                 $(otlib_incdir)/fast_mutex.h \

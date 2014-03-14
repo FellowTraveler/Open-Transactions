@@ -30,6 +30,9 @@
   <ItemGroup>
     <ClCompile Include="..\..\src\otlib\irrxml\irrXML.cpp" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\src\otlib\irrxml\Makefile.am" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{FF4E2F12-89AF-42AF-9630-66931CAE610A}</ProjectGuid>
     <RootNamespace>irrxml</RootNamespace>

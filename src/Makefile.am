@@ -31,31 +31,9 @@ common_includes             =   -I$(otapi_incdir) \
                                 -I$(opentxs_incdir)
 
 common_libraries            =   $(otapi_srcdir)/libotapi.la \
-                                $(otlib_incdir)/libotlib.la
+                                $(otlib_srcdir)/libotlib.la
                                         
 ######################## BUILD COMMANDS #############################
-
-
-#### OT
-
-ot_SOURCES                  =   $(ot_sources) $(ot_headers)
-
-ot_CXXFLAGS                 =   $(AM_CXXFLAGS) $(common_includes)
-
-ot_LDADD                    =   $(common_libraries) $(DEPS_LIBS)
-ot_DEPENDENCIES             =   $(common_libraries)
-
-
-#### OT Server
-
-otserver_SOURCES            =   $(otserver_sources) $(otserver_headers)
-
-otserver_CXXFLAGS           =   $(AM_CXXFLAGS) \
-                                -I$(otserver_incdir) \
-                                $(common_includes)
-
-otserver_LDADD              =   $(common_libraries) $(DEPS_LIBS)
-otserver_DEPENDENCIES       =   $(common_libraries)
 
 
 #### Createmint  (includes files from OT Server)
@@ -66,20 +44,50 @@ createmint_CXXFLAGS         =   $(AM_CXXFLAGS) \
                                 -I$(otserver_incdir) \
                                 $(common_includes)
 
-createmint_LDADD            =   $(common_libraries) $(DEPS_LIBS)
 createmint_DEPENDENCIES     =   $(common_libraries)
+
+createmint_LDADD            =   $(common_libraries) $(DEPS_LIBS)
+
+
+#### OT
+
+ot_SOURCES                  =   $(ot_sources) $(ot_headers)
+
+ot_CXXFLAGS                 =   $(AM_CXXFLAGS) $(common_includes)
+
+ot_DEPENDENCIES             =   $(common_libraries)
+
+ot_LDADD                    =   $(ot_DEPENDENCIES) $(DEPS_LIBS)
+
+
+#### OT Server
+
+otserver_SOURCES            =   $(otserver_sources) $(otserver_headers)
+
+otserver_CXXFLAGS           =   $(AM_CXXFLAGS) \
+                                -I$(otserver_incdir) \
+                                $(common_includes)
+
+otserver_DEPENDENCIES       =   $(common_libraries)
+
+otserver_LDADD              =   $(otserver_DEPENDENCIES) $(DEPS_LIBS)
 
 
 #### Transport ZMQ 'option'
 
 if TRANSPORT_ZMQ
+createmint_CXXFLAGS        +=   -DOT_ZMQ_MODE
 ot_CXXFLAGS                +=   -DOT_ZMQ_MODE
 otserver_SOURCES           +=   ots/xmlrpcxx_server.cpp
 otserver_CXXFLAGS          +=   -DOT_ZMQ_MODE
-createmint_CXXFLAGS        +=   -DOT_ZMQ_MODE
 endif
 
 ######################## DEPENDENCIES ###############################
+
+#### CreateMint
+
+createmint_sources          =   $(otmint_srcdir)/main.cpp
+
 
 #### OT
 
@@ -93,6 +101,7 @@ ot_headers                  =   $(otapi_incdir)/main.h             \
                                 $(otapi_incdir)/OTClient.h         \
                                 $(otapi_incdir)/OTServerConnection.h
 
+
 #### OT Server
 
 otserver_sources            =   $(otserver_srcdir)/OTClientConnection.cpp  \
@@ -101,7 +110,3 @@ otserver_sources            =   $(otserver_srcdir)/OTClientConnection.cpp  \
 otserver_headers            =   $(otserver_incdir)/main.h   \
                                 $(otserver_incdir)/OTClientConnection.h \
                                 $(otserver_incdir)/OTServer.h
-
-#### OT Create Mint
-
-createmint_sources          =   $(otmint_srcdir)/main.cpp

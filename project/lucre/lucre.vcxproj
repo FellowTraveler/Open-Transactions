@@ -24,6 +24,9 @@
   <ItemGroup>
     <ClCompile Include="..\..\src\otlib\lucre\bankimp.cpp" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\src\otlib\lucre\Makefile.am" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{07476ED4-1047-4BD1-BBF2-CC396FCAECEB}</ProjectGuid>
     <RootNamespace>lucre</RootNamespace>

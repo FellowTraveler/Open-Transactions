@@ -1,180 +1,179 @@
-lib_LTLIBRARIES             =   libotapi.la
+lib_LTLIBRARIES                 =   libotapi.la
 
 ########################## STANDARD FOLDERS #########################
 
-opentxs_incdir              =   $(top_srcdir)/include
-opentxs_srcdir              =   $(top_srcdir)/src
+opentxs_incdir                  =   $(top_srcdir)/include
+opentxs_srcdir                  =   $(top_srcdir)/src
 
-gmock_incdir                =   $(opentxs_incdir)/gmock
-gmock_srcdir                =   $(opentxs_srcdir)/gmock
-gtest_incdir                =   $(opentxs_incdir)/gtest
-gtest_srcdir                =   $(opentxs_srcdir)/gtest
-ot_incdir                   =   $(opentxs_incdir)/ot
-ot_srcdir                   =   $(opentxs_srcdir)/ot
-otapi_incdir                =   $(opentxs_incdir)/otapi
-otapi_srcdir                =   $(opentxs_srcdir)/otapi
-otapitest_incdir            =   $(opentxs_incdir)/otapitest
-otapitest_srcdir            =   $(opentxs_srcdir)/otapitest
-otlib_incdir                =   $(opentxs_incdir)/otlib
-otlib_srcdir                =   $(opentxs_srcdir)/otlib
-otmint_incdir               =   $(opentxs_incdir)/otmint
-otmint_srcdir               =   $(opentxs_srcdir)/otmint
-otserver_incdir             =   $(opentxs_incdir)/otserver
-otserver_srcdir             =   $(opentxs_srcdir)/otserver
+gmock_incdir                    =   $(opentxs_incdir)/gmock
+gmock_srcdir                    =   $(opentxs_srcdir)/gmock
+gtest_incdir                    =   $(opentxs_incdir)/gtest
+gtest_srcdir                    =   $(opentxs_srcdir)/gtest
+ot_incdir                       =   $(opentxs_incdir)/ot
+ot_srcdir                       =   $(opentxs_srcdir)/ot
+otapi_incdir                    =   $(opentxs_incdir)/otapi
+otapi_srcdir                    =   $(opentxs_srcdir)/otapi
+otapitest_incdir                =   $(opentxs_incdir)/otapitest
+otapitest_srcdir                =   $(opentxs_srcdir)/otapitest
+otlib_incdir                    =   $(opentxs_incdir)/otlib
+otlib_srcdir                    =   $(opentxs_srcdir)/otlib
+otmint_incdir                   =   $(opentxs_incdir)/otmint
+otmint_srcdir                   =   $(opentxs_srcdir)/otmint
+otserver_incdir                 =   $(opentxs_incdir)/otserver
+otserver_srcdir                 =   $(opentxs_srcdir)/otserver
 
-swig_dir                    =   $(top_srcdir)/swig
+swig_dir                        =   $(top_srcdir)/swig
 
-common_includes             =   -I$(otapi_incdir) \
-                                -I$(otlib_incdir) \
-                                -I$(opentxs_incdir)
+common_includes                 =   -I$(otapi_incdir) \
+                                    -I$(otlib_incdir) \
+                                    -I$(opentxs_incdir)
 
-common_libraries            =   $(otapi_srcdir)/libotapi.la \
-                                $(otlib_incdir)/libotlib.la
+common_libraries                =   $(otapi_srcdir)/libotapi.la \
+                                    $(otlib_srcdir)/libotlib.la
                                         
 ######################## BUILD COMMANDS #############################
 
-libotapi_la_SOURCES         =   $(otapi_sources) $(otapi_headers)
+libotapi_la_SOURCES             =   $(otapi_sources) $(otapi_headers)
 
-libotapi_la_CXXFLAGS        =   $(AM_CXXFLAGS) $(common_includes)
+libotapi_la_CXXFLAGS            =   $(AM_CXXFLAGS) $(common_includes)
 
 if TRANSPORT_ZMQ
-libotapi_la_CXXFLAGS       +=   -DOT_ZMQ_MODE
+libotapi_la_CXXFLAGS           +=   -DOT_ZMQ_MODE
 endif
 
-libotapi_la_LDFLAGS         =   --no-undefined -g
+libotapi_la_LDFLAGS             =   --no-undefined -g
 
-libotapi_la_LIBADD          =   $(common_libraries) $(DEPS_LIBS)
+libotapi_la_DEPENDENCIES        =   $(otlib_srcdir)/libotlib.la
 
-libotapi_la_DEPENDENCIES    =   $(otlib_srcdir)/libotlib.la
-
+libotapi_la_LIBADD              =   $(libotapi_la_DEPENDENCIES) $(DEPS_LIBS)
 
 ######################## EXTRA BUILD COMMANDS #############################
 
 #### OT API JAVA
 
 if WANT_JAVA
-lib_LTLIBRARIES            +=    libotapi-java.la
+lib_LTLIBRARIES                +=   libotapi-java.la
 endif
 
-libotapi_java_la_SOURCES    =    $(swig_dir)/otapi/OTAPI-java.cxx    \
-                                 $(swig_dir)/otapi/OTAPI-java.h
+libotapi_java_la_SOURCES        =   $(swig_dir)/otapi/OTAPI-java.cxx \
+                                    $(swig_dir)/otapi/OTAPI-java.h
 
-libotapi_java_la_CXXFLAGS   =    $(AM_CXXFLAGS) $(common_includes) $(JNI_CPPFLAGS)
+libotapi_java_la_CXXFLAGS       =   $(AM_CXXFLAGS) $(common_includes) $(JNI_CPPFLAGS)
 
-libotapi_java_la_LIBADD     =    $(common_libraries)  $(DEPS_LIBS)
-libotapi_java_la_DEPENDENCIES =  $(common_libraries) 
-libotapi_java_la_LDFLAGS    =   --no-undefined
+libotapi_java_la_DEPENDENCIES   =   $(common_libraries) 
+libotapi_java_la_LIBADD         =   $(libotapi_java_la_DEPENDENCIES) $(DEPS_LIBS)
+libotapi_java_la_LDFLAGS        =   --no-undefined
 
 if TRANSPORT_ZMQ
-libotapi_java_la_CXXFLAGS  +=    -DOT_ZMQ_MODE
+libotapi_java_la_CXXFLAGS      +=   -DOT_ZMQ_MODE
 endif
 
 #### OT API PERL5
 
 if WANT_PERL5
-lib_LTLIBRARIES            +=   libotapi-perl5.la
+lib_LTLIBRARIES                +=   libotapi-perl5.la
 endif
 
-libotapi_perl5_la_SOURCES   =   $(swig_dir)/otapi/OTAPI-perl5.cxx
-libotapi_perl5_la_CXXFLAGS  =   $(AM_CXXFLAGS) $(common_includes) \
-                                $(PERL_EXT_CPPFLAGS) \
-                                -I$(PERL_EXT_INC)
-libotapi_perl5_la_LIBADD    =   $(common_libraries)  $(DEPS_LIBS)
-libotapi_perl5_la_DEPENDENCIES =    $(common_libraries) 
-libotapi_perl5_la_LDFLAGS   =   $(PERL_EXT_LDFLAGS) --no-undefined
+libotapi_perl5_la_SOURCES       =   $(swig_dir)/otapi/OTAPI-perl5.cxx
+libotapi_perl5_la_CXXFLAGS      =   $(AM_CXXFLAGS) $(common_includes) \
+                                    -I$(PERL_EXT_INC) \
+                                    $(PERL_EXT_CPPFLAGS)
+libotapi_perl5_la_DEPENDENCIES  =   $(common_libraries) 
+libotapi_perl5_la_LIBADD        =   $(libotapi_perl5_la_DEPENDENCIES) $(DEPS_LIBS)
+libotapi_perl5_la_LDFLAGS       =   $(PERL_EXT_LDFLAGS) --no-undefined
 
 if TRANSPORT_ZMQ
-libotapi_perl5_la_CXXFLAGS +=   -DOT_ZMQ_MODE
+libotapi_perl5_la_CXXFLAGS     +=   -DOT_ZMQ_MODE
 endif
 
 #### OT API PHP
 
 if WANT_PHP
-lib_LTLIBRARIES            +=   libotapi-php.la
+lib_LTLIBRARIES                +=   libotapi-php.la
 endif
 
-libotapi_php_la_SOURCES     =   $(swig_dir)/otapi/OTAPI-php.cpp \
-                                $(swig_dir)/otapi/OTAPI-php.h
-libotapi_php_la_CXXFLAGS    =   $(AM_CXXFLAGS) $(common_includes) \
-                                -I$(swig_dir)/glue/php \
-                                $(PHP_INCLUDES)
-libotapi_php_la_LIBADD      =   $(common_libraries)  $(DEPS_LIBS)
+libotapi_php_la_SOURCES         =   $(swig_dir)/otapi/OTAPI-php.cpp \
+                                    $(swig_dir)/otapi/OTAPI-php.h
+libotapi_php_la_CXXFLAGS        =   $(AM_CXXFLAGS) $(common_includes) \
+                                    -I$(swig_dir)/glue/php \
+                                    $(PHP_INCLUDES)
 libotapi_php_la_DEPENDENCIES    =   $(common_libraries) 
-libotapi_php_la_LDFLAGS     =   $(PHP_LDFLAGS) --no-undefined
+libotapi_php_la_LIBADD          =   $(libotapi_php_la_DEPENDENCIES)  $(DEPS_LIBS)
+libotapi_php_la_LDFLAGS         =   $(PHP_LDFLAGS) --no-undefined
 
 if TRANSPORT_ZMQ
-libotapi_php_la_CXXFLAGS   +=   -DOT_ZMQ_MODE
+libotapi_php_la_CXXFLAGS       +=   -DOT_ZMQ_MODE
 endif
 
 #### OT API PYTHON
 
 if WANT_PYTHON
-lib_LTLIBRARIES            +=   _otapi.la
+lib_LTLIBRARIES                +=   _otapi.la
 endif
 
-_otapi_la_SOURCES           =   $(swig_dir)/otapi/OTAPI-python.cxx \
-                                $(swig_dir)/otapi/OTAPI-python.h
+_otapi_la_SOURCES               =   $(swig_dir)/otapi/OTAPI-python.cxx \
+                                    $(swig_dir)/otapi/OTAPI-python.h
 
-_otapi_la_CXXFLAGS          =   $(AM_CXXFLAGS) $(common_includes) \
-                                $(PYTHON_CPPFLAGS) \
-                                $(PYTHON_EXTRA_LIBS)
-_otapi_la_LIBADD            =   $(common_libraries)  $(DEPS_LIBS)
-_otapi_la_DEPENDENCIES      =   $(common_libraries) 
-_otapi_la_LDFLAGS           =   --no-undefined \
-                                -module -avoid-version \
-                                $(PYTHON_LDFLAGS) \
-                                $(PYTHON_EXTRA_LDFLAGS)
+_otapi_la_CXXFLAGS              =   $(AM_CXXFLAGS) $(common_includes) \
+                                    $(PYTHON_CPPFLAGS) \
+                                    $(PYTHON_EXTRA_LIBS)
+_otapi_la_DEPENDENCIES          =   $(common_libraries) 
+_otapi_la_LIBADD                =   $(_otapi_la_DEPENDENCIES)  $(DEPS_LIBS)
+_otapi_la_LDFLAGS               =   --no-undefined \
+                                    -module -avoid-version \
+                                    $(PYTHON_LDFLAGS) \
+                                    $(PYTHON_EXTRA_LDFLAGS)
 
 if TRANSPORT_ZMQ
-_otapi_la_CXXFLAGS         +=   -DOT_ZMQ_MODE
+_otapi_la_CXXFLAGS             +=   -DOT_ZMQ_MODE
 endif
 
 #### OT API RUBY
 
 if WANT_RUBY
-lib_LTLIBRARIES            +=   libotapi-ruby.la
+lib_LTLIBRARIES                +=   libotapi-ruby.la
 endif
 
-libotapi_ruby_la_SOURCES    =   $(swig_dir)/otapi/OTAPI-ruby. \
-                                $(swig_dir)/otapi/OTAPI-ruby.h
-libotapi_ruby_la_CXXFLAGS   =   $(AM_CXXFLAGS) $(common_includes) \
-                                $(RUBY_CPPFLAGS) \
-                                $(RUBY_EXTRA_LIBS)
-libotapi_ruby_la_LIBADD     =   $(common_libraries)  $(DEPS_LIBS)
+libotapi_ruby_la_SOURCES        =   $(swig_dir)/otapi/OTAPI-ruby. \
+                                    $(swig_dir)/otapi/OTAPI-ruby.h
+libotapi_ruby_la_CXXFLAGS       =   $(AM_CXXFLAGS) $(common_includes) \
+                                    $(RUBY_CPPFLAGS) \
+                                    $(RUBY_EXTRA_LIBS)
 libotapi_ruby_la_DEPENDENCIES   =   $(common_libraries) 
-libotapi_ruby_la_LDFLAGS    =   $(RUBY_LDFLAGS) --no-undefined
+libotapi_ruby_la_LIBADD         =   $(libotapi_ruby_la_DEPENDENCIES)  $(DEPS_LIBS)
+libotapi_ruby_la_LDFLAGS        =   $(RUBY_LDFLAGS) --no-undefined
 
 if TRANSPORT_ZMQ
-libotapi_ruby_la_CXXFLAGS  +=   -DOT_ZMQ_MODE
+libotapi_ruby_la_CXXFLAGS      +=   -DOT_ZMQ_MODE
 endif
 
 #### OT API TCL
 
 if WANT_TCL
-lib_LTLIBRARIES            +=   libotapi-tcl.la
+lib_LTLIBRARIES                +=   libotapi-tcl.la
 endif
 
-libotapi_tcl_la_SOURCES     =   $(swig_dir)/otapi/OTAPI-tcl.cxx
-libotapi_tcl_la_CXXFLAGS    =   $(AM_CXXFLAGS) $(common_includes)
-libotapi_tcl_la_LIBADD      =   $(common_libraries)  $(DEPS_LIBS)
+libotapi_tcl_la_SOURCES         =   $(swig_dir)/otapi/OTAPI-tcl.cxx
+libotapi_tcl_la_CXXFLAGS        =   $(AM_CXXFLAGS) $(common_includes)
 libotapi_tcl_la_DEPENDENCIES    =   $(common_libraries) 
-libotapi_tcl_la_LDFLAGS     =   --no-undefined
+libotapi_tcl_la_LIBADD          =   $(libotapi_tcl_la_DEPENDENCIES)  $(DEPS_LIBS)
+libotapi_tcl_la_LDFLAGS         =   --no-undefined
 
 if TRANSPORT_ZMQ
-libotapi_tcl_la_CXXFLAGS   +=   -DOT_ZMQ_MODE
+libotapi_tcl_la_CXXFLAGS       +=   -DOT_ZMQ_MODE
 endif
 
 #### OT API CSHARP
 
 if WANT_CSHARP
-lib_LTLIBRARIES            +=   libotapi-csharp.la
+lib_LTLIBRARIES                +=   libotapi-csharp.la
 endif
 
 libotapi_csharp_la_SOURCES      =   $(swig_dir)/otapi/OTAPI-csharp.cxx \
                                     $(swig_dir)/otapi/OTAPI-csharp.h
 libotapi_csharp_la_CXXFLAGS     =   $(AM_CXXFLAGS) $(common_includes)
-libotapi_csharp_la_LIBADD       =   $(common_libraries)  $(DEPS_LIBS)
 libotapi_csharp_la_DEPENDENCIES =   $(common_libraries) 
+libotapi_csharp_la_LIBADD       =   $(libotapi_csharp_la_DEPENDENCIES)  $(DEPS_LIBS)
 libotapi_csharp_la_LDFLAGS      =   --no-undefined
 
 if TRANSPORT_ZMQ
@@ -190,8 +189,8 @@ endif
 libotapi_d_la_SOURCES           =   $(swig_dir)/otapi/OTAPI-d.cxx \
                                     $(swig_dir)/otapi/OTAPI-d.h
 libotapi_d_la_CXXFLAGS          =   $(AM_CXXFLAGS) $(common_includes)
-libotapi_d_la_LIBADD            =   $(common_libraries)  $(DEPS_LIBS)
 libotapi_d_la_DEPENDENCIES      =   $(common_libraries) 
+libotapi_d_la_LIBADD            =   $(libotapi_d_la_DEPENDENCIES)  $(DEPS_LIBS)
 libotapi_d_la_LDFLAGS           =   --no-undefined
 
 if TRANSPORT_ZMQ
@@ -207,8 +206,8 @@ endif
 libotapi_go_la_SOURCES          =   $(swig_dir)/otapi/OTAPI-go.cxx \
                                     $(swig_dir)/otapi/OTAPI-go.h
 libotapi_go_la_CXXFLAGS         =   $(AM_CXXFLAGS) $(common_includes)
-libotapi_go_la_LIBADD           =   $(common_libraries)  $(DEPS_LIBS)
 libotapi_go_la_DEPENDENCIES     =   $(common_libraries) 
+libotapi_go_la_LIBADD           =   $(libotapi_go_la_DEPENDENCIES)  $(DEPS_LIBS)
 libotapi_go_la_LDFLAGS          =   --no-undefined
 
 if TRANSPORT_ZMQ
@@ -217,37 +216,37 @@ endif
 
 ######################## DEPENDENCIES ###############################
 
-otapi_sources       =   $(otapi_srcdir)/OpenTransactions.cpp \
-                        $(otapi_srcdir)/ot_commands_ot.cpp \
-                        $(otapi_srcdir)/ot_made_easy_ot.cpp \
-                        $(otapi_srcdir)/ot_opentxs_ot.cpp \
-                        $(otapi_srcdir)/ot_otapi_ot.cpp \
-                        $(otapi_srcdir)/ot_utility_ot.cpp \
-                        $(otapi_srcdir)/OTAPI.cpp \
-                        $(otapi_srcdir)/OT_ME.cpp \
-                        $(otapi_srcdir)/OT_ME_NEW.cpp \
-                        $(otapi_srcdir)/OTAPI_Basic.cpp \
-                        $(otapi_srcdir)/OTAPI_Exec.cpp \
-                        $(otapi_srcdir)/OTMadeEasy.cpp \
-                        $(otapi_srcdir)/OTClient.cpp \
-                        $(otapi_srcdir)/OTServerConnection.cpp
+otapi_sources                   =   OpenTransactions.cpp \
+                                    ot_commands_ot.cpp \
+                                    ot_made_easy_ot.cpp \
+                                    ot_opentxs_ot.cpp \
+                                    ot_otapi_ot.cpp \
+                                    ot_utility_ot.cpp \
+                                    OTAPI.cpp \
+                                    OT_ME.cpp \
+                                    OT_ME_NEW.cpp \
+                                    OTAPI_Basic.cpp \
+                                    OTAPI_Exec.cpp \
+                                    OTMadeEasy.cpp \
+                                    OTClient.cpp \
+                                    OTServerConnection.cpp
 
 
-otapi_headers       =   $(otapi_incdir)/main.h \
-                        $(otapi_incdir)/ot_commands_ot.hpp \
-                        $(otapi_incdir)/ot_made_easy_ot.hpp \
-                        $(otapi_incdir)/ot_otapi_ot.hpp \
-                        $(otapi_incdir)/ot_utility_ot.hpp \
-                        $(otapi_incdir)/OTClient.h \
-                        $(otapi_incdir)/OTServerConnection.h \
-                        $(otapi_headers_ext)
+otapi_headers                   =   $(otapi_incdir)/main.h \
+                                    $(otapi_incdir)/ot_commands_ot.hpp \
+                                    $(otapi_incdir)/ot_made_easy_ot.hpp \
+                                    $(otapi_incdir)/ot_otapi_ot.hpp \
+                                    $(otapi_incdir)/ot_utility_ot.hpp \
+                                    $(otapi_incdir)/OTClient.h \
+                                    $(otapi_incdir)/OTServerConnection.h \
+                                    $(otapi_headers_ext)
 
-otapi_headers_ext   =   $(otapi_incdir)/OpenTransactions.h \
-                        $(otapi_incdir)/OTAPI.h \
-                        $(otapi_incdir)/OTAPI_Basic.h \
-                        $(otapi_incdir)/OTAPI_Exec.h \
-                        $(otapi_incdir)/OTMadeEasy.h \
-                        $(otapi_incdir)/ot_me_switch.hpp \
-                        $(otapi_incdir)/OT_ME.h
+otapi_headers_ext               =   $(otapi_incdir)/OpenTransactions.h \
+                                    $(otapi_incdir)/OTAPI.h \
+                                    $(otapi_incdir)/OTAPI_Basic.h \
+                                    $(otapi_incdir)/OTAPI_Exec.h \
+                                    $(otapi_incdir)/OTMadeEasy.h \
+                                    $(otapi_incdir)/ot_me_switch.hpp \
+                                    $(otapi_incdir)/OT_ME.h
 
-pkginclude_HEADERS  =   $(otapi_headers_ext)
+pkginclude_HEADERS              =   $(otapi_headers_ext)
