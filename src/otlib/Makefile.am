@@ -37,7 +37,7 @@ common_libraries            =   $(otapi_srcdir)/libotapi.la \
 
 libotlib_la_SOURCES         =   $(otlib_sources) $(otlib_headers)
 
-libotapi_la_CXXFLAGS        =   $(AM_CXXFLAGS) $(common_includes)
+libotlib_la_CXXFLAGS        =   $(AM_CXXFLAGS) $(common_includes)
 
 libotlib_la_DEPENDENCIES    =   bigint/libbigint.la \
                                 irrxml/libirrxml.la \
