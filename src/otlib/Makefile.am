@@ -133,7 +133,7 @@ otlib_headers               =   $(otlib_incdir)/constants.h \
                                 $(otlib_incdir)/Timer.h \
                                 $(otlib_headers_ext)
 
-otlib_headers_ext           =   $(top_builddir)/include/otlib/ot_config.h \
+otlib_headers_ext           =   $(otlib_incdir)/ot_config.h \
                                 $(otlib_incdir)/ExportWrapper.h \
                                 $(otlib_incdir)/stacktrace.h \
                                 $(otlib_incdir)/stdafx.h \
@@ -196,30 +196,30 @@ otlib_headers_ext           =   $(top_builddir)/include/otlib/ot_config.h \
 
 ####   Containers
 
-containers_headers_dir      =   $(opentxs_incdir)/containers
+containers_incdir           =   $(opentxs_incdir)/containers
 
 containers_headers          =   $(containers_incdir)/containers.hpp \
-                                $(containers_headers_dir)/containers_fixes.hpp \
-                                $(containers_headers_dir)/copy_functors.hpp \
-                                $(containers_headers_dir)/digraph.hpp \
-                                $(containers_headers_dir)/digraph.tpp \
-                                $(containers_headers_dir)/exceptions.hpp \
-                                $(containers_headers_dir)/foursome.hpp \
-                                $(containers_headers_dir)/foursome.tpp \
-                                $(containers_headers_dir)/hash.hpp \
-                                $(containers_headers_dir)/hash.tpp \
-                                $(containers_headers_dir)/matrix.hpp \
-                                $(containers_headers_dir)/matrix.tpp \
-                                $(containers_headers_dir)/ntree.hpp \
-                                $(containers_headers_dir)/ntree.tpp \
-                                $(containers_headers_dir)/safe_iterator.hpp \
-                                $(containers_headers_dir)/safe_iterator.tpp \
-                                $(containers_headers_dir)/simple_ptr.hpp \
-                                $(containers_headers_dir)/simple_ptr.tpp \
-                                $(containers_headers_dir)/smart_ptr.hpp \
-                                $(containers_headers_dir)/smart_ptr.tpp \
-                                $(containers_headers_dir)/triple.hpp \
-                                $(containers_headers_dir)/triple.tpp
+                                $(containers_incdir)/containers_fixes.hpp \
+                                $(containers_incdir)/copy_functors.hpp \
+                                $(containers_incdir)/digraph.hpp \
+                                $(containers_incdir)/digraph.tpp \
+                                $(containers_incdir)/exceptions.hpp \
+                                $(containers_incdir)/foursome.hpp \
+                                $(containers_incdir)/foursome.tpp \
+                                $(containers_incdir)/hash.hpp \
+                                $(containers_incdir)/hash.tpp \
+                                $(containers_incdir)/matrix.hpp \
+                                $(containers_incdir)/matrix.tpp \
+                                $(containers_incdir)/ntree.hpp \
+                                $(containers_incdir)/ntree.tpp \
+                                $(containers_incdir)/safe_iterator.hpp \
+                                $(containers_incdir)/safe_iterator.tpp \
+                                $(containers_incdir)/simple_ptr.hpp \
+                                $(containers_incdir)/simple_ptr.tpp \
+                                $(containers_incdir)/smart_ptr.hpp \
+                                $(containers_incdir)/smart_ptr.tpp \
+                                $(containers_incdir)/triple.hpp \
+                                $(containers_incdir)/triple.tpp
 
 ####    Global Headers for dist.
 
