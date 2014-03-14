@@ -1,6 +1,6 @@
 bin_PROGRAMS            =   ot otserver createmint
 
-SUBDIRS                 =   otlib otapi mtest gmock aotapitest
+SUBDIRS                 =   otlib otapi gtest gmock otapitest
 
 ########################## STANDARD FOLDERS #########################
 
