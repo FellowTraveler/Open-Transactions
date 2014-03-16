@@ -1,7 +1,7 @@
 #include "stdafx.h"
 
 
-TEST_MOCK(getRequestNumber)
+TEST_MOCK(ot_utility_getRequestNumber)
 {
 	EXPECT_MOCK(FlushMessageBuffer());
 
