@@ -216,13 +216,11 @@ void OT_Sleep(int nMS);
 
 #include "OTScript.h"
 
-#include "ot_me_switch.hpp"
-
-//  Just Include OTAPI_Wrapper, as it is now our pure C++ api.
-//
-
 #include "OTAPI.h"
 #include "OT_ME.h"
+
+#include "ot_me_switch.hpp"
+
 
 // ---------------------------------------------------------------------------
 
@@ -1400,7 +1398,7 @@ int main(int argc, char* argv[])
             OTLog::Output(1, "Script output:\n\n");
 
             // OT SCRIPT PROMPT --------------------------------------------
-#if USE_OLD_CODE == 0
+#if USE_OLD_CHAISCRIPT == 0
             if (strFilename.find("scripts\\opentxs") != string::npos || strFilename.find("scripts/opentxs") != string::npos)
             {
                 return OT_ME::opentxs_main_loop();

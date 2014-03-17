@@ -136,6 +136,10 @@ kamH0Y/n11lCvo1oQxM+
 
 #include <stdafx.h>
 
+#include "ot_me_switch.hpp"
+
+#if USE_OLD_CHAISCRIPT == 0
+
 
 #ifndef EXPORT
 #define EXPORT
@@ -159,10 +163,6 @@ kamH0Y/n11lCvo1oQxM+
 #include <OT_ME.h>
 
 #include <OTLog.h>
-
-#include "ot_me_switch.hpp"
-
-#if USE_OLD_CODE == 0
 
 
 #include "ot_command_ot.hpp"
