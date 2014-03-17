@@ -27,11 +27,19 @@ TEST_MOCK(ot_utility_getBoxReceiptWithErrorCorrection)
 }
 
 
-bool OtMeExtra::ot_utility_getBoxReceiptWithErrorCorrection(const char * serverId, const char * nymId, const char * accountId, const int boxType, const int64_t transactionNumber)
+bool OtMeChai::ot_utility_getBoxReceiptWithErrorCorrection(const char * serverId, const char * nymId, const char * accountId, const int boxType, const int64_t transactionNumber)
 {
 	OTString code;
-    code.Format("{ var util = Utility(); util.getBoxReceiptWithErrorCorrection(\"%s\", \"%s\", \"%s\", %d, int64_t(%lld)); }", serverId, nymId, accountId, boxType, transactionNumber);
+    code.Format("{ var util = Utility(); util.getBoxReceiptWithErrorCorrection(\"%s\", \"%s\", \"%s\", %d, int64_t(%lld)); }",
+                serverId, nymId, accountId, boxType, transactionNumber);
 	return execBool(code.Get());
+}
+
+
+bool OtMeExtra::ot_utility_getBoxReceiptWithErrorCorrection(const char * serverId, const char * nymId, const char * accountId, const int boxType, const int64_t transactionNumber)
+{
+    Utility util;
+    return util.getBoxReceiptWithErrorCorrection(serverId, nymId, accountId, boxType, transactionNumber);
 }
 
 

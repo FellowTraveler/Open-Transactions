@@ -4,7 +4,6 @@
 #include <algorithm>
 #include <string>
 
-
 #ifndef EXPORT
 #define EXPORT
 #endif

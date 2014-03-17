@@ -82,6 +82,9 @@ using namespace tthread;
 
 #include "OTAPI.h"
 
+#include "ot_command_ot.hpp"
+#include "ot_utility_ot.hpp"
+
 #include "gtest/gtest.h"
 #include "gmock/gmock.h"
 

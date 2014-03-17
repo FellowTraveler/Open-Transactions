@@ -3,10 +3,17 @@
 
 #include <string>
 
+#ifndef EXPORT
+#define EXPORT
+#endif
+#ifndef NOEXPORT
+#include <ExportWrapper.h>
+#endif
+
 #include "OTStorage.h"
 
 
-#define OT_UTILITY_OT
+#define OT_UTILITY_OT  EXPORT
 
 
 using std::string;
@@ -64,8 +71,8 @@ public:
     int delay_ms;
     int max_trans_dl;
 
-    Utility();
-    ~Utility();
+    OT_UTILITY_OT Utility();
+    OT_UTILITY_OT ~Utility();
 
     OT_UTILITY_OT void delay();
     OT_UTILITY_OT int getAndProcessNymbox_3(const string & serverID, const string & nymID, bool & bWasMsgSent);
