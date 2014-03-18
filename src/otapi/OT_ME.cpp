@@ -134,47 +134,35 @@ kamH0Y/n11lCvo1oQxM+
 -----END PGP SIGNATURE-----
 **************************************************************/
 
-#include <stdafx.h>
+#include <stdafx.hpp>
 
 #include "ot_me_switch.hpp"
+
 
 #if USE_OLD_CHAISCRIPT == 1
 
 
-#ifndef EXPORT
-#define EXPORT
+#include <OT_ME.hpp>
+
+#include <OTAPI.hpp>
+
+#ifndef IMPORT
+#define IMPORT
 #endif
-#ifndef NOEXPORT
-#include <ExportWrapper.h>
-#endif
+
+#include <OTLog.hpp>
+#include <OTStorage.hpp>
+#include <OTPaths.hpp>
 
 
-#include <string>
-
-
-
-#include <OTStorage.h>
-
-#include <OTData.h>
-#include <OTString.h>
-#include <OTBylaw.h>
-#include <OTScript.h>
-
-#include <OTAPI.h>
-#include <OT_ME.h>
-
-#include <OTLog.h>
-
-
-
-using namespace std;
+using std::string;
 
 
 // no use in initializing the script multiple times since it takes prohibitively long
 OTScript_SharedPtr OT_ME::m_pScript;
 
 
-OT_ME::OT_ME(const std::string & _scriptName)
+OT_ME::OT_ME(const string & _scriptName)
 : scriptName(_scriptName)
 {
 }
@@ -184,12 +172,12 @@ OT_ME::~OT_ME()
 }
 
 
-typedef std::map<std::string, std::string>  mapOfArguments;
+typedef std::map<string, string>  mapOfArguments;
 
-//int    OT_CLI_GetArgsCount     (const std::string str_Args);
-//std::string OT_CLI_GetValueByKey    (const std::string str_Args, const std::string str_key);
-//std::string OT_CLI_GetValueByIndex  (const std::string str_Args, const int nIndex);
-//std::string OT_CLI_GetKeyByIndex    (const std::string str_Args, const int nIndex);
+//int    OT_CLI_GetArgsCount     (const string str_Args);
+//string OT_CLI_GetValueByKey    (const string str_Args, const string str_key);
+//string OT_CLI_GetValueByIndex  (const string str_Args, const int nIndex);
+//string OT_CLI_GetKeyByIndex    (const string str_Args, const int nIndex);
 
 // If user-defined script arguments were passed,
 // using:  --Args "key value key value key value"
@@ -197,7 +185,7 @@ typedef std::map<std::string, std::string>  mapOfArguments;
 // pairs available. (In that example, the return
 // value would be 3.)
 //
-int OT_CLI_GetArgsCount(const std::string str_Args)
+int OT_CLI_GetArgsCount(const string str_Args)
 {
     const OTString strArgs(str_Args);
     int nRetVal = 0;
@@ -214,10 +202,10 @@ int OT_CLI_GetArgsCount(const std::string str_Args)
 // using:  --Args "key value key value key value"
 // then this function can retrieve any value (by key.)
 //
-std::string OT_CLI_GetValueByKey(const std::string str_Args, const std::string str_key)
+string OT_CLI_GetValueByKey(const string str_Args, const string str_key)
 {
     const OTString strArgs(str_Args);
-    std::string str_retval = "";
+    string str_retval = "";
     mapOfArguments map_values;
     const bool bTokenized = strArgs.TokenizeIntoKeyValuePairs(map_values);
     if (bTokenized && (map_values.size() > 0))
@@ -236,10 +224,10 @@ std::string OT_CLI_GetValueByKey(const std::string str_Args, const std::string s
 // using:  --Args "key value key value key value"
 // then this function can retrieve any value (by index.)
 //
-std::string OT_CLI_GetValueByIndex(const std::string str_Args, const int nIndex)
+string OT_CLI_GetValueByIndex(const string str_Args, const int nIndex)
 {
     const OTString strArgs(str_Args);
-    std::string str_retval = "";
+    string str_retval = "";
     mapOfArguments map_values;
     const bool bTokenized = strArgs.TokenizeIntoKeyValuePairs(map_values);
     if (bTokenized && (nIndex < static_cast<int>(map_values.size())))
@@ -248,8 +236,8 @@ std::string OT_CLI_GetValueByIndex(const std::string str_Args, const int nIndex)
         FOR_EACH(mapOfArguments, map_values)
         {
             ++nMapIndex;
-            //   const std::string str_key = (*it).first;
-            //   const std::string str_val = (*it).second;
+            //   const string str_key = (*it).first;
+            //   const string str_val = (*it).second;
             // BY this point, nMapIndex contains the index we're at on map_values
             // (compare to nIndex.) And str_key and str_val contain the key/value
             // pair for THAT index.
@@ -270,10 +258,10 @@ std::string OT_CLI_GetValueByIndex(const std::string str_Args, const int nIndex)
 // using:  --Args "key value key value key value"
 // then this function can retrieve any key (by index.)
 //
-std::string OT_CLI_GetKeyByIndex(const std::string str_Args, const int nIndex)
+string OT_CLI_GetKeyByIndex(const string str_Args, const int nIndex)
 {
     const OTString strArgs(str_Args);
-    std::string str_retval = "";
+    string str_retval = "";
     mapOfArguments map_values;
     const bool bTokenized = strArgs.TokenizeIntoKeyValuePairs(map_values);
     if (bTokenized && (nIndex < static_cast<int>(map_values.size())))
@@ -282,8 +270,8 @@ std::string OT_CLI_GetKeyByIndex(const std::string str_Args, const int nIndex)
         FOR_EACH(mapOfArguments, map_values)
         {
             ++nMapIndex;
-            //   const std::string str_key = (*it).first;
-            //   const std::string str_val = (*it).second;
+            //   const string str_key = (*it).first;
+            //   const string str_val = (*it).second;
             // BY this point, nMapIndex contains the index we're at on map_values
             // (compare to nIndex.) And str_key and str_val contain the key/value
             // pair for THAT index.
@@ -303,9 +291,9 @@ std::string OT_CLI_GetKeyByIndex(const std::string str_Args, const int nIndex)
 
 // Reads from cin until Newline.
 //
-std::string OT_CLI_ReadLine()
+string OT_CLI_ReadLine()
 {
-    std::string line;
+    string line;
     if (std::getline(std::cin, line))
     {
         return line;
@@ -317,7 +305,7 @@ std::string OT_CLI_ReadLine()
 
 // Reads from cin until EOF. (Or until the ~ character as the first character on a line.)
 //
-std::string OT_CLI_ReadUntilEOF()
+string OT_CLI_ReadUntilEOF()
 {
     // don't skip the whitespace while reading
     // std::cin >> std::noskipws;
@@ -328,22 +316,22 @@ std::string OT_CLI_ReadUntilEOF()
     // s = outs.str();
 
     // use stream iterators to copy the stream to a string
-    // std::istream_iterator<std::string> it(std::cin);
-    // std::istream_iterator<std::string> end;
+    // std::istream_iterator<string> it(std::cin);
+    // std::istream_iterator<string> end;
     // std::istream_iterator<char> it(std::cin);
     // std::istream_iterator<char> end;
-    // std::string results(it, end);
+    // string results(it, end);
 
     // int onechar;
 
-    std::string result("");
+    string result("");
 
     for (;;)
     {
-        std::string input_line("");
+        string input_line("");
 
         //      int n;
-        ////    std::string sn;
+        ////    string sn;
         //      std::stringstream ssn;
         //
         //      std::getline(std::cin, input_line);
@@ -414,8 +402,8 @@ std::string OT_CLI_ReadUntilEOF()
 
 
 bool OT_ME::make_sure_enough_trans_nums(const int32_t        nNumberNeeded,
-    const std::string  & SERVER_ID,
-    const std::string  & NYM_ID)
+    const string  & SERVER_ID,
+    const string  & NYM_ID)
 {
 
     //    OTLog::vError("\n\n DEBUGGING: SERVER_ID: %s NYM_ID: %s \n", SERVER_ID.c_str(), NYM_ID.c_str());
@@ -470,10 +458,10 @@ string OT_ME::create_pseudonym(const int32_t  nKeybits, const string & NYM_ID_SO
 {
     // These strings contain newlines, so we create script variables to pass them as.
     //
-    const std::string str_var_name1("varSource");
+    const string str_var_name1("varSource");
     OTVariable varSource(str_var_name1, NYM_ID_SOURCE);
     this->AddVariable(str_var_name1, varSource);
-    const std::string str_var_name2("varAlt");
+    const string str_var_name2("varAlt");
     OTVariable varAlt(str_var_name2, ALT_LOCATION);
     this->AddVariable(str_var_name2, varAlt);
     OTString strRaw;
@@ -493,7 +481,7 @@ string OT_ME::issue_asset_type(const string  & SERVER_ID,
 {
     // This strings contains newlines, so we create script variables to pass it as.
     //
-    const std::string str_var_name1("varContract");
+    const string str_var_name1("varContract");
     OTVariable varTheContract(str_var_name1, THE_CONTRACT);
     this->AddVariable(str_var_name1, varTheContract);
     OTString strRaw;
@@ -513,7 +501,7 @@ string OT_ME::issue_basket_currency(const string  & SERVER_ID,
 {
     // This strings contains newlines, so we create script variables to pass it as.
     //
-    const std::string str_var_name1("varContract");
+    const string str_var_name1("varContract");
     OTVariable varTheContract(str_var_name1, THE_BASKET);
     this->AddVariable(str_var_name1, varTheContract);
     OTString strRaw;
@@ -528,16 +516,16 @@ string OT_ME::issue_basket_currency(const string  & SERVER_ID,
 
 //  EXCHANGE BASKET CURRENCY
 //
-string OT_ME::exchange_basket_currency(const std::string   & SERVER_ID,
-    const std::string   & NYM_ID,
-    const std::string   & ASSET_TYPE_ID,
-    const std::string   & THE_BASKET,
-    const std::string   & ACCOUNT_ID,
+string OT_ME::exchange_basket_currency(const string   & SERVER_ID,
+    const string   & NYM_ID,
+    const string   & ASSET_TYPE_ID,
+    const string   & THE_BASKET,
+    const string   & ACCOUNT_ID,
     const bool            IN_OR_OUT)
 {
     // This strings contains newlines, so we create script variables to pass it as.
     //
-    const std::string str_var_name1("varContract");
+    const string str_var_name1("varContract");
     OTVariable varTheContract(str_var_name1, THE_BASKET);
     this->AddVariable(str_var_name1, varTheContract);
     OTString strRaw;
@@ -644,8 +632,8 @@ bool OT_ME::retrieve_account(const string  & SERVER_ID,
 }
 
 
-bool OT_ME::retrieve_nym(const std::string  & SERVER_ID,
-    const std::string  & NYM_ID)
+bool OT_ME::retrieve_nym(const string  & SERVER_ID,
+    const string  & NYM_ID)
 {
     const bool bForceDownload = true;
     OTString   strRaw;
@@ -658,8 +646,8 @@ bool OT_ME::retrieve_nym(const std::string  & SERVER_ID,
 }
 
 
-bool OT_ME::retrieve_nym(const std::string  & SERVER_ID,
-    const std::string  & NYM_ID,
+bool OT_ME::retrieve_nym(const string  & SERVER_ID,
+    const string  & NYM_ID,
     const bool      bForceDownload)
 {
     OTString strRaw;
@@ -682,7 +670,7 @@ string OT_ME::send_transfer(const string  & SERVER_ID,
     const string  & NOTE)
 {
     // This variable contains newlines..
-    const std::string str_var_name1("varNote");
+    const string str_var_name1("varNote");
     OTVariable varNote(str_var_name1, NOTE);
     this->AddVariable(str_var_name1, varNote);
     OTString strRaw;
@@ -703,7 +691,7 @@ string OT_ME::process_inbox(const string  & SERVER_ID,
     const string  & ACCOUNT_ID,
     const string  & RESPONSE_LEDGER)
 {
-    const std::string str_var_name("varResponse");
+    const string str_var_name("varResponse");
     OTVariable varResponse(str_var_name, RESPONSE_LEDGER);
     this->AddVariable(str_var_name, varResponse);
     OTString strRaw;
@@ -717,9 +705,9 @@ string OT_ME::process_inbox(const string  & SERVER_ID,
 
 
 
-bool OT_ME::accept_inbox_items(const std::string  & ACCOUNT_ID,  // this method specific to asset account inbox.
+bool OT_ME::accept_inbox_items(const string  & ACCOUNT_ID,  // this method specific to asset account inbox.
     int32_t        nItemType,
-    const std::string  & INDICES)
+    const string  & INDICES)
 {
     OTString strRaw;
     strRaw.Format("{ var nResult = accept_inbox_items(\"%s\", int32_t(%" PRId32"), \"%s\"); var bResult = ((1 == nResult) ? true : false); }",
@@ -730,9 +718,9 @@ bool OT_ME::accept_inbox_items(const std::string  & ACCOUNT_ID,  // this method 
     return ExecuteScript_ReturnBool(str_Code, __FUNCTION__);
 }
 
-bool OT_ME::discard_incoming_payments(const std::string  & SERVER_ID,
-    const std::string  & NYM_ID,
-    const std::string  & INDICES)
+bool OT_ME::discard_incoming_payments(const string  & SERVER_ID,
+    const string  & NYM_ID,
+    const string  & INDICES)
 {
     OTString strRaw;
     strRaw.Format("{ var nResult = details_discard_incoming(\"%s\", \"%s\", \"%s\"); var bResult = ((1 == nResult) ? true : false); }",
@@ -743,9 +731,9 @@ bool OT_ME::discard_incoming_payments(const std::string  & SERVER_ID,
     return ExecuteScript_ReturnBool(str_Code, __FUNCTION__);
 }
 
-bool OT_ME::cancel_outgoing_payments(const std::string  & NYM_ID,
-    const std::string  & ACCOUNT_ID, // can be blank if a cheque. But if a voucher, smart contract or payment plan, you need to provide this. And it better match for the chosen indices. For example for a voucher, must have the same asset type.
-    const std::string  & INDICES)
+bool OT_ME::cancel_outgoing_payments(const string  & NYM_ID,
+    const string  & ACCOUNT_ID, // can be blank if a cheque. But if a voucher, smart contract or payment plan, you need to provide this. And it better match for the chosen indices. For example for a voucher, must have the same asset type.
+    const string  & INDICES)
 {
     OTString strRaw;
     strRaw.Format("{ var nResult = details_cancel_outgoing(\"%s\", \"%s\", \"%s\"); var bResult = ((1 == nResult) ? true : false); }",
@@ -756,9 +744,9 @@ bool OT_ME::cancel_outgoing_payments(const std::string  & NYM_ID,
     return ExecuteScript_ReturnBool(str_Code, __FUNCTION__);
 }
 
-int32_t OT_ME::accept_from_paymentbox(const std::string  & ACCOUNT_ID, // This acct better have the right asset type, based on chosen indices.
-    const std::string  & INDICES,
-    const std::string  & PAYMENT_TYPE)
+int32_t OT_ME::accept_from_paymentbox(const string  & ACCOUNT_ID, // This acct better have the right asset type, based on chosen indices.
+    const string  & INDICES,
+    const string  & PAYMENT_TYPE)
 {
     OTString strRaw;
     strRaw.Format("{ var nResult = accept_from_paymentbox(\"%s\", \"%s\", \"%s\"); }",
@@ -840,10 +828,10 @@ string OT_ME::send_user_msg_pubkey(const string  & SERVER_ID,
     const string  & THE_MESSAGE)
 {
     // This variable contains newlines..
-    const std::string str_var_name1("varPubkey");
+    const string str_var_name1("varPubkey");
     OTVariable varPubkey(str_var_name1, RECIPIENT_PUBKEY);
     this->AddVariable(str_var_name1, varPubkey);
-    const std::string str_var_name2("varNote");
+    const string str_var_name2("varNote");
     OTVariable varNote(str_var_name2, THE_MESSAGE);
     this->AddVariable(str_var_name2, varNote);
     OTString strRaw;
@@ -864,10 +852,10 @@ string OT_ME::send_user_pmnt_pubkey(const string  & SERVER_ID,
     const string  & THE_INSTRUMENT)
 {
     // This variable contains newlines..
-    const std::string str_var_name1("varPubkey");
+    const string str_var_name1("varPubkey");
     OTVariable varPubkey(str_var_name1, RECIPIENT_PUBKEY);
     this->AddVariable(str_var_name1, varPubkey);
-    const std::string str_var_name2("varNote");
+    const string str_var_name2("varNote");
     OTVariable varNote(str_var_name2, THE_INSTRUMENT);
     this->AddVariable(str_var_name2, varNote);
     OTString strRaw;
@@ -889,13 +877,13 @@ string OT_ME::send_user_cash_pubkey(const string  & SERVER_ID,
     const string  & INSTRUMENT_FOR_SENDER)
 {
     // This variable contains newlines..
-    const std::string str_var_name1("varPubkey");
+    const string str_var_name1("varPubkey");
     OTVariable varPubkey(str_var_name1, RECIPIENT_PUBKEY);
     this->AddVariable(str_var_name1, varPubkey);
-    const std::string str_var_name2("varNote");
+    const string str_var_name2("varNote");
     OTVariable varNote(str_var_name2, THE_INSTRUMENT);
     this->AddVariable(str_var_name2, varNote);
-    const std::string str_var_name3("varSenderNote");
+    const string str_var_name3("varSenderNote");
     OTVariable varSenderNote(str_var_name3, INSTRUMENT_FOR_SENDER);
     this->AddVariable(str_var_name3, varSenderNote);
     OTString strRaw;
@@ -915,7 +903,7 @@ string OT_ME::send_user_msg(const string  & SERVER_ID,
     const string  & THE_MESSAGE)
 {
     // This variable contains newlines..
-    const std::string str_var_name("varNote");
+    const string str_var_name("varNote");
     OTVariable varNote(str_var_name, THE_MESSAGE);
     this->AddVariable(str_var_name, varNote);
     OTString strRaw;
@@ -935,7 +923,7 @@ string OT_ME::send_user_payment(const string  & SERVER_ID,
     const string  & THE_PAYMENT)
 {
     // This variable contains newlines..
-    const std::string str_var_name("varNote");
+    const string str_var_name("varNote");
     OTVariable varNote(str_var_name, THE_PAYMENT);
     this->AddVariable(str_var_name, varNote);
     OTString strRaw;
@@ -956,11 +944,11 @@ string OT_ME::send_user_cash(const string  & SERVER_ID,
     const string  & SENDERS_COPY)
 {
     // This variable contains newlines..
-    const std::string str_var_name("varNote");
+    const string str_var_name("varNote");
     OTVariable varNote(str_var_name, THE_PAYMENT);
     this->AddVariable(str_var_name, varNote);
     // This variable contains newlines..
-    const std::string str_var_name2("varSenderNote");
+    const string str_var_name2("varSenderNote");
     OTVariable varSenderNote(str_var_name2, SENDERS_COPY);
     this->AddVariable(str_var_name2, varSenderNote);
     OTString strRaw;
@@ -979,7 +967,7 @@ bool OT_ME::withdraw_and_send_cash(const string & ACCT_ID,
     const int64_t  AMOUNT)
 {
     // This variable contains newlines..
-    const std::string str_var_name("varNote");
+    const string str_var_name("varNote");
     OTVariable varNote(str_var_name, MEMO);
     this->AddVariable(str_var_name, varNote);
     OTString strRaw;
@@ -1012,7 +1000,7 @@ string OT_ME::get_payment_instrument(const string  & SERVER_ID,
     const string  & PRELOADED_INBOX) // PRELOADED_INBOX is optional.
 {
     // This variable contains newlines..
-    const std::string str_var_name("varBox");
+    const string str_var_name("varBox");
     OTVariable varBox(str_var_name, PRELOADED_INBOX);
     this->AddVariable(str_var_name, varBox);
     OTString strRaw;
@@ -1094,7 +1082,7 @@ string OT_ME::query_asset_types(const string  & SERVER_ID,
     const string  & ENCODED_MAP)
 {
     // This variable contains newlines..
-    const std::string str_var_name("varMap");
+    const string str_var_name("varMap");
     OTVariable varMap(str_var_name, ENCODED_MAP);
     this->AddVariable(str_var_name, varMap);
     OTString strRaw;
@@ -1108,15 +1096,15 @@ string OT_ME::query_asset_types(const string  & SERVER_ID,
 
 // CREATE MARKET OFFER  -- TRANSACTION
 
-string OT_ME::create_market_offer(const std::string  &  ASSET_ACCT_ID,
-    const std::string  &  CURRENCY_ACCT_ID,
+string OT_ME::create_market_offer(const string  &  ASSET_ACCT_ID,
+    const string  &  CURRENCY_ACCT_ID,
     const int64_t         scale,
     const int64_t         minIncrement,
     const int64_t         quantity,
     const int64_t         price,
     const bool            bSelling,
     const int64_t         lLifespanInSeconds,  // 0 does default of 86400 == 1 day.
-    const std::string     STOP_SIGN,           // If a stop order, must be "<" or ">"
+    const string     STOP_SIGN,           // If a stop order, must be "<" or ">"
     const int64_t         ACTIVATION_PRICE)    // If a stop order, must be non-zero.
 {
     OTString strRaw;
@@ -1172,7 +1160,7 @@ string OT_ME::cancel_payment_plan(const string  & SERVER_ID,
     const string  & THE_PAYMENT_PLAN)
 {
     // This variable contains newlines..
-    const std::string str_var_name("varContract");
+    const string str_var_name("varContract");
     OTVariable varContract(str_var_name, THE_PAYMENT_PLAN);
     this->AddVariable(str_var_name, varContract);
     OTString strRaw;
@@ -1193,7 +1181,7 @@ string OT_ME::activate_smart_contract(const string  & SERVER_ID,
     const string  & THE_SMART_CONTRACT)
 {
     // This variable contains newlines..
-    const std::string str_var_name("varContract");
+    const string str_var_name("varContract");
     OTVariable varContract(str_var_name, THE_SMART_CONTRACT);
     this->AddVariable(str_var_name, varContract);
     OTString strRaw;
@@ -1215,7 +1203,7 @@ string OT_ME::trigger_clause(const string  & SERVER_ID,
     const string  & STR_PARAM)
 {
     // This variable contains newlines..
-    const std::string str_var_name("varParameter");
+    const string str_var_name("varParameter");
     OTVariable varParameter(str_var_name, STR_PARAM);
     this->AddVariable(str_var_name, varParameter);
     OTString strRaw;
@@ -1249,7 +1237,7 @@ string OT_ME::withdraw_cash(const string  & SERVER_ID,
 // This one automatically retrieves the mint beforehand, if necessary,
 // and the account files afterward, if appropriate.
 //
-int32_t OT_ME::easy_withdraw_cash(const std::string  & ACCT_ID,
+int32_t OT_ME::easy_withdraw_cash(const string  & ACCT_ID,
     const int64_t        AMOUNT)
 {
     OTString strRaw;
@@ -1303,7 +1291,7 @@ string OT_ME::withdraw_voucher(const string  & SERVER_ID,
     const int64_t   AMOUNT)
 {
     // This variable contains newlines..
-    const std::string str_var_name1("varNote");
+    const string str_var_name1("varNote");
     OTVariable varNote(str_var_name1, STR_MEMO);
     this->AddVariable(str_var_name1, varNote);
     OTString strRaw;
@@ -1327,7 +1315,7 @@ string OT_ME::pay_dividend(const string  & SERVER_ID,
     const int64_t   AMOUNT_PER_SHARE)
 {
     // This variable contains newlines..
-    const std::string str_var_name1("varNote");
+    const string str_var_name1("varNote");
     OTVariable varNote(str_var_name1, STR_MEMO);
     this->AddVariable(str_var_name1, varNote);
     OTString strRaw;
@@ -1347,7 +1335,7 @@ string OT_ME::deposit_cheque(const string  & SERVER_ID,
     const string  & STR_CHEQUE)
 {
     // This variable contains newlines..
-    const std::string str_var_name1("varNote");
+    const string str_var_name1("varNote");
     OTVariable varNote(str_var_name1, STR_CHEQUE);
     this->AddVariable(str_var_name1, varNote);
     OTString strRaw;
@@ -1366,7 +1354,7 @@ int32_t OT_ME::deposit_cash(const string  & SERVER_ID,
     const string  & STR_PURSE)
 {
     // This variable contains newlines..
-    const std::string str_var_name1("varNote");
+    const string str_var_name1("varNote");
     OTVariable varNote(str_var_name1, STR_PURSE);
     this->AddVariable(str_var_name1, varNote);
     OTString strRaw;
@@ -1379,10 +1367,10 @@ int32_t OT_ME::deposit_cash(const string  & SERVER_ID,
 }
 
 
-int32_t OT_ME::deposit_local_purse(const std::string  & SERVER_ID,
-    const std::string  & NYM_ID,
-    const std::string  & ACCT_ID,
-    const std::string  & STR_INDICES) // "all" for all indices
+int32_t OT_ME::deposit_local_purse(const string  & SERVER_ID,
+    const string  & NYM_ID,
+    const string  & ACCT_ID,
+    const string  & STR_INDICES) // "all" for all indices
 {
     OTString strRaw;
     strRaw.Format("{ details_deposit_purse(\"%s\", \"%s\", \"%s\", \"\", \"%s\"); }",
@@ -1670,7 +1658,7 @@ bool OT_ME::HaveWorkingScript()
 
 // used in otd/main.cpp
 //
-void OT_ME::AddVariable(const std::string & str_var_name, OTVariable & theVar)
+void OT_ME::AddVariable(const string & str_var_name, OTVariable & theVar)
 {
     if (HaveWorkingScript())
     {
@@ -1678,7 +1666,7 @@ void OT_ME::AddVariable(const std::string & str_var_name, OTVariable & theVar)
     }
 }
 
-OTVariable * OT_ME::FindVariable(const std::string & str_var_name)
+OTVariable * OT_ME::FindVariable(const string & str_var_name)
 {
     return HaveWorkingScript() ? m_pScript->FindVariable(str_var_name) : NULL;
 }
@@ -1937,52 +1925,52 @@ bool OT_ME::Register_OTDB_With_Script_Chai(OTScriptChai & theScript)
         theScript.chai.add(fun(&OTDB::CreateObject), "OTDB_CreateObject");
 
         //      theScript.chai.add(fun(&OTDB::Exists),           "OTDB_Exists");
-        theScript.chai.add(fun<bool(std::string, std::string, std::string, std::string)>(&OTDB::Exists), "OTDB_Exists");
-        //      theScript.chai.add(fun<bool (std::string, std::string, std::string)>(&OTDB::Exists), "OTDB_Exists");
-        //      theScript.chai.add(fun<bool (std::string, std::string)>(&OTDB::Exists), "OTDB_Exists");
-        //      theScript.chai.add(fun<bool (std::string)>(&OTDB::Exists), "OTDB_Exists");
+        theScript.chai.add(fun<bool(string, string, string, string)>(&OTDB::Exists), "OTDB_Exists");
+        //      theScript.chai.add(fun<bool (string, string, string)>(&OTDB::Exists), "OTDB_Exists");
+        //      theScript.chai.add(fun<bool (string, string)>(&OTDB::Exists), "OTDB_Exists");
+        //      theScript.chai.add(fun<bool (string)>(&OTDB::Exists), "OTDB_Exists");
 
 
         //      theScript.chai.add(fun(&OTDB::StoreString),      "OTDB_StoreString");
-        theScript.chai.add(fun<bool(std::string, std::string, std::string, std::string, std::string)>(&OTDB::StoreString), "OTDB_StoreString");
-        //      theScript.chai.add(fun<bool (std::string, std::string, std::string, std::string)>(&OTDB::StoreString), "OTDB_StoreString");
-        //      theScript.chai.add(fun<bool (std::string, std::string, std::string)>(&OTDB::StoreString), "OTDB_StoreString");
-        //      theScript.chai.add(fun<bool (std::string, std::string)>(&OTDB::StoreString), "OTDB_StoreString");
+        theScript.chai.add(fun<bool(string, string, string, string, string)>(&OTDB::StoreString), "OTDB_StoreString");
+        //      theScript.chai.add(fun<bool (string, string, string, string)>(&OTDB::StoreString), "OTDB_StoreString");
+        //      theScript.chai.add(fun<bool (string, string, string)>(&OTDB::StoreString), "OTDB_StoreString");
+        //      theScript.chai.add(fun<bool (string, string)>(&OTDB::StoreString), "OTDB_StoreString");
 
 
         //      theScript.chai.add(fun(&OTDB::QueryString),      "OTDB_QueryString");
-        theScript.chai.add(fun<std::string(std::string, std::string, std::string, std::string)>(&OTDB::QueryString), "OTDB_QueryString");
-        //      theScript.chai.add(fun<std::string (std::string, std::string, std::string)>(&OTDB::QueryString), "OTDB_QueryString");
-        //      theScript.chai.add(fun<std::string (std::string, std::string)>(&OTDB::QueryString), "OTDB_QueryString");
-        //      theScript.chai.add(fun<std::string (std::string)>(&OTDB::QueryString), "OTDB_QueryString");
+        theScript.chai.add(fun<string(string, string, string, string)>(&OTDB::QueryString), "OTDB_QueryString");
+        //      theScript.chai.add(fun<string (string, string, string)>(&OTDB::QueryString), "OTDB_QueryString");
+        //      theScript.chai.add(fun<string (string, string)>(&OTDB::QueryString), "OTDB_QueryString");
+        //      theScript.chai.add(fun<string (string)>(&OTDB::QueryString), "OTDB_QueryString");
 
 
         //      theScript.chai.add(fun(&OTDB::StorePlainString), "OTDB_StorePlainString");
-        theScript.chai.add(fun<bool(std::string, std::string, std::string, std::string, std::string)>(&OTDB::StorePlainString), "OTDB_StorePlainString");
-        //      theScript.chai.add(fun<bool (std::string, std::string, std::string, std::string)>(&OTDB::StorePlainString), "OTDB_StorePlainString");
-        //      theScript.chai.add(fun<bool (std::string, std::string, std::string)>(&OTDB::StorePlainString), "OTDB_StorePlainString");
-        //      theScript.chai.add(fun<bool (std::string, std::string)>(&OTDB::StorePlainString), "OTDB_StorePlainString");
+        theScript.chai.add(fun<bool(string, string, string, string, string)>(&OTDB::StorePlainString), "OTDB_StorePlainString");
+        //      theScript.chai.add(fun<bool (string, string, string, string)>(&OTDB::StorePlainString), "OTDB_StorePlainString");
+        //      theScript.chai.add(fun<bool (string, string, string)>(&OTDB::StorePlainString), "OTDB_StorePlainString");
+        //      theScript.chai.add(fun<bool (string, string)>(&OTDB::StorePlainString), "OTDB_StorePlainString");
 
 
         //      theScript.chai.add(fun(&OTDB::QueryPlainString), "OTDB_QueryPlainString");
-        theScript.chai.add(fun<std::string(std::string, std::string, std::string, std::string)>(&OTDB::QueryPlainString), "OTDB_QueryPlainString");
-        //      theScript.chai.add(fun<std::string (std::string, std::string, std::string)>(&OTDB::QueryPlainString), "OTDB_QueryPlainString");
-        //      theScript.chai.add(fun<std::string (std::string, std::string)>(&OTDB::QueryPlainString), "OTDB_QueryPlainString");
-        //      theScript.chai.add(fun<std::string (std::string)>(&OTDB::QueryPlainString), "OTDB_QueryPlainString");
+        theScript.chai.add(fun<string(string, string, string, string)>(&OTDB::QueryPlainString), "OTDB_QueryPlainString");
+        //      theScript.chai.add(fun<string (string, string, string)>(&OTDB::QueryPlainString), "OTDB_QueryPlainString");
+        //      theScript.chai.add(fun<string (string, string)>(&OTDB::QueryPlainString), "OTDB_QueryPlainString");
+        //      theScript.chai.add(fun<string (string)>(&OTDB::QueryPlainString), "OTDB_QueryPlainString");
 
 
         //      theScript.chai.add(fun(&OTDB::StoreObject),      "OTDB_StoreObject");
-        theScript.chai.add(fun<bool(OTDB::Storable &, std::string, std::string, std::string, std::string)>(&OTDB::StoreObject), "OTDB_StoreObject");
-        //      theScript.chai.add(fun<bool (OTDB::Storable &, std::string, std::string, std::string)>(&OTDB::StoreObject), "OTDB_StoreObject");
-        //      theScript.chai.add(fun<bool (OTDB::Storable &, std::string, std::string)>(&OTDB::StoreObject), "OTDB_StoreObject");
-        //      theScript.chai.add(fun<bool (OTDB::Storable &, std::string)>(&OTDB::StoreObject), "OTDB_StoreObject");
+        theScript.chai.add(fun<bool(OTDB::Storable &, string, string, string, string)>(&OTDB::StoreObject), "OTDB_StoreObject");
+        //      theScript.chai.add(fun<bool (OTDB::Storable &, string, string, string)>(&OTDB::StoreObject), "OTDB_StoreObject");
+        //      theScript.chai.add(fun<bool (OTDB::Storable &, string, string)>(&OTDB::StoreObject), "OTDB_StoreObject");
+        //      theScript.chai.add(fun<bool (OTDB::Storable &, string)>(&OTDB::StoreObject), "OTDB_StoreObject");
 
 
         //      theScript.chai.add(fun(&OTDB::QueryObject),      "OTDB_QueryObject");
-        theScript.chai.add(fun<OTDB::Storable * (OTDB::StoredObjectType, std::string, std::string, std::string, std::string)>(&OTDB::QueryObject), "OTDB_QueryObject");
-        //      theScript.chai.add(fun<OTDB::Storable * (OTDB::StoredObjectType, std::string, std::string, std::string)>(&OTDB::QueryObject), "OTDB_QueryObject");
-        //      theScript.chai.add(fun<OTDB::Storable * (OTDB::StoredObjectType, std::string, std::string)>(&OTDB::QueryObject), "OTDB_QueryObject");
-        //      theScript.chai.add(fun<OTDB::Storable * (OTDB::StoredObjectType, std::string)>(&OTDB::QueryObject), "OTDB_QueryObject");
+        theScript.chai.add(fun<OTDB::Storable * (OTDB::StoredObjectType, string, string, string, string)>(&OTDB::QueryObject), "OTDB_QueryObject");
+        //      theScript.chai.add(fun<OTDB::Storable * (OTDB::StoredObjectType, string, string, string)>(&OTDB::QueryObject), "OTDB_QueryObject");
+        //      theScript.chai.add(fun<OTDB::Storable * (OTDB::StoredObjectType, string, string)>(&OTDB::QueryObject), "OTDB_QueryObject");
+        //      theScript.chai.add(fun<OTDB::Storable * (OTDB::StoredObjectType, string)>(&OTDB::QueryObject), "OTDB_QueryObject");
 
 
         theScript.chai.add(fun(&OTDB::EncodeObject), "OTDB_EncodeObject");
@@ -2566,7 +2554,7 @@ bool NewScriptExists(const OTString & strScriptFilename, bool bIsHeader, OTStrin
         OT_FAIL;
     }
 
-    OTString strScriptsFolder(OTPaths::ScriptsFolder()); // /usr/local   /   lib    /  opentxs
+    OTString strScriptsFolder(OTPaths::ScriptsFolder()); //	/usr/local / lib / opentxs  OR (android) res/raw
     { bool bGetFolderSuccess = strScriptsFolder.Exists() && 3 < strScriptsFolder.GetLength();
     OT_ASSERT_MSG(bGetFolderSuccess, "NewScriptHeaderExists: Unalbe to Get Scripts Path"); }
 
@@ -2672,7 +2660,7 @@ bool OT_ME::Register_Headers_With_Script_Chai(OTScriptChai & theScript)
 
 
         {
-            const std::string   str_UseFile1(strHeaderFilePath_01.Get()),
+            const string   str_UseFile1(strHeaderFilePath_01.Get()),
                 str_UseFile2(strHeaderFilePath_02.Get()),
                 str_UseFile3(strHeaderFilePath_03.Get()),
                 str_UseFile4(strHeaderFilePath_04.Get());
@@ -2718,8 +2706,8 @@ bool OT_ME::Register_Headers_With_Script_Chai(OTScriptChai & theScript)
                     //                            << ee.call_stack[0]->start.column
                     //                            << ")";
                     //
-                    //                  const std::string text;
-                    //                  boost::shared_ptr<const std::string> filename;
+                    //                  const string text;
+                    //                  boost::shared_ptr<const string> filename;
 
                     for (size_t j = 1; j < ee.call_stack.size(); ++j) {
                         if (ee.call_stack[j]->identifier != chaiscript::AST_Node_Type::Block

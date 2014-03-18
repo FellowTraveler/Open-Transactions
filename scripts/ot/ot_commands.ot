@@ -3971,7 +3971,13 @@ def main_sendmsg()
 
         var strMessage = OT_CLI_ReadUntilEOF()
         
-        // Send the request.
+        if (!VerifyStringVal(strMessage))
+        {
+            OT_API_Output(0, "send_user_msg: Failed (no message submitted).\n")
+            return -1
+        }
+
+       // Send the request.
         //
         var strResponse = madeEasy.send_user_msg(Server, MyNym, HisNym, strMessage)
 
@@ -9455,7 +9461,6 @@ def purse_get_indices_or_amount(strServerID, strAssetTypeID, strMyNymID, lAmount
     OT_API_Output(0, "strMyNymID: " + strMyNymID + "\n")
     
     var strLocalPurse  = OT_API_LoadPurse(strServerID, strAssetTypeID, strMyNymID) // returns "", or a purse.
-    OT_API_Output(0, "purse: " + strLocalPurse + "\n")
     
     var bLoadedPurse = VerifyStringVal(strLocalPurse)
     if (!bLoadedPurse)

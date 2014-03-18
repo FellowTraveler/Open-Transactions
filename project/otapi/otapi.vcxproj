@@ -29,22 +29,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\include\otapi\Mock_OTAPI_Exec.h" />
-    <ClInclude Include="..\..\include\otapi\OpenTransactions.h" />
-    <ClInclude Include="..\..\include\otapi\OTAPI.h" />
-    <ClInclude Include="..\..\include\otapi\OTAPI_Exec.h" />
-    <ClInclude Include="..\..\include\otapi\ot_command_ot.hpp" />
-    <ClInclude Include="..\..\include\otapi\ot_made_easy_ot.hpp" />
-    <ClInclude Include="..\..\include\otapi\OT_ME.h" />
-    <ClInclude Include="..\..\include\otapi\OTAPI_Basic.h" />
-    <ClInclude Include="..\..\include\otapi\OTMadeEasy.h" />
-    <ClInclude Include="..\..\include\otapi\OTClient.h" />
-    <ClInclude Include="..\..\include\otapi\OTServerConnection.h" />
-    <ClInclude Include="..\..\include\otapi\ot_me_switch.hpp" />
-    <ClInclude Include="..\..\include\otapi\ot_otapi_ot.hpp" />
-    <ClInclude Include="..\..\include\otapi\ot_utility_ot.hpp" />
-  </ItemGroup>
-  <ItemGroup>
     <ClCompile Include="..\..\src\otapi\OpenTransactions.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Use</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Use</PrecompiledHeader>
@@ -264,7 +248,6 @@
       <FileType>Document</FileType>
     </None>
     <None Include="..\..\src\otapi\Makefile.am" />
-    <None Include="..\..\swig\otapi\OTAPI.i" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="..\..\scripts\samples\README.txt" />
@@ -272,6 +255,23 @@
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="..\..\src\otapi\otapi.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\include\otapi\main.hpp" />
+    <ClInclude Include="..\..\include\otapi\Mock_OTAPI_Exec.hpp" />
+    <ClInclude Include="..\..\include\otapi\OpenTransactions.hpp" />
+    <ClInclude Include="..\..\include\otapi\OTAPI.hpp" />
+    <ClInclude Include="..\..\include\otapi\OTAPI_Basic.hpp" />
+    <ClInclude Include="..\..\include\otapi\OTAPI_Exec.hpp" />
+    <ClInclude Include="..\..\include\otapi\OTClient.hpp" />
+    <ClInclude Include="..\..\include\otapi\OTMadeEasy.hpp" />
+    <ClInclude Include="..\..\include\otapi\OTServerConnection.hpp" />
+    <ClInclude Include="..\..\include\otapi\ot_command_ot.hpp" />
+    <ClInclude Include="..\..\include\otapi\ot_made_easy_ot.hpp" />
+    <ClInclude Include="..\..\include\otapi\OT_ME.hpp" />
+    <ClInclude Include="..\..\include\otapi\ot_me_switch.hpp" />
+    <ClInclude Include="..\..\include\otapi\ot_otapi_ot.hpp" />
+    <ClInclude Include="..\..\include\otapi\ot_utility_ot.hpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{BC1D1DC1-6AF7-4C38-A270-7F79A2888054}</ProjectGuid>
@@ -350,6 +350,8 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>_UNICODE;UNICODE;OT_ZMQ_MODE;_DEBUG;DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalOptions>/bigobj /Zm480 /wd4512 /wd4100</AdditionalOptions>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>stdafx.hpp</PrecompiledHeaderFile>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -379,6 +381,8 @@
       <PreprocessorDefinitions>_UNICODE;UNICODE;OT_ZMQ_MODE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalOptions>/bigobj /Zm480 /wd4512 /wd4100</AdditionalOptions>
       <WholeProgramOptimization>false</WholeProgramOptimization>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>stdafx.hpp</PrecompiledHeaderFile>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>

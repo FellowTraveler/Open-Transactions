@@ -18,8 +18,10 @@
 // single function interface to most of OT.  Like, "WithdrawVoucher" would go here,
 // and basically copy the Moneychanger code.
 
-#include "OTAPI.h"
-#include "OT_ME.h"
+#include <stdafx.hpp>
+
+#include "OTAPI.hpp"
+#include "OT_ME.hpp"
 #include "ot_command_ot.hpp"
 #include "ot_made_easy_ot.hpp"
 #include "ot_otapi_ot.hpp"

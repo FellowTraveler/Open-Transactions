@@ -31,7 +31,7 @@
 
 #include "stdafx.h"
 
-#include "OTPaths.h"
+#include "OTPaths.hpp"
 #include "ot_me_switch.hpp"
 
 

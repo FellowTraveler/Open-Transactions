@@ -130,36 +130,24 @@
  -----END PGP SIGNATURE-----
  **************************************************************/
 
-#include <stdafx.h>
+#include <stdafx.hpp>
 
-#include <cstdio>
-#include <cstring> // The C one 
-#include <cstdlib>
-#include <cctype>
+#include <OTString.hpp>
 
-#include <string> // The C++ one 
-#include <fstream> // The C++ one
-#include <iostream>
+#include <OTAssert.hpp>
+#include <OTPassword.hpp>
+#include <OTIdentifier.hpp>
+#include <OTASCIIArmor.hpp>
+#include <OTSignature.hpp>
+#include <OTContract.hpp>
+#include <OTPseudonym.hpp>
+#include <OTLog.hpp>
+
 #include <sstream>
 
-#include <cstdarg>
-// -------------------------------------------
-#if !defined(_WIN32) && !defined(ANDROID)
+#if !(_WIN32 || __IPHONE_7_0 || ANDROID)
 #include <wordexp.h>
 #endif
-// -------------------------------------------
-#include "OTStorage.h"
-
-#include "OTString.h"
-#include "OTASCIIArmor.h"
-#include "OTPassword.h"
-#include "OTIdentifier.h"
-#include "OTContract.h"
-#include "OTPseudonym.h"
-
-#include "OTLog.h"
-
-
 
 /*
  int vsnprintf(char *str, size_t size, const char *format, va_list ap);
@@ -617,25 +605,25 @@ bool OTString::TokenizeIntoKeyValuePairs(std::map<std::string, std::string> & ma
 	// --------------
 	return true;
 #else
-	const char * txt = Get();
-	std::string buf = txt;
-	for (int i = 0; txt[i] != 0;)
-	{
-		while (txt[i] == ' ') i++;
-		int k = i;
-		while (txt[i] != ' ' && txt[i] != 0) i++;
-		const std::string key = buf.substr(k, i - k);
+    const char * txt = Get();
+    std::string buf = txt;
+    for (int i = 0; txt[i] != 0;)
+    {
+        while (txt[i] == ' ') i++;
+        int k = i;
+        while (txt[i] != ' ' && txt[i] != 0) i++;
+        const std::string key = buf.substr(k, i - k);
 
-		while (txt[i] == ' ') i++;
-		int v = i;
-		while (txt[i] != ' ' && txt[i] != 0) i++;
-		const std::string value = buf.substr(v, i - v);
-		if (key.length() != 0 && value.length() != 0)
-		{
-			mapOutput.insert(std::pair<std::string, std::string>(key, value));
-		}
-	}
-	return true;
+        while (txt[i] == ' ') i++;
+        int v = i;
+        while (txt[i] != ' ' && txt[i] != 0) i++;
+        const std::string value = buf.substr(v, i - v);
+        if (key.length() != 0 && value.length() != 0)
+        {
+            mapOutput.insert(std::pair<std::string, std::string>(key, value));
+        }
+    }
+    return true;
 #endif
 }
 // ----------------------------------------------------------------------

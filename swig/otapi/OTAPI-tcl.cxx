@@ -1727,10 +1727,17 @@ SWIGEXPORT int SWIG_init(Tcl_Interp *);
 #include <map>
 
 
-#include "../../include/otlib/OTAsymmetricKey.h"
-#include "../../include/otapi/OTAPI_Basic.h"
-#include "../../include/otapi/OTMadeEasy.h"
-#include "../../include/otlib/OTStorage.h"
+
+#ifndef IMPORT
+#define IMPORT
+#endif
+
+#include "../../include/otlib/OTPassword.hpp"
+#include "../../include/otapi/OTAPI_Basic.hpp"
+#include "../../include/otapi/OTMadeEasy.hpp"
+#include "../../include/otlib/OTStorage.hpp"
+#include "../../include/otlib/OTAsymmetricKey.hpp"
+
 
 
 #include <string>

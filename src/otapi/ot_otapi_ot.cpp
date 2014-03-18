@@ -14,8 +14,10 @@
 
 // *************************************************************************************
 
-#include "OTAPI.h"
-#include "OT_ME.h"
+#include <stdafx.hpp>
+
+#include "OTAPI.hpp"
+#include "OT_ME.hpp"
 #include "ot_command_ot.hpp"
 #include "ot_made_easy_ot.hpp"
 #include "ot_otapi_ot.hpp"

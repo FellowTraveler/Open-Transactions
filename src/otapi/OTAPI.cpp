@@ -132,18 +132,20 @@
  -----END PGP SIGNATURE-----
  **************************************************************/
 
-#include <stdafx.h>
+#include <stdafx.hpp>
 
 // A C++ class, low-level interface to OT.
-#include "OTAPI.h"
+#include "OTAPI.hpp"
 
 #include <cstring>
 #include <list>
 #include <set>
 #include <string>
 
-#include "OTAPI_Exec.h"
-#include "OpenTransactions.h"
+#include "OTAPI_Exec.hpp"
+#include "OpenTransactions.hpp"
+#include "OTLog.hpp"
+#include "OTPaths.hpp"
 
 
 extern "C"
@@ -235,6 +237,43 @@ bool OTAPI_Wrap::AppCleanup()
 
 	return exec->AppCleanup();
 }
+
+// --------------------------------------------------------------------
+// SetAppBinaryFolder
+// OPTIONAL. Used in Android and Qt.
+//
+// Certain platforms use this to override the Prefix folder.
+// Basically /usr/local is the prefix folder by default, meaning
+// /usr/local/lib/opentxs will be the location of the scripts. But
+// if you override AppBinary folder to, say, "res/raw"
+// (Android does something like that) then even though the prefix remains
+// as /usr/local, the scripts folder will be res/raw
+//
+//
+void OTAPI_Wrap::SetAppBinaryFolder(const std::string & strFolder)
+{
+    OTPaths::SetAppBinaryFolder(strFolder.c_str());
+}
+
+// --------------------------------------------------------------------
+// SetHomeFolder
+// OPTIONAL. Used in Android.
+//
+// The AppDataFolder, such as /Users/au/.ot, is constructed from the home
+// folder, such as /Users/au.
+//
+// Normally the home folder is auto-detected, but certain platforms, such as
+// Android, require us to explicitly set this folder from the Java code. Then
+// the AppDataFolder is constructed from it. (It's the only way it can be done.)
+//
+// In Android, you would SetAppBinaryFolder to the path to "/data/app/packagename/res/raw",
+// and you would SetHomeFolder to "/data/data/[app package]/files/"
+//
+void OTAPI_Wrap::SetHomeFolder(const std::string & strFolder)
+{
+    OTPaths::SetHomeFolder(strFolder.c_str());
+}
+
 
 OT_API * OTAPI_Wrap::OTAPI()
 {

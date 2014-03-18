@@ -1,3 +1,3 @@
 // otlib
-// set to create pre-compiled headder file!
-#include <stdafx.h>
+// set to create pre-compiled header file!
+#include <stdafx.hpp>

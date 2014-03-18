@@ -130,21 +130,13 @@
  -----END PGP SIGNATURE-----
  **************************************************************/
 
-#include <stdafx.h>
+#include <stdafx.hpp>
 
-#include <algorithm>
+#include <OTScript.hpp>
 
-
-// -------------------
-#include "OTString.h"
-#include "OTIdentifier.h"
-
-#include "OTLog.h"
-
-#include "OTScript.h"
-#include "OTBylaw.h"
-
-#include "OTStorage.h"
+#include <OTLog.hpp>
+#include <OTAssert.hpp>
+#include <OTStorage.hpp>
 
 // ------------------------------------------------------------
 
@@ -731,7 +723,7 @@ bool OTScriptChai::ExecuteScript(OTVariable * pReturnVar/*=NULL*/)
 }
 
 
-#ifdef OPENTXS_HAVE_BOOST
+#ifndef OT_USE_CHAI5
 
 OTScriptChai::OTScriptChai() : OTScript()
 {
