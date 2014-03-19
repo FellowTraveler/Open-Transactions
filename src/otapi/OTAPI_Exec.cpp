@@ -142,23 +142,6 @@
 #include <set>
 #include <string>
 
-extern "C"
-{
-#ifndef _WIN32
-#include <inttypes.h>
-#else
-    
-#ifndef PRId64
-#define PRId64 "I64d"
-#endif
-    
-#ifndef PRId32
-#define PRId32 "I32d"
-#endif
-    
-#endif
-}
-
 
 #if defined (OT_ZMQ_MODE)
 #include <zmq.hpp>

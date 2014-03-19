@@ -76,31 +76,31 @@
     <IntDir>$(SolutionDir)..\obj\$(PlatformName)\$(Configuration)\$(ProjectName)\</IntDir>
     <OutDir>$(SolutionDir)..\lib\$(PlatformName)\$(Configuration)\</OutDir>
     <LibraryPath>$(SolutionDir)..\lib\$(PlatformName)\$(Configuration)\;$(SystemDrive)\boost_1_53_0\stage\lib\$(PlatformName);$(SystemDrive)\OpenSSL-Win$(PlatformArchitecture)\lib\VC;$(LibraryPath)</LibraryPath>
-    <IncludePath>$(SolutionDir)..\include;$(SolutionDir)..\include\$(ProjectName);$(SolutionDir)..\include\otlib;$(SystemDrive)\boost_1_53_0;$(SystemDrive)\OpenSSL-Win$(PlatformArchitecture)\include;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)..\src\$(ProjectName);$(SolutionDir)..\include\$(ProjectName);$(SolutionDir)..\include;$(SolutionDir)..\include\otapi;$(SolutionDir)..\include\otlib;$(SolutionDir)..\include\ots;$(SolutionDir)..\include\zlib;$(SystemDrive)\boost_1_53_0;$(SystemDrive)\OpenSSL-Win$(PlatformArchitecture)\include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <IntDir>$(SolutionDir)..\obj\$(PlatformName)\$(Configuration)\$(ProjectName)\</IntDir>
     <OutDir>$(SolutionDir)..\lib\$(PlatformName)\$(Configuration)\</OutDir>
     <LibraryPath>$(SolutionDir)..\lib\$(PlatformName)\$(Configuration)\;$(SystemDrive)\boost_1_53_0\stage\lib\$(PlatformName);$(SystemDrive)\OpenSSL-Win$(PlatformArchitecture)\lib\VC;$(LibraryPath)</LibraryPath>
-    <IncludePath>$(SolutionDir)..\include;$(SolutionDir)..\include\$(ProjectName);$(SolutionDir)..\include\otlib;$(SystemDrive)\boost_1_53_0;$(SystemDrive)\OpenSSL-Win$(PlatformArchitecture)\include;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)..\src\$(ProjectName);$(SolutionDir)..\include\$(ProjectName);$(SolutionDir)..\include;$(SolutionDir)..\include\otapi;$(SolutionDir)..\include\otlib;$(SolutionDir)..\include\ots;$(SolutionDir)..\include\zlib;$(SystemDrive)\boost_1_53_0;$(SystemDrive)\OpenSSL-Win$(PlatformArchitecture)\include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <IntDir>$(SolutionDir)..\obj\$(PlatformName)\$(Configuration)\$(ProjectName)\</IntDir>
     <OutDir>$(SolutionDir)..\lib\$(PlatformName)\$(Configuration)\</OutDir>
     <LibraryPath>$(SolutionDir)..\lib\$(PlatformName)\$(Configuration)\;$(SystemDrive)\boost_1_53_0\stage\lib\$(PlatformName);$(SystemDrive)\OpenSSL-Win$(PlatformArchitecture)\lib\VC;$(LibraryPath)</LibraryPath>
-    <IncludePath>$(SolutionDir)..\include;$(SolutionDir)..\include\$(ProjectName);$(SolutionDir)..\include\otlib;$(SystemDrive)\boost_1_53_0;$(SystemDrive)\OpenSSL-Win$(PlatformArchitecture)\include;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)..\src\$(ProjectName);$(SolutionDir)..\include\$(ProjectName);$(SolutionDir)..\include;$(SolutionDir)..\include\otapi;$(SolutionDir)..\include\otlib;$(SolutionDir)..\include\ots;$(SolutionDir)..\include\zlib;$(SystemDrive)\boost_1_53_0;$(SystemDrive)\OpenSSL-Win$(PlatformArchitecture)\include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <IntDir>$(SolutionDir)..\obj\$(PlatformName)\$(Configuration)\$(ProjectName)\</IntDir>
     <OutDir>$(SolutionDir)..\lib\$(PlatformName)\$(Configuration)\</OutDir>
     <LibraryPath>$(SolutionDir)..\lib\$(PlatformName)\$(Configuration)\;$(SystemDrive)\boost_1_53_0\stage\lib\$(PlatformName);$(SystemDrive)\OpenSSL-Win$(PlatformArchitecture)\lib\VC;$(LibraryPath)</LibraryPath>
-    <IncludePath>$(SolutionDir)..\include;$(SolutionDir)..\include\$(ProjectName);$(SolutionDir)..\include\otlib;$(SystemDrive)\boost_1_53_0;$(SystemDrive)\OpenSSL-Win$(PlatformArchitecture)\include;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)..\src\$(ProjectName);$(SolutionDir)..\include\$(ProjectName);$(SolutionDir)..\include;$(SolutionDir)..\include\otapi;$(SolutionDir)..\include\otlib;$(SolutionDir)..\include\ots;$(SolutionDir)..\include\zlib;$(SystemDrive)\boost_1_53_0;$(SystemDrive)\OpenSSL-Win$(PlatformArchitecture)\include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
-      <WarningLevel>Level4</WarningLevel>
+      <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <AdditionalOptions>/bigobj /Zm480 /wd4512 /wd4100 /wd4267  /wd4127</AdditionalOptions>
+      <AdditionalOptions>/bigobj /Zm400 /wd4061 /wd4100 /wd4365 /wd4512 /wd4514 /wd4625 /wd4626 /wd4710 /wd4820</AdditionalOptions>
       <PreprocessorDefinitions>_UNICODE;UNICODE;_DEBUG;DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
@@ -112,10 +112,11 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
-      <WarningLevel>Level4</WarningLevel>
+      <WarningLevel>EnableAllWarnings</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <AdditionalOptions>/bigobj /Zm480 /wd4512 /wd4100 /wd4267 </AdditionalOptions>
+      <AdditionalOptions>/bigobj /Zm400 /wd4061 /wd4100 /wd4365 /wd4512 /wd4514 /wd4625 /wd4626 /wd4710 /wd4820</AdditionalOptions>
       <PreprocessorDefinitions>_UNICODE;UNICODE;_DEBUG;DEBUG;_WIN64;_AMD64;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <SDLCheck>true</SDLCheck>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -123,13 +124,14 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
-      <WarningLevel>Level4</WarningLevel>
+      <WarningLevel>EnableAllWarnings</WarningLevel>
       <Optimization>MinSpace</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <AdditionalOptions>/bigobj /Zm480 /wd4512 /wd4100 /wd4267  /wd4127</AdditionalOptions>
+      <AdditionalOptions>/bigobj /Zm400 /wd4061 /wd4100 /wd4365 /wd4512 /wd4514 /wd4625 /wd4626 /wd4710 /wd4820</AdditionalOptions>
       <WholeProgramOptimization>false</WholeProgramOptimization>
       <PreprocessorDefinitions>_UNICODE;UNICODE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <SDLCheck>true</SDLCheck>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -139,13 +141,14 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
-      <WarningLevel>Level4</WarningLevel>
+      <WarningLevel>EnableAllWarnings</WarningLevel>
       <Optimization>MinSpace</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <AdditionalOptions>/bigobj /Zm480 /wd4512 /wd4100 /wd4267  /wd4127</AdditionalOptions>
+      <AdditionalOptions>/bigobj /Zm400 /wd4061 /wd4100 /wd4365 /wd4512 /wd4514 /wd4625 /wd4626 /wd4710 /wd4820</AdditionalOptions>
       <WholeProgramOptimization>false</WholeProgramOptimization>
       <PreprocessorDefinitions>_UNICODE;UNICODE;_WIN64;_AMD64;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <SDLCheck>true</SDLCheck>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
