@@ -123,7 +123,7 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <AdditionalOptions>/bigobj /Zm400 /wd4061 /wd4100 /wd4365 /wd4512 /wd4514 /wd4625 /wd4626 /wd4710 /wd4820</AdditionalOptions>
+      <AdditionalOptions>/bigobj /Zm400 /wd4061 /wd4100 /wd4365 /wd4512 /wd4514 /wd4625 /wd4626 /wd4710 /wd4820 /wd4996</AdditionalOptions>
       <PreprocessorDefinitions>_UNICODE;UNICODE;_DEBUG;DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
@@ -137,7 +137,7 @@
     <ClCompile>
       <WarningLevel>EnableAllWarnings</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <AdditionalOptions>/bigobj /Zm400 /wd4061 /wd4100 /wd4365 /wd4512 /wd4514 /wd4625 /wd4626 /wd4710 /wd4820</AdditionalOptions>
+      <AdditionalOptions>/bigobj /Zm400 /wd4061 /wd4100 /wd4365 /wd4512 /wd4514 /wd4625 /wd4626 /wd4710 /wd4820 /wd4996</AdditionalOptions>
       <PreprocessorDefinitions>_UNICODE;UNICODE;_DEBUG;DEBUG;_WIN64;_AMD64;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
     </ClCompile>
@@ -151,7 +151,7 @@
       <Optimization>MinSpace</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <AdditionalOptions>/bigobj /Zm400 /wd4061 /wd4100 /wd4365 /wd4512 /wd4514 /wd4625 /wd4626 /wd4710 /wd4820</AdditionalOptions>
+      <AdditionalOptions>/bigobj /Zm400 /wd4061 /wd4100 /wd4365 /wd4512 /wd4514 /wd4625 /wd4626 /wd4710 /wd4820 /wd4996</AdditionalOptions>
       <WholeProgramOptimization>false</WholeProgramOptimization>
       <PreprocessorDefinitions>_UNICODE;UNICODE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
@@ -164,11 +164,11 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
-      <WarningLevel>EnableAllWarnings</WarningLevel>
+      <WarningLevel>Level3</WarningLevel>
       <Optimization>MinSpace</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <AdditionalOptions>/bigobj /Zm400 /wd4061 /wd4100 /wd4365 /wd4512 /wd4514 /wd4625 /wd4626 /wd4710 /wd4820</AdditionalOptions>
+      <AdditionalOptions>/bigobj /Zm400 /wd4061 /wd4100 /wd4365 /wd4512 /wd4514 /wd4625 /wd4626 /wd4710 /wd4820 /wd4996</AdditionalOptions>
       <WholeProgramOptimization>false</WholeProgramOptimization>
       <PreprocessorDefinitions>_UNICODE;UNICODE;_WIN64;_AMD64;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>

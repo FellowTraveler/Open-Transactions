@@ -125,7 +125,7 @@ otlib_sources               =   OTAccount.cpp \
                                 OTTrade.cpp \
                                 OTTransaction.cpp \
                                 OTTransactionType.cpp \
-                                OTWallet.cpp \
+                                OTWallet.cpp
 
 otlib_headers               =   $(otlib_incdir)/constants.h \
                                 $(otlib_incdir)/fast_mutex.h \
@@ -200,7 +200,7 @@ otlib_headers_ext           =   $(otlib_incdir)/anyoption.hpp \
                                 $(otlib_incdir)/OTWallet.hpp \
                                 $(otlib_incdir)/stacktrace.h \
                                 $(otlib_incdir)/stdafx.h \
-                                $(otlib_incdir)/stdafx.hpp \
+                                $(otlib_incdir)/stdafx.hpp
 
 ####   Containers
 
