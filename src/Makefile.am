@@ -93,13 +93,13 @@ createmint_sources          =   $(otmint_srcdir)/main.cpp
 
 ot_sources                  =   $(ot_srcdir)/main.cpp
 
-ot_headers                  =   $(otapi_incdir)/main.h             \
-                                $(otapi_incdir)/OpenTransactions.h \
-                                $(otapi_incdir)/OTAPI.h            \
-                                $(otapi_incdir)/OT_ME.h            \
+ot_headers                  =   $(otapi_incdir)/main.hpp             \
+                                $(otapi_incdir)/OpenTransactions.hpp \
+                                $(otapi_incdir)/OTAPI.hpp            \
+                                $(otapi_incdir)/OT_ME.hpp            \
                                 $(otapi_incdir)/ot_switch_me.hpp   \
-                                $(otapi_incdir)/OTClient.h         \
-                                $(otapi_incdir)/OTServerConnection.h
+                                $(otapi_incdir)/OTClient.hpp         \
+                                $(otapi_incdir)/OTServerConnection.hpp
 
 
 #### OT Server
@@ -107,6 +107,6 @@ ot_headers                  =   $(otapi_incdir)/main.h             \
 otserver_sources            =   $(otserver_srcdir)/OTClientConnection.cpp  \
                                 $(otserver_srcdir)/OTServer.cpp
 
-otserver_headers            =   $(otserver_incdir)/main.h   \
-                                $(otserver_incdir)/OTClientConnection.h \
-                                $(otserver_incdir)/OTServer.h
+otserver_headers            =   $(otserver_incdir)/main.hpp   \
+                                $(otserver_incdir)/OTClientConnection.hpp \
+                                $(otserver_incdir)/OTServer.hpp

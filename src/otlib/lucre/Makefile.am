@@ -12,4 +12,4 @@ liblucre_la_LDFLAGS     =   -static
 
 lucre_sources           =   bankimp.cpp
 
-lucre_headers           =   $(lucre_headers_dir)/bank.h
+lucre_headers           =   $(lucre_headers_dir)/bank.hpp
