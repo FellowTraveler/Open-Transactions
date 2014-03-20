@@ -15,8 +15,8 @@ otext_sources           =   mkcert.cpp \
                             tinythread.cpp \
                             Timer.cpp
 
-otext_headers           =   $(otext_headers_dir)/anyoption.h \
-                            $(otext_headers_dir)/tinythread.h \
-                            $(otext_headers_dir)/Timer.h
+otext_headers           =   $(otext_headers_dir)/anyoption.hpp \
+                            $(otext_headers_dir)/tinythread.hpp \
+                            $(otext_headers_dir)/Timer.hpp
 
 pkginclude_HEADERS      =   $(otext_headers)
