@@ -13,11 +13,12 @@
 #define OT_USE_CXX11
 #endif
 
-#ifdef OT_USE_CHAI5
-#undef OT_USE_CHAI5
-#endif
-#if defined(_MSC_VER) || defined(OPENTXS_CHAISCRIPT_5)
+#ifndef OT_USE_CHAI5
 #define OT_USE_CHAI5
+#endif
+#if defined(ANDROID) || defined(OT_KEYRING_IOS)
+// DON'T use ChaiScript on mobile devices
+#undef OT_USE_CHAI5
 #endif
 
 #ifndef OT_CRYPTO_USING_OPENSSL
