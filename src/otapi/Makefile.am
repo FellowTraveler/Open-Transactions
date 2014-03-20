@@ -56,7 +56,7 @@ lib_LTLIBRARIES                +=   libotapi-java.la
 endif
 
 libotapi_java_la_SOURCES        =   $(swig_dir)/otapi/OTAPI-java.cxx \
-                                    $(swig_dir)/otapi/OTAPI-java.h
+                                    $(swig_dir)/otapi/OTAPI-java.hpp
 
 libotapi_java_la_CXXFLAGS       =   $(AM_CXXFLAGS) $(common_includes) $(JNI_CPPFLAGS)
 
@@ -93,7 +93,7 @@ lib_LTLIBRARIES                +=   libotapi-php.la
 endif
 
 libotapi_php_la_SOURCES         =   $(swig_dir)/otapi/OTAPI-php.cpp \
-                                    $(swig_dir)/otapi/OTAPI-php.h
+                                    $(swig_dir)/otapi/OTAPI-php.hpp
 libotapi_php_la_CXXFLAGS        =   $(AM_CXXFLAGS) $(common_includes) \
                                     -I$(swig_dir)/glue/php \
                                     $(PHP_INCLUDES)
@@ -112,7 +112,7 @@ lib_LTLIBRARIES                +=   _otapi.la
 endif
 
 _otapi_la_SOURCES               =   $(swig_dir)/otapi/OTAPI-python.cxx \
-                                    $(swig_dir)/otapi/OTAPI-python.h
+                                    $(swig_dir)/otapi/OTAPI-python.hpp
 
 _otapi_la_CXXFLAGS              =   $(AM_CXXFLAGS) $(common_includes) \
                                     $(PYTHON_CPPFLAGS) \
@@ -135,7 +135,7 @@ lib_LTLIBRARIES                +=   libotapi-ruby.la
 endif
 
 libotapi_ruby_la_SOURCES        =   $(swig_dir)/otapi/OTAPI-ruby. \
-                                    $(swig_dir)/otapi/OTAPI-ruby.h
+                                    $(swig_dir)/otapi/OTAPI-ruby.hpp
 libotapi_ruby_la_CXXFLAGS       =   $(AM_CXXFLAGS) $(common_includes) \
                                     $(RUBY_CPPFLAGS) \
                                     $(RUBY_EXTRA_LIBS)
@@ -170,7 +170,7 @@ lib_LTLIBRARIES                +=   libotapi-csharp.la
 endif
 
 libotapi_csharp_la_SOURCES      =   $(swig_dir)/otapi/OTAPI-csharp.cxx \
-                                    $(swig_dir)/otapi/OTAPI-csharp.h
+                                    $(swig_dir)/otapi/OTAPI-csharp.hpp
 libotapi_csharp_la_CXXFLAGS     =   $(AM_CXXFLAGS) $(common_includes)
 libotapi_csharp_la_DEPENDENCIES =   $(common_libraries) 
 libotapi_csharp_la_LIBADD       =   $(libotapi_csharp_la_DEPENDENCIES)  $(DEPS_LIBS)
@@ -187,7 +187,7 @@ lib_LTLIBRARIES                +=   libotapi-d.la
 endif
 
 libotapi_d_la_SOURCES           =   $(swig_dir)/otapi/OTAPI-d.cxx \
-                                    $(swig_dir)/otapi/OTAPI-d.h
+                                    $(swig_dir)/otapi/OTAPI-d.hpp
 libotapi_d_la_CXXFLAGS          =   $(AM_CXXFLAGS) $(common_includes)
 libotapi_d_la_DEPENDENCIES      =   $(common_libraries) 
 libotapi_d_la_LIBADD            =   $(libotapi_d_la_DEPENDENCIES)  $(DEPS_LIBS)
@@ -204,7 +204,7 @@ lib_LTLIBRARIES                +=   libotapi-go.la
 endif
 
 libotapi_go_la_SOURCES          =   $(swig_dir)/otapi/OTAPI-go.cxx \
-                                    $(swig_dir)/otapi/OTAPI-go.h
+                                    $(swig_dir)/otapi/OTAPI-go.hpp
 libotapi_go_la_CXXFLAGS         =   $(AM_CXXFLAGS) $(common_includes)
 libotapi_go_la_DEPENDENCIES     =   $(common_libraries) 
 libotapi_go_la_LIBADD           =   $(libotapi_go_la_DEPENDENCIES)  $(DEPS_LIBS)
