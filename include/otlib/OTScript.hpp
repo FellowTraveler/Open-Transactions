@@ -150,9 +150,8 @@
 #pragma warning( disable : 4702 )  // warning C4702: unreachable code
 #endif
 
-#include <chaiscript/chaiscript.hpp>
-
 #ifdef OT_USE_CHAI5
+#include <chaiscript/chaiscript.hpp>
 #include <chaiscript/chaiscript_stdlib.hpp>
 #endif
 
@@ -249,6 +248,8 @@ EXPORT OTScript_SharedPtr OTScriptFactory(const std::string & script_type,
                                           const std::string & script_contents);
 
 
+#ifdef OT_USE_CHAI5
+
 
 // ********************************************************************
 //
@@ -287,7 +288,7 @@ typedef std::tr1::weak_ptr   <OTScriptChai>    OTScriptChai_WeakPtr;
 
 typedef std::auto_ptr<OTScriptChai>            OTScriptChai_AutoPtr;
 
-
+#endif // OT_USE_CHAI5
 
 
 

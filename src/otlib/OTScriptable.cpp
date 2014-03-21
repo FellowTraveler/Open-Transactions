@@ -272,6 +272,7 @@ bool OTScriptable::ValidateName(const std::string str_name)
 //
 void OTScriptable::RegisterOTNativeCallsWithScript(OTScript & theScript)
 {
+#ifdef OT_USE_CHAI5
 	using namespace chaiscript;
 	
 	// In the future, this will be polymorphic.
@@ -289,7 +290,8 @@ void OTScriptable::RegisterOTNativeCallsWithScript(OTScript & theScript)
 //	else if (NULL != (pScript = dynamic_cast<OTScriptSomeOtherScriptingLanguageSubClass_GOES_HERE *> (&theScript)) )
 //	{ }
 	else 
-	{
+#endif // OT_USE_CHAI5
+    {
 		OTLog::Error("OTScriptable::RegisterOTNativeCallsWithScript: Failed dynamic casting OTScript to OTScriptChai \n");
 	}	
 }

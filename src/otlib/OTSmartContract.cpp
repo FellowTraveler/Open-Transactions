@@ -683,6 +683,7 @@ void OTSmartContract::RegisterOTNativeCallsWithScript(OTScript & theScript)
 	OTScriptable::RegisterOTNativeCallsWithScript(theScript);
 	// --------------------------------
 
+#ifdef OT_USE_CHAI5
 	using namespace chaiscript;
 
 	OTScriptChai * pScript = dynamic_cast<OTScriptChai *> (&theScript);
@@ -750,6 +751,7 @@ void OTSmartContract::RegisterOTNativeCallsWithScript(OTScript & theScript)
 //	{ }
 	// *******************************************************************
 	else
+#endif // OT_USE_CHAI5
 	{
 		OTLog::Error("OTSmartContract::RegisterOTNativeCallsWithScript: Failed dynamic casting OTScript to OTScriptChai \n");
 	}

@@ -200,6 +200,7 @@
 
 OTScript_SharedPtr OTScriptFactory(const std::string & script_type)
 {  
+#ifdef OT_USE_CHAI5
     // if the type is explicitly set to "chai", or if the type is 0 length, then 
     // use chaiscript as the default interpreter in that case as well.
     if (script_type == "" || script_type =="chai") // todo no hardcoding.
@@ -207,6 +208,7 @@ OTScript_SharedPtr OTScriptFactory(const std::string & script_type)
         OTScript_SharedPtr pChaiScript(new OTScriptChai);
         return pChaiScript;
     }
+#endif
 
     if (script_type == "noscript")
     {
@@ -233,7 +235,7 @@ OTScript_SharedPtr OTScriptFactory(const std::string & script_type)
 OTScript_SharedPtr OTScriptFactory(const std::string & script_type, 
                                    const std::string & script_contents)
 {
-    
+#ifdef OT_USE_CHAI5    
     // if the type is explicitly set to "chai", or if the type is 0 length, then 
     // use chaiscript as the default interpreter in that case as well.
     if (script_type == "" || script_type == "chai") // todo no hardcoding.
@@ -241,7 +243,8 @@ OTScript_SharedPtr OTScriptFactory(const std::string & script_type,
         OTScript_SharedPtr pChaiScript(new OTScriptChai(script_contents));
         return pChaiScript;
     }
-    
+#endif // OT_USE_CHAI5
+
     if (script_type == "noscript")
     {
         OTScript_SharedPtr pNoScript(new OTScript);
@@ -410,6 +413,9 @@ bool OTScript::ExecuteScript(OTVariable * pReturnVar/*=NULL*/)
     OTLog::vError("OTScript::ExecuteScript: Executing NO SCRIPT ????\n");
     return true;
 }
+
+
+#ifdef OT_USE_CHAI5
 
 
 // ********************************************************************
@@ -723,30 +729,6 @@ bool OTScriptChai::ExecuteScript(OTVariable * pReturnVar/*=NULL*/)
 }
 
 
-#ifndef OT_USE_CHAI5
-
-OTScriptChai::OTScriptChai() : OTScript()
-{
-}
-
-OTScriptChai::OTScriptChai(const OTString & strValue) : OTScript(strValue)
-{
-}
-
-OTScriptChai::OTScriptChai(const char * new_string) : OTScript(new_string)
-{
-}
-
-OTScriptChai::OTScriptChai(const char * new_string, size_t sizeLength) : OTScript(new_string, sizeLength)
-{
-}
-
-OTScriptChai::OTScriptChai(const std::string & new_string) : OTScript(new_string)
-{
-}
-
-#else
-
 OTScriptChai::OTScriptChai() : OTScript(), chai(chaiscript::Std_Lib::library())
 {
 }
@@ -766,12 +748,12 @@ OTScriptChai::OTScriptChai(const char * new_string, size_t sizeLength) : OTScrip
 OTScriptChai::OTScriptChai(const std::string & new_string) : OTScript(new_string), chai(chaiscript::Std_Lib::library())
 {
 }
-
-#endif
 	
 OTScriptChai::~OTScriptChai()
 {
 }
+
+#endif
 
 
 
