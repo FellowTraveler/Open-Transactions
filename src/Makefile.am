@@ -1,4 +1,4 @@
-SUBDIRS                     =   otlib otapi gtest gmock otapitest
+SUBDIRS                     =   otlib otapi
 
 bin_PROGRAMS                =   ot otserver createmint
 
