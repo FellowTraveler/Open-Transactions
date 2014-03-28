@@ -2,11 +2,11 @@
 #define _H_OT_COMMAND_OT
 
 #include <string>
-#include <ExportWrapper.h>
+#include "OTCommon.hpp"
 #include "OTStorage.hpp"
 
 
-#define OT_COMMAND_OT 
+#define OT_COMMAND_OT
 
 
 using std::map;

@@ -4,7 +4,8 @@
 #pragma once
 
 // Include the C one.
-#include <stdafx.h>
+#include "stdafx.h"
+
 
 #ifdef OT_USE_CXX11
 #undef OT_USE_CXX11
@@ -19,6 +20,13 @@
 #if defined(ANDROID) || defined(OT_KEYRING_IOS)
 // DON'T use ChaiScript on mobile devices
 #undef OT_USE_CHAI5
+#endif
+
+#ifdef OT_USE_CHAI_STDLIB
+#undef OT_USE_CHAI_STDLIB
+#endif
+#ifdef OPENTXS_CHAISCRIPT_5
+#define OT_USE_CHAI_STDLIB
 #endif
 
 #ifndef OT_CRYPTO_USING_OPENSSL
@@ -54,8 +62,8 @@
 
 #ifdef _WIN32
 #ifndef NO_OT_PCH
-//#include <OTStorage.h>
-//#include <OTSmartContract.h>
+//#include "OTStorage.h"
+//#include "OTSmartContract.h"
 #else
 #undef NO_OT_PCH
 #endif

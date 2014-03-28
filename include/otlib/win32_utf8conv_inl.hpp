@@ -5,16 +5,14 @@
 // by Giovanni Dicanio <gdicanio@mvps.org>
 //
 // Private header file containing implementations of inline functions.
-// The public header file for this module is "utf8conv.h"; 
+// The public header file for this module is "utf8conv.h";
 // users should *not* #include this private header file directly.
 //
 //////////////////////////////////////////////////////////////////////////
 
 #pragma once
 
-
-#include <ExportWrapper.h>
-#include <WinsockWrapper.h>
+#include "OTCommon.hpp"
 
 #include <string.h>     // strlen()
 
@@ -37,10 +35,10 @@ namespace utf8util {
 //------------------------------------------------------------------------
 
 inline utf8_conversion_error::utf8_conversion_error(
-    const char * message, 
-    conversion_type conversion, 
+    const char * message,
+    conversion_type conversion,
     error_code_type error_code
-    ) : 
+    ) :
         std::runtime_error(message),
         m_conversion(conversion),
         m_error_code(error_code)
@@ -49,10 +47,10 @@ inline utf8_conversion_error::utf8_conversion_error(
 
 
 inline utf8_conversion_error::utf8_conversion_error(
-    const std::string & message, 
-    conversion_type conversion, 
+    const std::string & message,
+    conversion_type conversion,
     error_code_type error_code
-    ) : 
+    ) :
         std::runtime_error(message),
         m_conversion(conversion),
         m_error_code(error_code)
@@ -108,11 +106,11 @@ inline std::wstring UTF16FromUTF8(const std::string & utf8)
         DWORD error = ::GetLastError();
 
         throw utf8_conversion_error(
-            (error == ERROR_NO_UNICODE_TRANSLATION) ? 
+            (error == ERROR_NO_UNICODE_TRANSLATION) ?
                 "Invalid UTF-8 sequence found in input string." :
-                "Can't get length of UTF-16 string (MultiByteToWideChar failed).", 
+                "Can't get length of UTF-16 string (MultiByteToWideChar failed).",
             utf8_conversion_error::conversion_utf16_from_utf8,
-            error);      
+            error);
     }
 
 
@@ -128,7 +126,7 @@ inline std::wstring UTF16FromUTF8(const std::string & utf8)
     //
     if ( ! ::MultiByteToWideChar(
         CP_UTF8,            // convert from UTF-8
-        0,                  // validation was done in previous call, 
+        0,                  // validation was done in previous call,
                             // so speed up things with default flags
         utf8.data(),        // source UTF-8 string
         static_cast<int> (utf8.length()),      // length (in chars) of source UTF-8 string
@@ -139,7 +137,7 @@ inline std::wstring UTF16FromUTF8(const std::string & utf8)
         // Error
         DWORD error = ::GetLastError();
         throw utf8_conversion_error(
-            "Can't convert string from UTF-8 to UTF-16 (MultiByteToWideChar failed).", 
+            "Can't convert string from UTF-8 to UTF-16 (MultiByteToWideChar failed).",
             utf8_conversion_error::conversion_utf16_from_utf8,
             error);
     }
@@ -184,9 +182,9 @@ inline std::wstring UTF16FromUTF8(const char * utf8)
         // Error
         DWORD error = ::GetLastError();
         throw utf8_conversion_error(
-            (error == ERROR_NO_UNICODE_TRANSLATION) ? 
+            (error == ERROR_NO_UNICODE_TRANSLATION) ?
             "Invalid UTF-8 sequence found in input string." :
-            "Can't get length of UTF-16 string (MultiByteToWideChar failed).", 
+            "Can't get length of UTF-16 string (MultiByteToWideChar failed).",
             utf8_conversion_error::conversion_utf16_from_utf8,
             error);
     }
@@ -204,7 +202,7 @@ inline std::wstring UTF16FromUTF8(const char * utf8)
     //
     if ( ! ::MultiByteToWideChar(
         CP_UTF8,            // convert from UTF-8
-        0,                  // validation was done in previous call, 
+        0,                  // validation was done in previous call,
                             // so speed up things with default flags
         utf8,               // source UTF-8 string
         static_cast<int> (utf8Length),         // length (in chars) of source UTF-8 string
@@ -215,7 +213,7 @@ inline std::wstring UTF16FromUTF8(const char * utf8)
         // Error
         DWORD error = ::GetLastError();
         throw utf8_conversion_error(
-            "Can't convert string from UTF-8 to UTF-16 (MultiByteToWideChar failed).", 
+            "Can't convert string from UTF-8 to UTF-16 (MultiByteToWideChar failed).",
             utf8_conversion_error::conversion_utf16_from_utf8,
             error);
     }
@@ -255,7 +253,7 @@ inline std::string UTF8FromUTF16(const std::wstring & utf16)
         // Error
         DWORD error = ::GetLastError();
         throw utf8_conversion_error(
-            "Can't get length of UTF-8 string (WideCharToMultiByte failed).", 
+            "Can't get length of UTF-8 string (WideCharToMultiByte failed).",
             utf8_conversion_error::conversion_utf8_from_utf16,
             error);
     }
@@ -284,7 +282,7 @@ inline std::string UTF8FromUTF16(const std::wstring & utf16)
         // Error
         DWORD error = ::GetLastError();
         throw utf8_conversion_error(
-            "Can't convert string from UTF-16 to UTF-8 (WideCharToMultiByte failed).", 
+            "Can't convert string from UTF-16 to UTF-8 (WideCharToMultiByte failed).",
             utf8_conversion_error::conversion_utf8_from_utf16,
             error);
     }
@@ -309,7 +307,7 @@ inline std::string UTF8FromUTF16(const wchar_t * utf16)
 
     // Prefetch the length of the input UTF-16 string
     const int utf16Length = static_cast<int>(wcslen(utf16));
-  
+
 
     //
     // Get length (in chars) of resulting UTF-8 string
@@ -328,7 +326,7 @@ inline std::string UTF8FromUTF16(const wchar_t * utf16)
         // Error
         DWORD error = ::GetLastError();
         throw utf8_conversion_error(
-            "Can't get length of UTF-8 string (WideCharToMultiByte failed).", 
+            "Can't get length of UTF-8 string (WideCharToMultiByte failed).",
             utf8_conversion_error::conversion_utf8_from_utf16,
             error);
     }
@@ -357,7 +355,7 @@ inline std::string UTF8FromUTF16(const wchar_t * utf16)
         // Error
         DWORD error = ::GetLastError();
         throw utf8_conversion_error(
-            "Can't convert string from UTF-16 to UTF-8 (WideCharToMultiByte failed).", 
+            "Can't convert string from UTF-16 to UTF-8 (WideCharToMultiByte failed).",
             utf8_conversion_error::conversion_utf8_from_utf16,
             error);
     }

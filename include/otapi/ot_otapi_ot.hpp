@@ -2,7 +2,7 @@
 #define _H_OT_OTAPI_OT
 
 #include <string>
-#include <ExportWrapper.h>
+#include "OTCommon.hpp"
 
 
 #define OT_OTAPI_OT
@@ -20,7 +20,6 @@ inline int32_t to_int(const string & strValue) { return static_cast<int32_t>(std
 inline int64_t to_long(const string & strValue) { return std::stoll(strValue); }
 inline string to_string(const bool bValue) { return bValue ? "true" : "false"; }
 inline string to_string(const int64_t nValue) { return std::to_string(nValue); }
-
 
 class the_lambda_struct;
 

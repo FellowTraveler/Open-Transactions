@@ -2,7 +2,7 @@
 #define _H_OT_MADE_EASY_OT
 
 #include <string>
-#include <ExportWrapper.h>
+#include "OTCommon.hpp"
 
 
 #define OT_MADE_EASY_OT
@@ -16,7 +16,6 @@ EXPORT OT_MADE_EASY_OT bool exchangeCashPurse(const string & serverID, const str
 EXPORT OT_MADE_EASY_OT string exportCashPurse(const string & serverID, const string & assetID, const string & nymID, const string & oldPurse, const vector<string> & selectedTokens, string & recipientNymID, const bool bPasswordProtected, string & strRetainedCopy);
 EXPORT OT_MADE_EASY_OT bool importCashPurse(const string & serverID, const string & nymID, const string & assetID, string & userInput, const bool isPurse);
 EXPORT OT_MADE_EASY_OT bool processCashPurse(string & newPurse, string & newPurseForSender, const string & serverID, const string & assetID, const string & nymID, string & oldPurse, const vector<string> & selectedTokens, const string & recipientNymID, const bool bPWProtectOldPurse, const bool bPWProtectNewPurse);
-
 
 class MadeEasy
 {

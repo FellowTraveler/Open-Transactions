@@ -1,13 +1,13 @@
 /************************************************************************************
- *    
+ *
  *  OTScript.h
- *  
+ *
  */
 
 /************************************************************
  -----BEGIN PGP SIGNED MESSAGE-----
  Hash: SHA1
- 
+
  *                 OPEN TRANSACTIONS
  *
  *       Financial Cryptography and Digital Cash
@@ -110,10 +110,10 @@
  *   warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR
  *   PURPOSE.  See the GNU Affero General Public License for
  *   more details.
- 
+
  -----BEGIN PGP SIGNATURE-----
  Version: GnuPG v1.4.9 (Darwin)
- 
+
  iQIcBAEBAgAGBQJRSsfJAAoJEAMIAO35UbuOQT8P/RJbka8etf7wbxdHQNAY+2cC
  vDf8J3X8VI+pwMqv6wgTVy17venMZJa4I4ikXD/MRyWV1XbTG0mBXk/7AZk7Rexk
  KTvL/U1kWiez6+8XXLye+k2JNM6v7eej8xMrqEcO0ZArh/DsLoIn1y8p8qjBI7+m
@@ -134,10 +134,9 @@
 #ifndef __OT_SCRIPT_HPP__
 #define __OT_SCRIPT_HPP__
 
-#include <ExportWrapper.h>
-#include <WinsockWrapper.h>
+#include "OTCommon.hpp"
 
-#include <OTBylaw.hpp>
+#include "OTBylaw.hpp"
 
 #if __clang__
 #pragma clang diagnostic push
@@ -150,10 +149,7 @@
 #pragma warning( disable : 4702 )  // warning C4702: unreachable code
 #endif
 
-#ifdef OT_USE_CHAI5
-#include <chaiscript/chaiscript.hpp>
-#include <chaiscript/chaiscript_stdlib.hpp>
-#endif
+
 
 #ifdef _MSC_VER
 #pragma warning( pop )
@@ -169,14 +165,13 @@
 // There, multiple parties might be loaded, as well as multiple scripts
 // (clauses) and that is where the proper resources, accounts, etc are
 // instantiated and validated before any use.
-// 
+//
 // Thus by the time you get down to OTScript, all that validation is already
 // done.  The programmatic user will interact with OTSmartContract, likely,
 // and not with OTScript itself.
 //
 
-
-class OTScript 
+class OTScript
 {
 protected:
     std::string         m_str_script;   // the script itself.
@@ -184,28 +179,28 @@ protected:
     mapOfParties        m_mapParties; // no need to clean this up. Script doesn't own the parties, just references them.
     mapOfPartyAccounts  m_mapAccounts; // no need to clean this up. Script doesn't own the accounts, just references them.
     mapOfVariables      m_mapVariables; // no need to clean this up. Script doesn't own the variables, just references them.
-    
-	// List 
+
+	// List
 	// Construction -- Destruction
 public:
-    
+
 	OTScript();
 	OTScript(const OTString & strValue);
 	OTScript(const char * new_string);
 	OTScript(const char * new_string, size_t sizeLength);
 	OTScript(const std::string & new_string);
-	
+
 	virtual ~OTScript();
-	
+
 EXPORT	void SetScript(const OTString & strValue);
 EXPORT	void SetScript(const char * new_string);
 EXPORT	void SetScript(const char * new_string, size_t sizeLength);
 EXPORT	void SetScript(const std::string & new_string);
 
-    void SetDisplayFilename(const std::string str_display_filename) 
+    void SetDisplayFilename(const std::string str_display_filename)
     { m_str_display_filename = str_display_filename;}
 	// ---------------------------------------------------
-    
+
     // The same OTSmartContract that loads all the clauses (scripts) will
     // also load all the parties, so it will call this function whenever before it
     // needs to actually run a script.
@@ -220,31 +215,20 @@ EXPORT	void SetScript(const std::string & new_string);
 EXPORT  void         AddVariable    (const std::string str_var_name,   OTVariable & theVar);
 EXPORT  OTVariable * FindVariable   (const std::string str_var_name);
 EXPORT  void         RemoveVariable (OTVariable & theVar);
-    
+
     // Note: any relevant assets or asset accounts are listed by their owner / contributor
     // parties. Therefore there's no need to separately input any accounts or assets to
     // a script, since the necessary ones are already present inside their respective parties.
-    
+
     virtual bool ExecuteScript(OTVariable * pReturnVar = NULL);
 };
 
 
 
-#ifndef OT_USE_TR1
-typedef std::shared_ptr	<OTScript>         OTScript_SharedPtr;
-typedef std::weak_ptr   <OTScript>         OTScript_WeakPtr;
-#else
-typedef std::tr1::shared_ptr <OTScript>    OTScript_SharedPtr;
-typedef std::tr1::weak_ptr   <OTScript>    OTScript_WeakPtr;
-#endif
-
-typedef std::auto_ptr<OTScript>            OTScript_AutoPtr;
-
-
 // -----------------------------------
 
-EXPORT OTScript_SharedPtr OTScriptFactory(const std::string & script_type = "");
-EXPORT OTScript_SharedPtr OTScriptFactory(const std::string & script_type,
+EXPORT _SharedPtr<OTScript> OTScriptFactory(const std::string & script_type = "");
+EXPORT _SharedPtr<OTScript> OTScriptFactory(const std::string & script_type,
                                           const std::string & script_contents);
 
 
@@ -258,38 +242,29 @@ EXPORT OTScript_SharedPtr OTScriptFactory(const std::string & script_type,
 // ********************************************************************
 
 
+namespace chaiscript{
+    class ChaiScript;
+}
 
 class OTScriptChai : public OTScript
-{    
+{
 public:
-    
+
 	OTScriptChai();
 	OTScriptChai(const OTString & strValue);
 	OTScriptChai(const char * new_string);
 	OTScriptChai(const char * new_string, size_t sizeLength);
 	OTScriptChai(const std::string & new_string);
-	
+
 	virtual ~OTScriptChai();
 
     virtual bool ExecuteScript(OTVariable * pReturnVar=NULL);
     // ------------------------
-    
-    chaiscript::ChaiScript chai;
+
+    chaiscript::ChaiScript * const chai;
 };
 
-
-#ifndef OT_USE_TR1
-typedef std::shared_ptr	<OTScriptChai>         OTScriptChai_SharedPtr;
-typedef std::weak_ptr   <OTScriptChai>         OTScriptChai_WeakPtr;
-#else
-typedef std::tr1::shared_ptr <OTScriptChai>    OTScriptChai_SharedPtr;
-typedef std::tr1::weak_ptr   <OTScriptChai>    OTScriptChai_WeakPtr;
-#endif
-
-typedef std::auto_ptr<OTScriptChai>            OTScriptChai_AutoPtr;
-
 #endif // OT_USE_CHAI5
-
 
 
 #if __clang__

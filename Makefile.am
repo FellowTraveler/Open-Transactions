@@ -1,8 +1,9 @@
-# -*- fill-column: 72 -*-
+## Top Level Automake ##
+
 AUTOMAKE_OPTIONS        =   subdir-objects
 ACLOCAL_AMFLAGS         =   -I build-aux/m4
 
-## Main Automake Call to subdirs ##
+## Call to automake subdirs     ##
 
 SUBDIRS                 =   src
 
@@ -10,8 +11,9 @@ SUBDIRS                 =   src
 
 #### autogen.sh, opentxs script CLI utility
 
-dist_bin_SCRIPTS        =   autogen.sh \
-                            scripts/opentxs
+dist_bin_SCRIPTS		=	scripts/opentxs
+
+dist_noinst_SCRIPTS		=	autogen.sh
 
 #### OT SCRIPTS (headers)
 
@@ -21,6 +23,12 @@ dist_opentxslib_SCRIPTS =   scripts/ot/ot_commands.ot \
                             scripts/ot/otapi.ot \
                             scripts/ot/ot_made_easy.ot \
                             scripts/ot/ot_utility.ot
+
+## opentxs prompt autocomplete
+
+bashcompletiondir		=	$(BASH_COMPLETIONDIR)
+
+dist_bashcompletion_SCRIPTS	=	scripts/bash_completion.d/opentxs-bash-completion.sh
 
 #### OT docs, licences, info, etc.
 

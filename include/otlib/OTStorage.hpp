@@ -1,7 +1,7 @@
 /************************************************************
  -----BEGIN PGP SIGNED MESSAGE-----
  Hash: SHA1
- 
+
  *                 OPEN TRANSACTIONS
  *
  *       Financial Cryptography and Digital Cash
@@ -104,10 +104,10 @@
  *   warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR
  *   PURPOSE.  See the GNU Affero General Public License for
  *   more details.
- 
+
  -----BEGIN PGP SIGNATURE-----
  Version: GnuPG v1.4.9 (Darwin)
- 
+
  iQIcBAEBAgAGBQJRSsfJAAoJEAMIAO35UbuOQT8P/RJbka8etf7wbxdHQNAY+2cC
  vDf8J3X8VI+pwMqv6wgTVy17venMZJa4I4ikXD/MRyWV1XbTG0mBXk/7AZk7Rexk
  KTvL/U1kWiez6+8XXLye+k2JNM6v7eej8xMrqEcO0ZArh/DsLoIn1y8p8qjBI7+m
@@ -127,8 +127,7 @@
 #ifndef __OT_STORAGE_HPP__
 #define __OT_STORAGE_HPP__
 
-#include <ExportWrapper.h>
-#include <WinsockWrapper.h>
+#include "OTCommon.hpp"
 
 #if __clang__
 #pragma clang diagnostic push
@@ -141,40 +140,16 @@
 
 #ifndef SWIG
 
-#include <OTAssert.hpp>
+#include "OTAssert.hpp"
 
 #include <iostream>
 #include <deque>
 #include <map>
 #include <vector>
 
-//extern "C"
-//{
-//    
-//#ifdef _WIN32
-////#include <direct.h>
-////#include <sys/stat.h>
-//#else
-//#include <sys/stat.h>
-//#endif
-//}
-
 
 // credit:stlplus library.
 #include "containers/simple_ptr.hpp"
-
-
-//// Use Win or Posix
-//// IF I need this while porting, then uncomment it.
-//#ifdef _WIN32
-////#include <windows.h>
-////#else
-////#ifndef POSIX
-////#warning POSIX will be used (but you did not define it)
-////#endif
-////#include <unistd.h>
-//#endif
-
 
 
 // Which storage mechanism are we building?
@@ -243,13 +218,13 @@ public: \
 // ----------------------------------------------------
 
 namespace OTDB
-{		
+{
 
 	// ENUMS:	PackType, StorageType, and StoredObjectType.
 
 	// ---------------------------------------------------
-	// Currently supporting MsgPack and Protocol Buffers.  
-	// 
+	// Currently supporting MsgPack and Protocol Buffers.
+	//
 	enum PackType // PACKING TYPE
 	{
 		PACK_MESSAGE_PACK = 0,	// Using MessagePack as packer.
@@ -269,9 +244,9 @@ namespace OTDB
 
 #ifndef SWIG
 	// -------------------------------------
-	// 
+	//
 	// STORED OBJECT TYPES...
-	// 
+	//
 	extern const char * StoredObjectTypeStrings[];
 #endif // (not) SWIG
 
@@ -319,7 +294,7 @@ namespace OTDB
 
 	// OTDB NAMESPACE "CONSTRUCTOR"
 	//
-	class InitOTDBDetails 
+	class InitOTDBDetails
 	{
 	public:
 		InitOTDBDetails();  // See implementation of this in CPP file for namespace construction.
@@ -357,7 +332,7 @@ namespace OTDB
 	// OTDB Namespace PRIVATE MEMBERS
 	// this "details" naming is a common C++ idiom for "private" in a namespace.
 	//
-	namespace details 
+	namespace details
 	{
 		extern OTDB::Storage * s_pStorage;
 
@@ -371,7 +346,7 @@ namespace OTDB
 
 	// All of the class hierarchy under Storable is based on OT data design. (Not packing and such implementation details.)
 	// So when we need to add custom behavior that's common to groups of the final subclasses,
-	// we use **Interfaces** to do it. 
+	// we use **Interfaces** to do it.
 
 	// ===> That way, the Storable hierarchy can focus on DATA, (and form the external interface for OTStorage.)
 	// ===> while the IStorable hierarchy focuses on PACKING.   (and is hidden INSIDE OTStorage.)
@@ -393,7 +368,7 @@ namespace OTDB
 	EndInterface
 
 #endif // (not) SWIG
-	
+
 	// ********************************************************************
 	//
 	// use this without a semicolon:
@@ -438,17 +413,17 @@ namespace OTDB
 
 		DEFINE_OT_DYNAMIC_CAST(Storable)
 	};
-	
+
 #ifndef SWIG
-	
+
 	// ********************************************************************
 
 	// PACKED BUFFER (for storing PACKED DATA)
 	//
 	// %ignore these classes (I think)
-	// 
+	//
 
-	class PackedBuffer 
+	class PackedBuffer
 	{
 	protected:
 		PackedBuffer() { } // Only subclasses of this should be instantiated.
@@ -516,7 +491,7 @@ namespace OTDB
 	//
 
 	// %ignore spam(unsigned short);  (probably for all packers.)
-	class OTPacker 
+	class OTPacker
 	{
 	protected:
 		OTPacker() { }  // To instantiate: OTPacker * pPacker = OTPacker::Create(OTDB_DEFAULT_PACKER);
@@ -605,13 +580,13 @@ namespace OTDB
 		// possible with the other classes in OTStorage (yet), which must be subclassed in C++. But
 		// for this class, it is.
 		//
-		virtual bool onStorePackedBuffer(PackedBuffer & theBuffer, std::string strFolder, std::string oneStr="", 
+		virtual bool onStorePackedBuffer(PackedBuffer & theBuffer, std::string strFolder, std::string oneStr="",
 			std::string twoStr="", std::string threeStr="")=0;
 
 		virtual bool onQueryPackedBuffer(PackedBuffer & theBuffer, std::string strFolder, std::string oneStr="",
 			std::string twoStr="", std::string threeStr="")=0;
 
-		virtual bool onStorePlainString(std::string & theBuffer, std::string strFolder, std::string oneStr="", 
+		virtual bool onStorePlainString(std::string & theBuffer, std::string strFolder, std::string oneStr="",
 			std::string twoStr="", std::string threeStr="")=0;
 
 		virtual bool onQueryPlainString(std::string & theBuffer, std::string strFolder, std::string oneStr="",
@@ -624,7 +599,7 @@ namespace OTDB
 
 	public:
 		// Use GetPacker() to access the Packer, throughout duration of this Storage object.
-		// If it doesn't exist yet, this function will create it on the first call. (The 
+		// If it doesn't exist yet, this function will create it on the first call. (The
 		// parameter allows you the choose what type will be created, other than default.)
 		//
 		// This way, whenever using an OT Storage, you KNOW the packer is always the right
@@ -636,12 +611,12 @@ namespace OTDB
 		EXPORT		OTPacker * GetPacker(PackType ePackType = OTDB_DEFAULT_PACKER);
 
 
-		//virtual bool Init(std::string oneStr="", std::string twoStr="", std::string threeStr="", 
+		//virtual bool Init(std::string oneStr="", std::string twoStr="", std::string threeStr="",
 		//				  std::string fourStr="", std::string fiveStr="", std::string sixStr="")=0;
 
 		// -----------------------------------------
 		// See if the file is there.
-		virtual bool Exists(std::string strFolder, 
+		virtual bool Exists(std::string strFolder,
 			std::string oneStr="", std::string twoStr="", std::string threeStr="")=0;
 
 		// ********************************************************
@@ -651,13 +626,13 @@ namespace OTDB
 		// -----------------------------------------
 		// Store/Retrieve a string.
 
-		EXPORT		bool StoreString(std::string strContents, std::string strFolder, 
+		EXPORT		bool StoreString(std::string strContents, std::string strFolder,
 			std::string oneStr="", std::string twoStr="", std::string threeStr="");
 
 		EXPORT		std::string QueryString(std::string strFolder, std::string oneStr="",
 			std::string twoStr="", std::string threeStr="");
 
-		EXPORT		bool StorePlainString(std::string strContents, std::string strFolder, 
+		EXPORT		bool StorePlainString(std::string strContents, std::string strFolder,
 			std::string oneStr="", std::string twoStr="", std::string threeStr="");
 
 		EXPORT		std::string QueryPlainString(std::string strFolder, std::string oneStr="",
@@ -666,7 +641,7 @@ namespace OTDB
 		// -----------------------------------------
 		// Store/Retrieve an object. (Storable.)
 
-		EXPORT		bool StoreObject(Storable & theContents, std::string strFolder, 
+		EXPORT		bool StoreObject(Storable & theContents, std::string strFolder,
 			std::string oneStr="", std::string twoStr="", std::string threeStr="");
 
 		// Use %newobject OTDB::Storage::QueryObject();
@@ -684,7 +659,7 @@ namespace OTDB
 		// -----------------------------------------
 		// Erase any value based on its location.
 
-		EXPORT		bool EraseValueByKey(std::string strFolder, 
+		EXPORT		bool EraseValueByKey(std::string strFolder,
 			std::string oneStr="", std::string twoStr="", std::string threeStr="");
 
 		// --------------------------
@@ -699,7 +674,7 @@ namespace OTDB
 
 		// --------------------------
 
-		// Factory for Storage itself.  %ignore this in OTAPI.i  (It's accessed through 
+		// Factory for Storage itself.  %ignore this in OTAPI.i  (It's accessed through
 		// a namespace-level function, whereas this is for internal purposes.)
 		//
 		EXPORT		static Storage * Create(StorageType eStorageType, PackType ePackType); // FACTORY
@@ -739,19 +714,19 @@ namespace OTDB
 	// --------
 	// See if the file is there.
 	//
-	EXPORT	bool Exists(std::string strFolder, 
+	EXPORT	bool Exists(std::string strFolder,
 		std::string oneStr="", std::string twoStr="", std::string threeStr="");
 
 	// --------
 	// Store/Retrieve a string.
 	//
-	EXPORT	bool StoreString(std::string strContents, std::string strFolder, 
+	EXPORT	bool StoreString(std::string strContents, std::string strFolder,
 		std::string oneStr="", std::string twoStr="", std::string threeStr="");
 
 	EXPORT	std::string QueryString(std::string strFolder, std::string oneStr="",
 		std::string twoStr="", std::string threeStr="");
 
-	EXPORT	bool StorePlainString(std::string strContents, std::string strFolder, 
+	EXPORT	bool StorePlainString(std::string strContents, std::string strFolder,
 		std::string oneStr="", std::string twoStr="", std::string threeStr="");
 
 	EXPORT	std::string QueryPlainString(std::string strFolder, std::string oneStr="",
@@ -760,13 +735,13 @@ namespace OTDB
 	// --------
 	// Store/Retrieve an object. (Storable.)
 	//
-	EXPORT	bool StoreObject(Storable & theContents, std::string strFolder, 
+	EXPORT	bool StoreObject(Storable & theContents, std::string strFolder,
 		std::string oneStr="", std::string twoStr="", std::string threeStr="");
 
 	// Use %newobject OTDB::Storage::Query();
 	EXPORT	Storable * QueryObject(StoredObjectType theObjectType,
 		std::string strFolder, std::string oneStr="",
-		std::string twoStr="", std::string threeStr="");		
+		std::string twoStr="", std::string threeStr="");
 	// -----------------------------------------
 	// Store/Retrieve a Storable object inside an OTASCIIArmor object.
 
@@ -778,7 +753,7 @@ namespace OTDB
 	// -----------------------------------------
 	// Erase any value based on its location.
 
-	EXPORT    bool EraseValueByKey(std::string strFolder, 
+	EXPORT    bool EraseValueByKey(std::string strFolder,
 		std::string oneStr="", std::string twoStr="", std::string threeStr="");
 
 	// ********************************************************************
@@ -870,25 +845,25 @@ public: \
 		// Therefore, I don't allow you to access the constructor except through the factory.
 	protected:
 		StringMap() : Storable() { m_Type = "StringMap"; }
-        
+
 	public:
 		virtual ~StringMap() { }
-        
+
 		std::map<std::string, std::string> the_map;  // all strings, key/value pairs.
-        
+
 		void SetValue(const std::string& strKey, const std::string& strValue)
 		{ std::map<std::string, std::string>::iterator ii = the_map.find(strKey);
         if (ii != the_map.end()) the_map.erase(ii); the_map[strKey] = strValue; }
-        
+
 		std::string GetValue(const std::string& strKey)
 		{ std::string ret_val(""); std::map<std::string, std::string>::iterator ii = the_map.find(strKey);
         if (ii != the_map.end()) ret_val = (*ii).second; return ret_val; }
-        
+
 		DEFINE_OT_DYNAMIC_CAST(StringMap)
 	};
-    
+
 	// ------------------------------------------------
-    
+
 	class Displayable : public Storable
 	{
 		// You never actually get an instance of this, only its subclasses.
@@ -911,9 +886,9 @@ public: \
 		// You never actually get an instance of this, only its subclasses.
 		// Therefore, I don't allow you to access the constructor except through factory.
 	protected:
-		MarketData() : Displayable(), 
+		MarketData() : Displayable(),
 			scale("0"), total_assets("0"), number_bids("0"), last_sale_price("0"),
-			current_bid("0"), current_ask("0"), 
+			current_bid("0"), current_ask("0"),
 			volume_trades("0"), volume_assets("0"), volume_currency("0"),
 			recent_highest_bid("0"), recent_lowest_ask("0"), last_sale_date("0")
 		{ m_Type = "MarketData"; }
@@ -978,7 +953,7 @@ public: \
 		// You never actually get an instance of this, only its subclasses.
 		// Therefore, I don't allow you to access the constructor except through factory.
 	protected:
-		OfferDataMarket() : Displayable(), 
+		OfferDataMarket() : Displayable(),
 			transaction_id("0"), price_per_scale("1"), available_assets("0"), minimum_increment("1"), date("0")
 		{ m_Type = "OfferDataMarket"; }
 
@@ -995,14 +970,14 @@ public: \
 		std::string available_assets;
 
 		// Each sale or purchase against (total_assets - finished_so_far) must be in minimum increments.
-		// Minimum Increment must be evenly divisible by scale. 
+		// Minimum Increment must be evenly divisible by scale.
 		// (This effectively becomes a "FILL OR KILL" order if set to the same value as total_assets. Also, MUST be 1
 		// or greater. CANNOT be zero. Enforce this at class level. You cannot sell something in minimum increments of 0.)
 
 		std::string minimum_increment;
-        
+
 		std::string date;  // (NEW FIELD) The date this offer was added to the market.
-        
+
 		DEFINE_OT_DYNAMIC_CAST(OfferDataMarket)
 	};
 
@@ -1078,8 +1053,8 @@ public: \
 		// You never actually get an instance of this, only its subclasses.
 		// Therefore, I don't allow you to access the constructor except through factory.
 	protected:
-		TradeDataMarket() : Displayable(), 
-			transaction_id("0"), date("0"), 
+		TradeDataMarket() : Displayable(),
+			transaction_id("0"), date("0"),
 			price("0"), amount_sold("0")
 		{ m_Type = "TradeDataMarket"; }
 
@@ -1091,7 +1066,7 @@ public: \
 		std::string transaction_id;	// (transaction number for this trade.)
 		std::string date;				// (The date of this trade's execution)
 		std::string price;				// (The price this trade executed at.)
-		std::string amount_sold;		// (Amount of asset sold for that price.)	
+		std::string amount_sold;		// (Amount of asset sold for that price.)
 
 		DEFINE_OT_DYNAMIC_CAST(TradeDataMarket)
 	};
@@ -1119,11 +1094,11 @@ public: \
 		// You never actually get an instance of this, only its subclasses.
 		// Therefore, I don't allow you to access the constructor except through factory.
 	protected:
-		OfferDataNym() : Displayable(), 
-			valid_from("0"), valid_to("0"), 
+		OfferDataNym() : Displayable(),
+			valid_from("0"), valid_to("0"),
 			selling(false), scale("1"), price_per_scale("1"),
-			transaction_id("0"), 
-			total_assets("1"), finished_so_far("0"), 
+			transaction_id("0"),
+			total_assets("1"), finished_so_far("0"),
 			minimum_increment("1"), stop_price("0"), date("0")
 		{ m_Type = "OfferDataNym"; }
 
@@ -1153,23 +1128,23 @@ public: \
 
 
 		// Each sale or purchase against (total_assets - finished_so_far) must be in minimum increments.
-		// Minimum Increment must be evenly divisible by scale. 
+		// Minimum Increment must be evenly divisible by scale.
 		// (This effectively becomes a "FILL OR KILL" order if set to the same value as total_assets. Also, MUST be 1
 		// or greater. CANNOT be zero. Enforce this at class level. You cannot sell something in minimum increments of 0.)
 
-		std::string minimum_increment;  	
+		std::string minimum_increment;
 
 		std::string stop_sign;  // If this is a stop order, this will contain '<' or '>'.
 		std::string stop_price;	// The price at which the stop order activates (less than X or greater than X, based on sign.)
 
         std::string date;       // (NEW FIELD) The date on which this offer was added to the market.
-        
+
 		DEFINE_OT_DYNAMIC_CAST(OfferDataNym)
 	};
 
 	// ------------------------------------------------------
 
-	class OfferListNym : public Storable 
+	class OfferListNym : public Storable
 	{
 		// You never actually get an instance of this, only its subclasses.
 		// Therefore, I don't allow you to access the constructor except through factory.
@@ -1191,9 +1166,9 @@ public: \
 		// You never actually get an instance of this, only its subclasses.
 		// Therefore, I don't allow you to access the constructor except through factory.
 	protected:
-		TradeDataNym() : Displayable(), 
+		TradeDataNym() : Displayable(),
 			transaction_id("0"),
-			completed_count("0"), date("0"), 
+			completed_count("0"), date("0"),
 			price("0"), amount_sold("0"), updated_id("0"), offer_price("0"),
             finished_so_far("0"), currency_paid("0")
 		{ m_Type = "TradeDataNym"; }
@@ -1533,15 +1508,15 @@ public: \
 // StorageFS -- FILE-SYSTEM Storage Context
 //
 //
-namespace OTDB 
+namespace OTDB
 {
 	// --------------------------------------------------------------------------
 	//
 	// StorageFS means "Storage on Filesystem."
-	// 
+	//
 	// This is the first subclass of OTDB::Storage -- but it won't be the last!
 	//
-	class StorageFS : public Storage 
+	class StorageFS : public Storage
 	{
 	private:
 		std::string m_strDataPath;
@@ -1552,12 +1527,12 @@ namespace OTDB
 
         // Confirms if a file exists.  If it exists at path; return length.
 		long ConstructAndConfirmPath(std::string & strOutput,
-			const std::string strFolder, const std::string oneStr="",  
+			const std::string strFolder, const std::string oneStr="",
 			const std::string twoStr="", const std::string threeStr="");
 
         // Verifies whether path exists AND creates folders where necessary.
 		long ConstructAndCreatePath(std::string & strOutput,
-			const std::string strFolder, const std::string oneStr="",  
+			const std::string strFolder, const std::string oneStr="",
 			const std::string twoStr="", const std::string threeStr="");
 
 	private:
@@ -1577,13 +1552,13 @@ namespace OTDB
 		// If you wish to make your own subclass of OTDB::Storage, then use StorageFS as an example.
 		// The below 6 methods are the only overrides you need to copy.
 		//
-		virtual bool onStorePackedBuffer(PackedBuffer & theBuffer, std::string strFolder, std::string oneStr="", 
+		virtual bool onStorePackedBuffer(PackedBuffer & theBuffer, std::string strFolder, std::string oneStr="",
 			std::string twoStr="", std::string threeStr="");
 
 		virtual bool onQueryPackedBuffer(PackedBuffer & theBuffer, std::string strFolder, std::string oneStr="",
 			std::string twoStr="", std::string threeStr="");
 
-		virtual bool onStorePlainString(std::string & theBuffer, std::string strFolder, std::string oneStr="", 
+		virtual bool onStorePlainString(std::string & theBuffer, std::string strFolder, std::string oneStr="",
 			std::string twoStr="", std::string threeStr="");
 
 		virtual bool onQueryPlainString(std::string & theBuffer, std::string strFolder, std::string oneStr="",
@@ -1597,12 +1572,12 @@ namespace OTDB
 	public:
 		//virtual bool Init_Basic(OTString strWalletFilename);  // OTLog::Path must be first set to use this command
 
-		//virtual bool Init(std::string oneStr="", std::string twoStr="", std::string threeStr="", 
+		//virtual bool Init(std::string oneStr="", std::string twoStr="", std::string threeStr="",
 		//	std::string fourStr="", std::string fiveStr="", std::string sixStr="");
 
 		// -----------------------------------------
 		// See if the file is there.
-		virtual bool Exists(std::string strFolder, 
+		virtual bool Exists(std::string strFolder,
 			std::string oneStr="", std::string twoStr="", std::string threeStr="");
 
 		//virtual	bool GetWalletFilePath(OTString & strWalletFilePath);
@@ -1626,13 +1601,13 @@ namespace OTDB
 		// -----------------------------------------
 		// Store/Retrieve a string.
 
-		bool StoreString(std::string strContents, std::string strFolder, 
+		bool StoreString(std::string strContents, std::string strFolder,
 		std::string oneStr="", std::string twoStr="", std::string threeStr="");
 
 		std::string QueryString(std::string strFolder, std::string oneStr="",
 		std::string twoStr="", std::string threeStr="");
 
-		bool StorePlainString(std::string strContents, std::string strFolder, 
+		bool StorePlainString(std::string strContents, std::string strFolder,
 		std::string oneStr="", std::string twoStr="", std::string threeStr="");
 
 		std::string QueryPlainString(std::string strFolder, std::string oneStr="",
@@ -1641,7 +1616,7 @@ namespace OTDB
 		// -----------------------------------------
 		// Store/Retrieve an object. (Storable.)
 
-		bool StoreObject(Storable & theContents, std::string strFolder, 
+		bool StoreObject(Storable & theContents, std::string strFolder,
 		std::string oneStr="", std::string twoStr="", std::string threeStr="");
 
 		// Use %newobject OTDB::Storage::Query();
@@ -1652,7 +1627,7 @@ namespace OTDB
 	};
 
 	// Other storage subclasses may go here, for storing in SQL lite,
-	// or couchDB, mongoDB, distributed DB, etc...	
+	// or couchDB, mongoDB, distributed DB, etc...
 
 	// class StorageCouchDB
 	// class CloudMagic
@@ -1723,7 +1698,7 @@ OT_MSGPACK_END;
 // DON'T use a semicolon after the first macro. (OT_MSGPACK_BEGIN.)
 // But DO put semicolons after the MSGPACK_DEFINE and OT_MSGPACK_END macros.
 //
-// The idea is that the data members themselves (in the above example, 
+// The idea is that the data members themselves (in the above example,
 // bitcoin_address, bitcoin_acct_name, and gui_label) are actually implemented
 // by BitcoinAcct (the base), and any other packer library could similarly
 // be subclassing that base as we are here with BitcoinAcctMsgPack.
@@ -1774,7 +1749,7 @@ public: \
 	msgpack::unpack(theBuffer.GetBuffer().data(), theBuffer.GetBuffer().size(), NULL, &z, &obj); if (msgpack::UNPACK_SUCCESS == ret) \
 { obj.convert(const_cast<theType*>(this)); return true; } return false; }
 
-#define OT_MSGPACK_END  } 
+#define OT_MSGPACK_END  }
 
 // ----- Next go these:
 //	OT_USING_ISTORABLE_HOOKS;
@@ -1790,7 +1765,7 @@ public: \
 // -----------------------------------------------------------
 // This part is commented out. Why? Because I think it's unnecessary. Operator= is not inherited.
 // That means when I copy these objects, only the WalletDataMsgpack data members are being copied,
-// not the 
+// not the
 
 // Deprecated:
 // !!!!! This bottom part MUST be directly before the OT_MSGPACK_END!!!!!!!!!
@@ -1828,8 +1803,8 @@ std::swap(theMember, rhs.theMember)
 // ----------------------------------------------
 
 
-namespace OTDB 
-{	
+namespace OTDB
+{
 	class BufferMsgpack;
 
 	// Interface:	IStorableMsgpack
@@ -1867,7 +1842,7 @@ namespace OTDB
 	MSGPACK_DEFINE(m_memBuffer);
 	//		OT_MSGPACK_BEGIN_SWAP(BlobMsgpack)
 	//		OT_MSGPACK_SWAP_MEMBER(m_memBuffer);
-	OT_MSGPACK_END;	
+	OT_MSGPACK_END;
 	// -------------------------------------------------------
 	OT_MSGPACK_BEGIN(StringMsgpack, OTDBString, STORED_OBJ_STRING)
 		StringMsgpack(const std::string& rhs) : OTDBString(rhs), IStorableMsgpack() { }
@@ -1882,7 +1857,7 @@ namespace OTDB
 	MSGPACK_DEFINE(the_map);
 	//		OT_MSGPACK_BEGIN_SWAP(StringMapMsgpack)
 	//		OT_MSGPACK_SWAP_MEMBER(the_map);
-	OT_MSGPACK_END;	
+	OT_MSGPACK_END;
 	// -------------------------------------------------------
 	OT_MSGPACK_BEGIN(ServerInfoMsgpack, ServerInfo, STORED_OBJ_SERVER_INFO)
 		OT_USING_ISTORABLE_HOOKS;
@@ -1891,7 +1866,7 @@ namespace OTDB
 	//		OT_MSGPACK_SWAP_MEMBER(gui_label);
 	//		OT_MSGPACK_SWAP_MEMBER(server_id);
 	//		OT_MSGPACK_SWAP_MEMBER(server_type);
-	OT_MSGPACK_END;	
+	OT_MSGPACK_END;
 	// -------------------------------------------------------
 	OT_MSGPACK_BEGIN(BitcoinAcctMsgpack, BitcoinAcct, STORED_OBJ_BITCOIN_ACCT)
 		OT_USING_ISTORABLE_HOOKS;
@@ -1970,7 +1945,7 @@ namespace OTDB
 	//		OT_MSGPACK_SWAP_MEMBER(public_key);
 	//		OT_MSGPACK_SWAP_MEMBER(memo);
 	//		OT_MSGPACK_SWAP_MEMBER(deque_ServerInfos);
-	OT_MSGPACK_END;	
+	OT_MSGPACK_END;
 	// -------------------------------------------------------
 	OT_MSGPACK_BEGIN(ContactMsgpack, Contact, STORED_OBJ_CONTACT)
 		virtual void hookBeforePack(); // This is called just before packing a storable. (Opportunity to copy values...)
@@ -1986,7 +1961,7 @@ namespace OTDB
 	//		OT_MSGPACK_SWAP_MEMBER(memo);
 	//		OT_MSGPACK_SWAP_MEMBER(deque_Nyms);
 	//		OT_MSGPACK_SWAP_MEMBER(deque_Accounts);
-	OT_MSGPACK_END;	
+	OT_MSGPACK_END;
 	// -------------------------------------------------------
 	OT_MSGPACK_BEGIN(AddressBookMsgpack, AddressBook, STORED_OBJ_ADDRESS_BOOK)
 		virtual void hookBeforePack(); // This is called just before packing a storable. (Opportunity to copy values...)
@@ -1995,7 +1970,7 @@ namespace OTDB
 	MSGPACK_DEFINE(deque_Contacts);
 	//		OT_MSGPACK_BEGIN_SWAP(AddressBookMsgpack)
 	//		OT_MSGPACK_SWAP_MEMBER(deque_Contacts);
-	OT_MSGPACK_END;	
+	OT_MSGPACK_END;
 	// -------------------------------------------------------
 	OT_MSGPACK_BEGIN(WalletDataMsgpack, WalletData, STORED_OBJ_WALLET_DATA)
 		virtual void hookBeforePack(); // This is called just before packing a storable. (Opportunity to copy values...)
@@ -2022,10 +1997,10 @@ namespace OTDB
 	// -------------------------------------------------------
 	OT_MSGPACK_BEGIN(MarketDataMsgpack, MarketData, STORED_OBJ_MARKET_DATA)
 		OT_USING_ISTORABLE_HOOKS;
-	MSGPACK_DEFINE(gui_label, server_id, market_id, asset_type_id, currency_type_id, 
-		scale, total_assets, number_bids, number_asks, 
-		last_sale_price, current_bid, current_ask, 
-		volume_trades, volume_assets, volume_currency, 
+	MSGPACK_DEFINE(gui_label, server_id, market_id, asset_type_id, currency_type_id,
+		scale, total_assets, number_bids, number_asks,
+		last_sale_price, current_bid, current_ask,
+		volume_trades, volume_assets, volume_currency,
 		recent_highest_bid, recent_lowest_ask, last_sale_date);
 	OT_MSGPACK_END;
 	// -------------------------------------------------------
@@ -2072,11 +2047,11 @@ namespace OTDB
 
 	OT_MSGPACK_BEGIN(OfferDataNymMsgpack, OfferDataNym, STORED_OBJ_OFFER_DATA_NYM)
 		OT_USING_ISTORABLE_HOOKS;
-	MSGPACK_DEFINE(gui_label, valid_from, valid_to, server_id, 
-		asset_type_id, asset_acct_id, 
-		currency_type_id, currency_acct_id, 
-		selling, scale, price_per_scale, transaction_id, 
-		total_assets, finished_so_far, minimum_increment, 
+	MSGPACK_DEFINE(gui_label, valid_from, valid_to, server_id,
+		asset_type_id, asset_acct_id,
+		currency_type_id, currency_acct_id,
+		selling, scale, price_per_scale, transaction_id,
+		total_assets, finished_so_far, minimum_increment,
 		stop_sign, stop_price, date);
 	OT_MSGPACK_END;
 	// -------------------------------------------------------
@@ -2090,7 +2065,7 @@ namespace OTDB
 
 	OT_MSGPACK_BEGIN(TradeDataNymMsgpack, TradeDataNym, STORED_OBJ_TRADE_DATA_NYM)
 		OT_USING_ISTORABLE_HOOKS;
-	MSGPACK_DEFINE(gui_label, transaction_id, completed_count, date, 
+	MSGPACK_DEFINE(gui_label, transaction_id, completed_count, date,
 		price, amount_sold, updated_id, offer_price, finished_so_far,
         asset_id, currency_id, currency_paid);
 	OT_MSGPACK_END;
@@ -2160,7 +2135,7 @@ namespace OTDB
 // (Instructions are below.)
 //
 // ----------------------------------------------------
-/* 
+/*
 REPLACING OT_PROTOBUF_DECLARE() WITH A TEMPLATE FOR NOW...
 
 #define OT_PROTOBUF_DECLARE(theType, theBaseType, theInternalType) \
@@ -2202,7 +2177,7 @@ virtual bool WriteToOStream(std::ostream &outStream); \
 
 
 
-namespace OTDB 
+namespace OTDB
 {
 
 	// Interface:    IStorablePB
@@ -2216,7 +2191,7 @@ namespace OTDB
 
 		// ----------------------------------------------------
 		// BUFFER for Protocol Buffers.
-		// Google's protocol buffers serializes to std::strings and streams. How conveeeeeenient. 
+		// Google's protocol buffers serializes to std::strings and streams. How conveeeeeenient.
 		//
 		//typedef PackedBufferSubclass<PackerPB, IStorablePB, std::string> BufferPB;
 		DECLARE_PACKED_BUFFER_SUBCLASS(BufferPB, PackerSubclass<BufferPB>, IStorablePB, std::string);
@@ -2230,25 +2205,25 @@ namespace OTDB
 	// Used for subclassing IStorablePB:
 	//
 	template<class theBaseType, class theInternalType, StoredObjectType theObjectType>
-	class ProtobufSubclass : public theBaseType, implements IStorablePB 
+	class ProtobufSubclass : public theBaseType, implements IStorablePB
 	{
 	private:
 		theInternalType __pb_obj;
 		std::string m_Type;
-	public: 
-		static Storable * Instantiate() 
-		{ return dynamic_cast<Storable *>(new ProtobufSubclass<theBaseType, theInternalType, theObjectType>); } 
+	public:
+		static Storable * Instantiate()
+		{ return dynamic_cast<Storable *>(new ProtobufSubclass<theBaseType, theInternalType, theObjectType>); }
 
-		ProtobufSubclass() : theBaseType(), IStorablePB() { m_Type = StoredObjectTypeStrings[static_cast<int>(theObjectType)]; m_Type += "PB"; 
-		/*std::cout << m_Type.c_str() << " -- Constructor" << std::endl;*/ } 
+		ProtobufSubclass() : theBaseType(), IStorablePB() { m_Type = StoredObjectTypeStrings[static_cast<int>(theObjectType)]; m_Type += "PB";
+		/*std::cout << m_Type.c_str() << " -- Constructor" << std::endl;*/ }
 
-		ProtobufSubclass(const ProtobufSubclass<theBaseType,theInternalType,theObjectType> & rhs) : theBaseType(), IStorablePB() 
-		{ m_Type = StoredObjectTypeStrings[static_cast<int>(theObjectType)]; m_Type += "PB"; 
-		/*std::cout << m_Type.c_str() << " -- Copy Constructor" << std::endl; */ rhs.CopyToObject(*this); } 
+		ProtobufSubclass(const ProtobufSubclass<theBaseType,theInternalType,theObjectType> & rhs) : theBaseType(), IStorablePB()
+		{ m_Type = StoredObjectTypeStrings[static_cast<int>(theObjectType)]; m_Type += "PB";
+		/*std::cout << m_Type.c_str() << " -- Copy Constructor" << std::endl; */ rhs.CopyToObject(*this); }
 
-		ProtobufSubclass<theBaseType,theInternalType,theObjectType> & 
+		ProtobufSubclass<theBaseType,theInternalType,theObjectType> &
 			operator= (const ProtobufSubclass<theBaseType,theInternalType,theObjectType> & rhs)
-		{ rhs.CopyToObject(*this); return *this; } 
+		{ rhs.CopyToObject(*this); return *this; }
 
 		void CopyToObject(ProtobufSubclass<theBaseType,theInternalType,theObjectType> & theNewStorable) const
 		{
@@ -2263,12 +2238,12 @@ namespace OTDB
 			if (NULL != pBuffer) { delete pBuffer; pBuffer = NULL; }
 		}
 
-		virtual ::google::protobuf::MessageLite * getPBMessage(); 
+		virtual ::google::protobuf::MessageLite * getPBMessage();
 
 //		IStorable * clone(void) const
 //			{return dynamic_cast<IStorable *>(new ProtobufSubclass<theBaseType, theInternalType, theObjectType>(*this));}
 
-		virtual theBaseType * clone(void) const 
+		virtual theBaseType * clone(void) const
 		{  /*std::cout << "Cloning a " << m_Type.c_str() << std::endl;*/ return dynamic_cast<theBaseType *>(do_clone()); }
 
 		IStorable * do_clone(void) const
@@ -2276,7 +2251,7 @@ namespace OTDB
 		if(NULL == pNewStorable) OT_FAIL;
 		CopyToObject(*(dynamic_cast< ProtobufSubclass<theBaseType,theInternalType,theObjectType> * > (pNewStorable))); return dynamic_cast<IStorable *>(pNewStorable);}
 
-		virtual ~ProtobufSubclass() { } 
+		virtual ~ProtobufSubclass() { }
 		OT_USING_ISTORABLE_HOOKS;
 		virtual void hookBeforePack();  // <=== Implement this if you subclass.
 		virtual void hookAfterUnpack(); // <=== Implement this if you subclass.
@@ -2289,7 +2264,7 @@ namespace OTDB
 	typedef ProtobufSubclass<theBaseType, theInternalType, theObjectType>	theNewType
 
 	// ---------------------------------------------
-	// THE ACTUAL SUBCLASSES: 
+	// THE ACTUAL SUBCLASSES:
 
 	DECLARE_PROTOBUF_SUBCLASS(OTDBString,	String_InternalPB,			StringPB,			STORED_OBJ_STRING);
 	DECLARE_PROTOBUF_SUBCLASS(Blob,			Blob_InternalPB,			BlobPB,				STORED_OBJ_BLOB);
@@ -2325,10 +2300,10 @@ namespace OTDB
 	/*
 	void SUBCLASS_HERE::hookBeforePack()
 	{
-	__pb_obj.set_PROPERTY_NAME_GOES_HERE(PROPERTY_NAME_GOES_HERE); 
+	__pb_obj.set_PROPERTY_NAME_GOES_HERE(PROPERTY_NAME_GOES_HERE);
 	}
 	void SUBCLASS_HERE::hookAfterUnpack()
-	{ 
+	{
 	PROPERTY_NAME_GOES_HERE	= __pb_obj.PROPERTY_NAME_GOES_HERE();
 	}
 	*/

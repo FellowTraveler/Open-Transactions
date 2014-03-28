@@ -28,7 +28,9 @@ $ git clone git://github.com/Open-Transactions/Open-Transactions.git
 $ cd Open-Transactions
 $ ./autogen.sh
 
-$ ./configure --with-script=chai5 --enable-cxx11 --disable-cxxtr1 --disable-boost
+
+$ ./configure
+
 
 #########   Configure Options:   #########
 
@@ -39,12 +41,12 @@ Warnings:        --enable-warnings
 Release Mode:    --enable-release
 (default)
 
-No Boost:        --disable-boost
-No C++11:        --disable-cxx11
-
 (Optional)
 System Keyring:  --with-keyring=ARG
 Arguments:       gnome, kwallet, windows or mac
+
+opentxs Autocompletion: --with-bashcompletion=
+path depending on the system e.g. /etc/bash_completion.d/
 
 Enable OTAPI support for swig wrapper:
        Java:     --with-java
@@ -110,11 +112,11 @@ $ cd opentxs
 $ ./autogen.sh
 $ ./configure
 $ make distcheck
-$ mv opentxs-0.90.c.tar.gz opentxs_0.90.c.orig.tar.gz
-$ tar xf opentxs_0.90.c.orig.tar.gz
-$ cd opentxs-0.90.c
+$ mv opentxs-0.90.d.tar.gz opentxs_0.90.d.orig.tar.gz
+$ tar xf opentxs_0.90.d.orig.tar.gz
+$ cd opentxs-0.90.d
 $ cp -r ../debian .
 $ debuild -us -uc -d
 
 To install deb package:
-$ sudo dpkg -i opentxs_0.90.c_<arch>.deb
+$ sudo dpkg -i opentxs_0.90.d_<arch>.deb

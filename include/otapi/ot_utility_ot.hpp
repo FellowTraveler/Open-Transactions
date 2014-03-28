@@ -2,7 +2,7 @@
 #define _H_OT_UTILITY_OT
 
 #include <string>
-#include <ExportWrapper.h>
+#include "OTCommon.hpp"
 
 
 #define OT_UTILITY_OT
@@ -29,7 +29,6 @@ EXPORT OT_UTILITY_OT bool VerifyNotNull(const void * theObjectRef);
 EXPORT OT_UTILITY_OT bool VerifyStorable(OTDB::Storable * theStorableObjectRef, const string & strType);
 EXPORT OT_UTILITY_OT bool VerifyType(const void * theObjectRef, const string & strType);
 
-
 class OTfourbool
 {
 public:
@@ -54,7 +53,6 @@ public:
         four = param_four;
     }
 };
-
 
 class Utility
 {

@@ -1,13 +1,13 @@
 /************************************************************************************
- *    
+ *
  *  OTAssetContract.h
- *  
+ *
  */
 
 /************************************************************
  -----BEGIN PGP SIGNED MESSAGE-----
  Hash: SHA1
- 
+
  *                 OPEN TRANSACTIONS
  *
  *       Financial Cryptography and Digital Cash
@@ -110,10 +110,10 @@
  *   warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR
  *   PURPOSE.  See the GNU Affero General Public License for
  *   more details.
- 
+
  -----BEGIN PGP SIGNATURE-----
  Version: GnuPG v1.4.9 (Darwin)
- 
+
  iQIcBAEBAgAGBQJRSsfJAAoJEAMIAO35UbuOQT8P/RJbka8etf7wbxdHQNAY+2cC
  vDf8J3X8VI+pwMqv6wgTVy17venMZJa4I4ikXD/MRyWV1XbTG0mBXk/7AZk7Rexk
  KTvL/U1kWiez6+8XXLye+k2JNM6v7eej8xMrqEcO0ZArh/DsLoIn1y8p8qjBI7+m
@@ -134,10 +134,9 @@
 #ifndef __OTASSETCONTRACT_HPP__
 #define __OTASSETCONTRACT_HPP__
 
-#include <ExportWrapper.h>
-#include <WinsockWrapper.h>
+#include "OTCommon.hpp"
 
-#include <OTContract.hpp>
+#include "OTContract.hpp"
 
 class OTBasket;
 class OTPseudonym;
@@ -151,11 +150,10 @@ class OTAcctFunctor; // defined below.
 
 // ----------------------------------------------------------------------------
 
-
 class OTAmount
 {
     int64_t  m_lAmount;    // $5.45 has m_lAmount set to 545
-    
+
 public:
 EXPORT    friend void swap(OTAmount& first, OTAmount& second) // nothrow
     {
@@ -163,21 +161,21 @@ EXPORT    friend void swap(OTAmount& first, OTAmount& second) // nothrow
         swap(first.m_lAmount,    second.m_lAmount);
     }
     // -----------------------------------------------------
-    bool          IsPositive()   const { return (m_lAmount >  0);  }
-    bool          IsNegative()   const { return (m_lAmount <  0);  }
-    bool          IsZero()       const { return (m_lAmount == 0);  }
+EXPORT    bool          IsPositive()   const { return (m_lAmount >  0);  }
+EXPORT    bool          IsNegative()   const { return (m_lAmount <  0);  }
+EXPORT    bool          IsZero()       const { return (m_lAmount == 0);  }
     // -----------------------------------------------------
-    int64_t       GetAmount()    const { return m_lAmount; }
-    int64_t       GetAbsolute()  const { return (m_lAmount <  0) ? (m_lAmount*(-1)) : m_lAmount; }
+EXPORT    int64_t       GetAmount()    const { return m_lAmount; }
+EXPORT    int64_t       GetAbsolute()  const { return (m_lAmount <  0) ? (m_lAmount*(-1)) : m_lAmount; }
     // -----------------------------------------------------
-    void          SetAmount(int64_t lAmount) { m_lAmount = lAmount; }
+EXPORT    void          SetAmount(int64_t lAmount) { m_lAmount = lAmount; }
     // -----------------------------------------------------
 EXPORT    OTAmount(int64_t lAmount=0);
 EXPORT    OTAmount(const OTAmount & other);
-    
+
 EXPORT    OTAmount& operator=(OTAmount other);
 //  OTAmount(OTAmount&& other);  // C++11
-    
+
 EXPORT    ~OTAmount() {}
 };
 
@@ -189,13 +187,13 @@ class OTAssetContract : public OTContract
 protected:
     // basket currencies only:
 	OTString	m_strBasketInfo;	// If this contract is for a basket currency, the OTBasket object is stored here.
-	
+
     // currencies and shares:
 	OTString    m_strIssueCompany;
 	OTString    m_strIssueEmail;
 	OTString    m_strIssueContractURL;
 	OTString    m_strIssueType;         // A vs B. Voting / non-voting...
-    
+
     // shares only:
     OTString    m_strIssueDate;
 
@@ -209,7 +207,7 @@ protected:
 	OTString    m_strCurrencyFactor;        // A dollar is 100 cents. Therefore factor == 100.
 	OTString    m_strCurrencyDecimalPower;  // If value is 103, decimal power of 0 displays 103 (actual value.) Whereas decimal power of 2 displays 1.03 and 4 displays .0103
 	OTString    m_strCurrencyFraction;      // "cents"
-	
+
     bool        m_bIsCurrency; // default: true.  (default.)
     bool        m_bIsShares;   // default: false. (defaults to currency, not shares.)
     // ----------------------------------
@@ -226,7 +224,7 @@ EXPORT	OTAssetContract();
 EXPORT	OTAssetContract(OTString & name, OTString & foldername, OTString & filename, OTString & strID);
 EXPORT	virtual ~OTAssetContract();
 	// ----------------------------------
-    bool IsShares() const { return m_bIsShares; }
+EXPORT    bool IsShares() const { return m_bIsShares; }
     // Some asset types keep a list of "simple" accounts (the complete set of that type.)
     // This is called when the user creates a new asset account, in order to add it to that list.
     // (Currently only operational for "shares", not "currencies", since it's used exclusively
@@ -234,7 +232,7 @@ EXPORT	virtual ~OTAssetContract();
     //
 EXPORT    bool AddAccountRecord  (const OTAccount    & theAccount); // adds the account to the list. (When account is created.)
 EXPORT    bool EraseAccountRecord(const OTIdentifier & theAcctID);  // removes the account from the list. (When account is deleted.)
-    
+
 EXPORT    bool ForEachAccountRecord(OTAcctFunctor & theAction); // Loops through all the accounts for a given asset type, and calls Functor on each.
 	// ----------------------------------
 EXPORT    static std::string formatLongAmount(long & lOriginalValue, int nFactor=100, int nPower=2, const char * szSymbol="",
@@ -250,14 +248,14 @@ EXPORT    bool StringToAmount(    OTAmount & theOutput, const std::string & str_
 EXPORT    int64_t GetDollarsOnly(const OTAmount & theInput) const; // Given input of 545, GetDollarsOnly returns 5
 EXPORT    int64_t CentsOnly     (const OTAmount & theInput) const; // Given input of 545, GetCentsOnly returns 45.
 	// ----------------------------------
-    const OTString & GetCurrencyName     () const { return m_strCurrencyName;     }  // "dollars"  (for example)
-    const OTString & GetCurrencyFraction () const { return m_strCurrencyFraction; }  // "cents"    (for example)
-    const OTString & GetCurrencySymbol   () const { return m_strCurrencySymbol;   }  // "$"        (for example)
-    const OTString & GetCurrencyTLA      () const { return m_strCurrencyTLA;      }  // "USD""     (for example)
+EXPORT    const OTString & GetCurrencyName     () const { return m_strCurrencyName;     }  // "dollars"  (for example)
+EXPORT    const OTString & GetCurrencyFraction () const { return m_strCurrencyFraction; }  // "cents"    (for example)
+EXPORT    const OTString & GetCurrencySymbol   () const { return m_strCurrencySymbol;   }  // "$"        (for example)
+EXPORT    const OTString & GetCurrencyTLA      () const { return m_strCurrencyTLA;      }  // "USD""     (for example)
 	// ----------------------------------
 	virtual bool SaveContractWallet(OTString & strContents) const;
 	virtual bool SaveContractWallet(std::ofstream & ofs);
-	// ----------------------------------	
+	// ----------------------------------
 	virtual bool DisplayStatistics(OTString & strContents) const;
 };
 
@@ -277,15 +275,15 @@ typedef std::map<std::string, OTAssetContract *>	mapOfContracts;
 class OTAcctFunctor
 {
 protected:
-    OTIdentifier  * m_pServerID; // owned.    
+    OTIdentifier  * m_pServerID; // owned.
     mapOfAccounts * m_pLoadedAccounts; // not owned.
-    
+
 public:
 EXPORT    OTAcctFunctor(const OTIdentifier & theServerID, mapOfAccounts * pLoadedAccounts=NULL);
 EXPORT    virtual ~OTAcctFunctor();
-    
-    OTIdentifier  * GetServerID()    { return m_pServerID; }
-    mapOfAccounts * GetLoadedAccts() { return m_pLoadedAccounts; }
+
+EXPORT    OTIdentifier  * GetServerID()    { return m_pServerID; }
+EXPORT    mapOfAccounts * GetLoadedAccts() { return m_pLoadedAccounts; }
 
 EXPORT    virtual bool Trigger(OTAccount & theAccount)=0; // We still provide an implementation, however.
 };
@@ -306,7 +304,7 @@ EXPORT    virtual bool Trigger(OTAccount & theAccount)=0; // We still provide an
 //public:
 //    OTAcctFunctor_PayDividend(const OTIdentifier & theServerID);
 //    virtual ~OTAcctFunctor_PayDividend();
-//    
+//
 //    virtual bool Trigger(OTAccount & theAccount);
 //};
 

@@ -1,8 +1,8 @@
 /*************************************************************
- *    
+ *
  *  OTPayment.h
- *  
- * If you use sendUserInstrument to send an invoice / cheque / 
+ *
+ * If you use sendUserInstrument to send an invoice / cheque /
  * voucher / payment plan / purse / smart contract to another
  * user, that object, whatever it turns out to be, should be
  * encapsulated inside one of THESE (a PAYMENT--used on the
@@ -12,7 +12,7 @@
 /************************************************************
  -----BEGIN PGP SIGNED MESSAGE-----
  Hash: SHA1
- 
+
  *                 OPEN TRANSACTIONS
  *
  *       Financial Cryptography and Digital Cash
@@ -115,10 +115,10 @@
  *   warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR
  *   PURPOSE.  See the GNU Affero General Public License for
  *   more details.
- 
+
  -----BEGIN PGP SIGNATURE-----
  Version: GnuPG v1.4.9 (Darwin)
- 
+
  iQIcBAEBAgAGBQJRSsfJAAoJEAMIAO35UbuOQT8P/RJbka8etf7wbxdHQNAY+2cC
  vDf8J3X8VI+pwMqv6wgTVy17venMZJa4I4ikXD/MRyWV1XbTG0mBXk/7AZk7Rexk
  KTvL/U1kWiez6+8XXLye+k2JNM6v7eej8xMrqEcO0ZArh/DsLoIn1y8p8qjBI7+m
@@ -139,10 +139,9 @@
 #ifndef __OT_PAYMENT_HPP__
 #define __OT_PAYMENT_HPP__
 
-#include <ExportWrapper.h>
-#include <WinsockWrapper.h>
+#include "OTCommon.hpp"
 
-#include <OTContract.hpp>
+#include "OTContract.hpp"
 
 class OTPurse;
 class OTTrackable;
@@ -156,7 +155,7 @@ class OTSmartContract;
     - CHEQUE, INVOICE, VOUCHER (these are all forms of cheque)
     - PAYMENT PLAN, SMART CONTRACT (these are cron items)
     - PURSE (containing cash)
- 
+
  FYI:
  // ----------------------
  OTContract — Most other classes are derived from this one. Contains the actual XML contents,
@@ -187,13 +186,11 @@ class OTSmartContract;
  // ----------------------
  */
 
-
-
-class OTPayment : public OTContract 
+class OTPayment : public OTContract
 {
 private:  // Private prevents erroneous use by other classes.
     typedef OTContract ot_super;
-    
+
 public:
     enum paymentType
     {
@@ -213,9 +210,9 @@ public:
         ERROR_STATE
     };  // If you add any types to this list, update the list of strings at the top of the .CPP file.
 
-   
+
 protected:
-	virtual void UpdateContents();  // Before transmission or serialization, this is where the object saves its contents 
+	virtual void UpdateContents();  // Before transmission or serialization, this is where the object saves its contents
 	// -----------------------------------------
     OTString        m_strPayment;   // Contains the cheque / payment plan / etc in string form.
     paymentType     m_Type;         // Default value is ERROR_STATE
@@ -224,7 +221,7 @@ protected:
     // object. Until then, this bool (m_bAreTempValuesSet) is set to false.
     //
     bool            m_bAreTempValuesSet;
-    
+
     // Here are the TEMP values:
     // (These are not serialized.)
     //
@@ -233,9 +230,9 @@ protected:
 
     long            m_lAmount;          // Contains 0 by default. This is set by SetPayment() along with other useful values.
     long            m_lTransactionNum;  // Contains 0 by default. This is set by SetPayment() along with other useful values.
-    
+
     OTString        m_strMemo;          // Memo, Consideration, Subject, etc.
-    
+
     OTIdentifier    m_AssetTypeID;      // These are for convenience only, for caching once they happen to be loaded.
     OTIdentifier    m_ServerID;         // These values are NOT serialized other than via the payment instrument itself
     // ----------------------------
@@ -253,16 +250,16 @@ protected:
 public:
 EXPORT    bool SetPayment(const OTString & strPayment);
 	// -----------------------------------------
-    
-    bool IsCheque()        const { return (CHEQUE         == m_Type); }
-    bool IsVoucher()       const { return (VOUCHER        == m_Type); }
-    bool IsInvoice()       const { return (INVOICE        == m_Type); }
-    bool IsPaymentPlan()   const { return (PAYMENT_PLAN   == m_Type); }
-    bool IsSmartContract() const { return (SMART_CONTRACT == m_Type); }
-    bool IsPurse()         const { return (PURSE          == m_Type); }
-    bool IsValid()         const { return (ERROR_STATE    != m_Type); }
-    
-    paymentType     GetType() const { return m_Type; }
+
+EXPORT    bool IsCheque()        const { return (CHEQUE         == m_Type); }
+EXPORT    bool IsVoucher()       const { return (VOUCHER        == m_Type); }
+EXPORT    bool IsInvoice()       const { return (INVOICE        == m_Type); }
+EXPORT    bool IsPaymentPlan()   const { return (PAYMENT_PLAN   == m_Type); }
+EXPORT    bool IsSmartContract() const { return (SMART_CONTRACT == m_Type); }
+EXPORT    bool IsPurse()         const { return (PURSE          == m_Type); }
+EXPORT    bool IsValid()         const { return (ERROR_STATE    != m_Type); }
+
+EXPORT    paymentType     GetType() const { return m_Type; }
     // -------------------------------------------
 EXPORT    OTTrackable *   Instantiate() const;
 EXPORT    OTTrackable *   Instantiate(const OTString & strPayment);
@@ -277,15 +274,15 @@ EXPORT    OTPurse * InstantiatePurse(const OTString & strPayment);
 //        OTPurse * InstantiatePurse(const OTIdentifier & SERVER_ID, const OTIdentifier & ASSET_ID,
 //                                   const OTString & strPayment);
     // -------------------------------------------
-    bool GetPaymentContents(OTString & strOutput) const { strOutput = m_strPayment; return true; }
-    
+EXPORT    bool GetPaymentContents(OTString & strOutput) const { strOutput = m_strPayment; return true; }
+
     // Since the temp values are not available until at least ONE instantiating has occured,
     // this function forces that very scenario (cleanly) so you don't have to instantiate-and-
     // then-delete a payment instrument. Instead, just call this, and then the temp values will
     // be available thereafter.
     //
 EXPORT    bool SetTempValues();
-    
+
 EXPORT    bool SetTempValuesFromCheque        (const OTCheque         & theInput);
 EXPORT    bool SetTempValuesFromPaymentPlan   (const OTPaymentPlan    & theInput);
 EXPORT    bool SetTempValuesFromSmartContract (const OTSmartContract  & theInput);
@@ -340,7 +337,7 @@ EXPORT	virtual int  ProcessXMLNode(irr::io::IrrXMLReader*& xml);
 EXPORT	virtual bool SaveContractWallet(std::ofstream & ofs);
     // ----------------------------
 EXPORT	static const char * _GetTypeString(paymentType theType);
-  const char * GetTypeString() const { return OTPayment::_GetTypeString(m_Type); }
+EXPORT  const char * GetTypeString() const { return OTPayment::_GetTypeString(m_Type); }
 EXPORT	static paymentType GetTypeFromString(const OTString & strType);
 };
 

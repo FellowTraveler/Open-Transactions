@@ -3,13 +3,13 @@
 * OTAPI.cpp   --	A C++ Low-Level API (wraps OT_API)
 *
 * This is a C++ class that contains many helper functions.
-*  
+*
 */
 
 /************************************************************
  -----BEGIN PGP SIGNED MESSAGE-----
  Hash: SHA1
- 
+
  *                 OPEN TRANSACTIONS
  *
  *       Financial Cryptography and Digital Cash
@@ -112,10 +112,10 @@
  *   warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR
  *   PURPOSE.  See the GNU Affero General Public License for
  *   more details.
- 
+
  -----BEGIN PGP SIGNATURE-----
  Version: GnuPG v1.4.9 (Darwin)
- 
+
  iQIcBAEBAgAGBQJRSsfJAAoJEAMIAO35UbuOQT8P/RJbka8etf7wbxdHQNAY+2cC
  vDf8J3X8VI+pwMqv6wgTVy17venMZJa4I4ikXD/MRyWV1XbTG0mBXk/7AZk7Rexk
  KTvL/U1kWiez6+8XXLye+k2JNM6v7eej8xMrqEcO0ZArh/DsLoIn1y8p8qjBI7+m
@@ -153,15 +153,15 @@ extern "C"
 #ifndef _WIN32
 #include <inttypes.h>
 #else
-    
+
 #ifndef PRId64
 #define PRId64 "I64d"
 #endif
-    
+
 #ifndef PRId32
 #define PRId32 "I32d"
 #endif
-    
+
 #endif
 }
 
@@ -252,7 +252,7 @@ bool OTAPI_Wrap::AppCleanup()
 //
 void OTAPI_Wrap::SetAppBinaryFolder(const std::string & strFolder)
 {
-    OTPaths::SetAppBinaryFolder(strFolder.c_str());
+    Exec()->SetAppBinaryFolder(strFolder);
 }
 
 // --------------------------------------------------------------------
@@ -271,7 +271,7 @@ void OTAPI_Wrap::SetAppBinaryFolder(const std::string & strFolder)
 //
 void OTAPI_Wrap::SetHomeFolder(const std::string & strFolder)
 {
-    OTPaths::SetHomeFolder(strFolder.c_str());
+    Exec()->SetHomeFolder(strFolder);
 }
 
 
@@ -294,6 +294,16 @@ int64_t OTAPI_Wrap::StringToLong(const std::string & strNumber)
 std::string OTAPI_Wrap::LongToString(const int64_t & lNumber)
 {
     return Exec()->LongToString(lNumber);
+}
+
+uint64_t OTAPI_Wrap::StringToUlong(const std::string & strNumber)
+{
+    return Exec()->StringToUlong(strNumber);
+}
+
+std::string OTAPI_Wrap::UlongToString(const uint64_t & lNumber)
+{
+    return Exec()->UlongToString(lNumber);
 }
 
 void OTAPI_Wrap::Output(const int32_t & nLogLevel, const std::string & strOutput)
@@ -379,6 +389,17 @@ int32_t OTAPI_Wrap::NumList_Count(const std::string & strNumList)
 std::string OTAPI_Wrap::CreateNym(const int32_t & nKeySize, const std::string & NYM_ID_SOURCE, const std::string & ALT_LOCATION)
 {
     return Exec()->CreateNym(nKeySize, NYM_ID_SOURCE, ALT_LOCATION);
+}
+
+std::string OTAPI_Wrap::GetNym_ActiveCronItemIDs(const std::string & NYM_ID, const std::string & SERVER_ID)
+{
+    return Exec()->GetNym_ActiveCronItemIDs(NYM_ID, SERVER_ID);
+
+}
+std::string OTAPI_Wrap::GetActiveCronItem(const std::string & SERVER_ID, int64_t lTransNum)
+{
+    return Exec()->GetActiveCronItem(SERVER_ID, lTransNum);
+
 }
 
 std::string OTAPI_Wrap::GetNym_SourceForID(const std::string & NYM_ID)
@@ -849,6 +870,11 @@ std::string OTAPI_Wrap::GetAssetType_ID(const int32_t & nIndex)
 std::string OTAPI_Wrap::GetAssetType_Name(const std::string & THE_ID)
 {
     return Exec()->GetAssetType_Name(THE_ID);
+}
+
+std::string OTAPI_Wrap::GetAssetType_TLA(const std::string & THE_ID)
+{
+    return Exec()->GetAssetType_TLA(THE_ID);
 }
 
 std::string OTAPI_Wrap::GetAccountWallet_ID(const int32_t & nIndex)
