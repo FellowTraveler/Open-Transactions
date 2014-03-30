@@ -132,32 +132,34 @@
 
 #include <stdafx.hpp>
 
-#include "OTServer.hpp"
+#include <stdafx.hpp>
 
-#include "OTClientConnection.hpp"
+#include <OTServer.hpp>
+
+#include <OTClientConnection.hpp>
 
 #ifndef IMPORT
 #define IMPORT
 #endif
 
-#include "OTLog.hpp"
-#include "OTPaths.hpp"
-#include "OTMint.hpp"
-#include "OTPurse.hpp"
-#include "OTMessage.hpp"
-#include "OTSmartContract.hpp"
-#include "OTLedger.hpp"
-#include "OTEnvelope.hpp"
-#include "OTCheque.hpp"
-#include "OTBasket.hpp"
-#include "OTTrade.hpp"
-#include "OTOffer.hpp"
-#include "OTPaymentPlan.hpp"
-#include "OTPayment.hpp"
-#include "OTServerContract.hpp"
-#include "OTPassword.hpp"
-#include "OTMarket.hpp"
-#include "OTKeyring.hpp"
+#include <OTLog.hpp>
+#include <OTPaths.hpp>
+#include <OTMint.hpp>
+#include <OTPurse.hpp>
+#include <OTMessage.hpp>
+#include <OTSmartContract.hpp>
+#include <OTLedger.hpp>
+#include <OTEnvelope.hpp>
+#include <OTCheque.hpp>
+#include <OTBasket.hpp>
+#include <OTTrade.hpp>
+#include <OTOffer.hpp>
+#include <OTPaymentPlan.hpp>
+#include <OTPayment.hpp>
+#include <OTServerContract.hpp>
+#include <OTPassword.hpp>
+#include <OTMarket.hpp>
+#include <OTKeyring.hpp>
 
 #include <fstream>
 

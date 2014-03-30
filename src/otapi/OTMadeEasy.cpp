@@ -134,10 +134,10 @@ This is a wrapper for OT_ME
 
 #include <stdafx.hpp>
 
-#include "OTMadeEasy.hpp"
+#include <OTMadeEasy.hpp>
 
 #include <OT_ME.hpp>
-#include "OTAPI.hpp"
+#include <OTAPI.hpp>
 
 
 
@@ -150,7 +150,6 @@ OTMadeEasy::~OTMadeEasy()
 {
     if (NULL != m_pME)
         delete m_pME;
-    m_pME = NULL;
 }
 
 

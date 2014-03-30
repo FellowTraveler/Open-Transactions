@@ -271,7 +271,7 @@
     <ClInclude Include="..\..\include\otapi\OTClient.hpp" />
     <ClInclude Include="..\..\include\otapi\OTMadeEasy.hpp" />
     <ClInclude Include="..\..\include\otapi\OTServerConnection.hpp" />
-    <ClInclude Include="..\..\include\otapi\ot_command_ot.hpp" />
+    <ClInclude Include="..\..\include\otapi\ot_commands_ot.hpp" />
     <ClInclude Include="..\..\include\otapi\ot_made_easy_ot.hpp" />
     <ClInclude Include="..\..\include\otapi\OT_ME.hpp" />
     <ClInclude Include="..\..\include\otapi\ot_me_switch.hpp" />

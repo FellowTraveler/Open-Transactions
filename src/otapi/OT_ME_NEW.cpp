@@ -1,4 +1,4 @@
-/************************************************************************************
+/************************************************************
 
 OT_ME.cpp   -- "OT Made Easy"
 
@@ -136,28 +136,31 @@ kamH0Y/n11lCvo1oQxM+
 
 #include <stdafx.hpp>
 
-#include "ot_me_switch.hpp"
+#include <ot_me_switch.hpp>
 
 
 #if USE_OLD_CHAISCRIPT == 0
 
 #include <OT_ME.hpp>
 
-#include "OTAPI.hpp"
+#include <OTAPI.hpp>
 
 #ifndef IMPORT
 #define IMPORT
 #endif
 
-#include "OTLog.hpp"
-#include "OTStorage.hpp"
-#include "OTPaths.hpp"
+#include <OTLog.hpp>
+#include <OTStorage.hpp>
+#include <OTPaths.hpp>
 
-#include "ot_command_ot.hpp"
-#include "ot_made_easy_ot.hpp"
-#include "ot_otapi_ot.hpp"
-#include "ot_utility_ot.hpp"
+#include <ot_commands_ot.hpp>
+#include <ot_made_easy_ot.hpp>
+#include <ot_otapi_ot.hpp>
+#include <ot_utility_ot.hpp>
 
+
+// ------------------------------------------
+#ifdef OT_USE_SCRIPT_CHAI
 
 #include <chaiscript/chaiscript.hpp>
 
@@ -165,8 +168,19 @@ kamH0Y/n11lCvo1oQxM+
 #include <chaiscript/chaiscript_stdlib.hpp>
 #endif
 
-// no use in initializing the script multiple times since it takes prohibitively long
+#endif
+// ------------------------------------------
+
+// No use in initializing the script multiple times since it takes prohibitively long.
+//
+// ...except it crashes everytime I run on my Mac. Removing this for now since script
+// interpreter is removed anyway.
+//
+// ...except we need this under Windows because it does NOT crash there and it makes
+// a ridiculously large difference: 10 seconds overhead per initialization
+#ifdef _WIN32
 _SharedPtr<OTScript> OT_ME::m_pScript;
+#endif
 
 
 OT_ME::OT_ME(const std::string & _scriptName)
@@ -1400,7 +1414,7 @@ bool OT_ME::SetupScriptObject()
 
 bool OT_ME::Register_OTDB_With_Script()
 {
-#ifdef OT_USE_CHAI5
+#ifdef OT_USE_SCRIPT_CHAI
     // See if it's ChaiScript.
     //
     OTScriptChai * pScript = dynamic_cast<OTScriptChai *> (m_pScript.get());
@@ -1409,7 +1423,7 @@ bool OT_ME::Register_OTDB_With_Script()
     {
         return Register_OTDB_With_Script_Chai(*pScript);
     }
-#endif // OT_USE_CHAI5
+#endif // OT_USE_SCRIPT_CHAI
 
     OTLog::vError("%s: Failed dynamic casting OTScript to OTScriptChai \n", __FUNCTION__);
     return false;
@@ -1418,7 +1432,7 @@ bool OT_ME::Register_OTDB_With_Script()
 
 bool OT_ME::Register_CLI_With_Script()
 {
-#ifdef OT_USE_CHAI5
+#ifdef OT_USE_SCRIPT_CHAI
     // See if it's ChaiScript.
     //
     OTScriptChai * pScript = dynamic_cast<OTScriptChai *> (m_pScript.get());
@@ -1427,7 +1441,7 @@ bool OT_ME::Register_CLI_With_Script()
     {
         return Register_CLI_With_Script_Chai(*pScript);
     }
-#endif // OT_USE_CHAI5
+#endif // OT_USE_SCRIPT_CHAI
 
     OTLog::vError("%s: Failed dynamic casting OTScript to OTScriptChai \n", __FUNCTION__);
     return false;
@@ -1435,7 +1449,7 @@ bool OT_ME::Register_CLI_With_Script()
 
 bool OT_ME::Register_API_With_Script()
 {
- #ifdef OT_USE_CHAI5
+ #ifdef OT_USE_SCRIPT_CHAI
    // See if it's ChaiScript.
     //
     OTScriptChai * pScript = dynamic_cast<OTScriptChai *> (m_pScript.get());
@@ -1444,7 +1458,7 @@ bool OT_ME::Register_API_With_Script()
     {
         return Register_API_With_Script_Chai(*pScript);
     }
-#endif // OT_USE_CHAI5
+#endif // OT_USE_SCRIPT_CHAI
 
     OTLog::vError("%s: Failed dynamic casting OTScript to OTScriptChai \n", __FUNCTION__);
     return false;
@@ -1452,7 +1466,7 @@ bool OT_ME::Register_API_With_Script()
 
 bool OT_ME::Register_Headers_With_Script()
 {
-#ifdef OT_USE_CHAI5
+#ifdef OT_USE_SCRIPT_CHAI
     // See if it's ChaiScript.
     //
     OTScriptChai * pScript = dynamic_cast<OTScriptChai *> (m_pScript.get());
@@ -1461,14 +1475,14 @@ bool OT_ME::Register_Headers_With_Script()
     {
         return Register_Headers_With_Script_Chai(*pScript);
     }
-#endif // OT_USE_CHAI5
+#endif // OT_USE_SCRIPT_CHAI
 
     OTLog::vError("%s: Failed dynamic casting OTScript to OTScriptChai \n", __FUNCTION__);
     return false;
 }
 
 
-#ifdef OT_USE_CHAI5
+#ifdef OT_USE_SCRIPT_CHAI
 
 //bool OT_ME::Register_OTDB_With_Script_Lua(OTScriptLua & theScript)
 
@@ -2175,7 +2189,7 @@ bool OT_ME::Register_API_With_Script_Chai(OTScriptChai & theScript)
     }
 }
 
-#endif // OT_USE_CHAI5
+#endif // OT_USE_SCRIPT_CHAI
 
 // ********************************************************************
 
@@ -2237,7 +2251,7 @@ bool NewScriptExists(const OTString & strScriptFilename, bool bIsHeader, OTStrin
 }
 
 
-#ifdef OT_USE_CHAI5
+#ifdef OT_USE_SCRIPT_CHAI
 
 //bool OT_ME::Register_Headers_With_Script_Lua(OTScriptLua & theScript)
 
@@ -2394,6 +2408,6 @@ bool OT_ME::Register_Headers_With_Script_Chai(OTScriptChai & theScript)
     }
 }
 
-#endif // OT_USE_CHAI5
+#endif // OT_USE_SCRIPT_CHAI
 
 #endif

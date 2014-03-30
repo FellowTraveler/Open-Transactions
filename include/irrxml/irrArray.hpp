@@ -66,18 +66,18 @@ public:
 
 		data = new T[new_size];
 		allocated = new_size;
-
+		
 		s32 end = used < new_size ? used : new_size;
 		for (s32 i=0; i<end; ++i)
 			data[i] = old_data[i];
 
 		if (allocated < used)
 			used = allocated;
-
+		
 		delete [] old_data;
 	}
 
-	//! Adds an element at back of array. If the array is to small to
+	//! Adds an element at back of array. If the array is to small to 
 	//! add this new element, the array is made bigger.
 	//! \param element: Element to add at the back of the array.
 	void push_back(const T& element)
@@ -93,7 +93,7 @@ public:
 			e = element;           // copy element
 			reallocate(used * 2 +1); // increase data block
 			data[used++] = e;        // push_back
-			is_sorted = false;
+			is_sorted = false; 
 			return;
 		}
 
@@ -102,7 +102,7 @@ public:
 	}
 
 
-	//! Adds an element at the front of the array. If the array is to small to
+	//! Adds an element at the front of the array. If the array is to small to 
 	//! add this new element, the array is made bigger. Please note that this
 	//! is slow, because the whole array needs to be copied for this.
 	//! \param element: Element to add at the back of the array.
@@ -119,20 +119,20 @@ public:
 		++used;
 	}
 
-
+	
 	//! Insert item into array at specified position. Please use this
-	//! only if you know what you are doing (possible performance loss).
+	//! only if you know what you are doing (possible performance loss). 
 	//! The preferred method of adding elements should be push_back().
 	//! \param element: Element to be inserted
 	//! \param index: Where position to insert the new element.
-	void insert(const T& element, u32 index=0)
+	void insert(const T& element, u32 index=0) 
 	{
 		_IRR_DEBUG_BREAK_IF(index>used) // access violation
 
 		if (used + 1 > allocated)
 			reallocate(used * 2 +1);
 
-		for (u32 i=used++; i>index; i--)
+		for (u32 i=used++; i>index; i--) 
 			data[i] = data[i-1];
 
 		data[index] = element;
@@ -245,7 +245,7 @@ public:
 
 		return data[used-1];
 	}
-
+    
 
 	//! Returns a pointer to the array.
 	//! \return Pointer to the array.
@@ -390,7 +390,7 @@ public:
 
 
 
-	//! Erases an element from the array. May be slow, because all elements
+	//! Erases an element from the array. May be slow, because all elements 
 	//! following after the erased element have to be copied.
 	//! \param index: Index of element to be erased.
 	void erase(u32 index)
@@ -404,7 +404,7 @@ public:
 	}
 
 
-	//! Erases some elements from the array. may be slow, because all elements
+	//! Erases some elements from the array. may be slow, because all elements 
 	//! following after the erased element have to be copied.
 	//! \param index: Index of the first element to be erased.
 	//! \param count: Amount of elements to be erased.
@@ -425,7 +425,7 @@ public:
 		is_sorted = _is_sorted;
 	}
 
-
+			
 	private:
 
 		T* data;

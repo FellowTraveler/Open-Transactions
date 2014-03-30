@@ -1,14 +1,16 @@
 #ifndef _H_OT_MADE_EASY_OT
 #define _H_OT_MADE_EASY_OT
 
-#include <string>
 #include "OTCommon.hpp"
 
+#include <string>
+#include <vector>
 
 #define OT_MADE_EASY_OT
 
 
 using std::string;
+using std::vector;
 
 
 EXPORT OT_MADE_EASY_OT int32_t depositCashPurse(const string & serverID, const string & assetID, const string & nymID, const string & oldPurse, const vector<string> & selectedTokens, const string & accountID, const bool bReimportIfFailure); // So we don't re-import a purse that wasn't internal to begin with.

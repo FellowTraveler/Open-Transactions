@@ -1,9 +1,11 @@
 #ifndef _H_OT_UTILITY_OT
 #define _H_OT_UTILITY_OT
 
-#include <string>
 #include "OTCommon.hpp"
 
+#include <string>
+
+#include <OTStorage.hpp>
 
 #define OT_UTILITY_OT
 
