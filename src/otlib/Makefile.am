@@ -28,11 +28,11 @@ libot_la_SOURCES	=	$(otlib_sources)		\
 libot_la_CXXFLAGS	=	$(common_includes)
 
 libot_la_LIBADD		=	bigint/libbigint.la	\
-				irrxml/libirrxml.la		\
-				lucre/liblucre.la		\
+                                irrxml/libirrxml.la \
+                                lucre/liblucre.la \
 				otprotob/libotprotob.la		\
-				otext/libotext.la		\
-				$(DEPS_LIBS)
+                                otext/libotext.la \
+                                $(DEPS_LIBS)
 
 libot_la_DEPENDENCIES	=	bigint/libbigint.la		\
 				irrxml/libirrxml.la		\
@@ -234,11 +234,6 @@ nodist_pkginclude_HEADERS	= 	$(top_builddir)/include/otlib/ot_config.h
 DISTCLEANFILES			= 	$(top_builddir)/include/otlib/ot_config.h
 
 ## Extra to package containers headers
-
-pkginclude_containersdir	=	$(pkgincludedir)/containers
-pkginclude_containers_HEADERS	=	$(containers_headers)
-
-## Extra to package simpleini headers
 
 simpleini_headers_dir		=	$(top_srcdir)/include/simpleini
 

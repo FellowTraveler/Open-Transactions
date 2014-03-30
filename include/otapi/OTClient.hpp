@@ -1,13 +1,13 @@
 /************************************************************************************
-* 
+*
 * OTClient.h
-* 
+*
 */
 
 /************************************************************
  -----BEGIN PGP SIGNED MESSAGE-----
  Hash: SHA1
- 
+
  *                 OPEN TRANSACTIONS
  *
  *       Financial Cryptography and Digital Cash
@@ -110,10 +110,10 @@
  *   warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR
  *   PURPOSE.  See the GNU Affero General Public License for
  *   more details.
- 
+
  -----BEGIN PGP SIGNATURE-----
  Version: GnuPG v1.4.9 (Darwin)
- 
+
  iQIcBAEBAgAGBQJRSsfJAAoJEAMIAO35UbuOQT8P/RJbka8etf7wbxdHQNAY+2cC
  vDf8J3X8VI+pwMqv6wgTVy17venMZJa4I4ikXD/MRyWV1XbTG0mBXk/7AZk7Rexk
  KTvL/U1kWiez6+8XXLye+k2JNM6v7eej8xMrqEcO0ZArh/DsLoIn1y8p8qjBI7+m
@@ -133,9 +133,7 @@
 #ifndef __OTCLIENT_HPP__
 #define __OTCLIENT_HPP__
 
-#include "ExportWrapper.h"
-#include "WinsockWrapper.h"
-#include "TR1_Wrapper.hpp"
+#include "OTCommon.hpp"
 
 #include "OTServerConnection.hpp"
 
@@ -152,11 +150,9 @@
 #undef IMPORT_SET
 #ifdef IMPORT
 #undef IMPORT
-#include "ExportWrapper.h"
+#include "OTCommon.hpp"
 #endif
 #endif
-
-#include _CINTTYPES
 
 struct TransportCallback;
 
@@ -184,7 +180,7 @@ private:
 	OTWallet * m_pWallet; // NOT owned, but this pointer is here for convenience.
 
 	OTMessageBuffer     m_MessageBuffer;    // Incoming server replies are copied here for easy access.
-	OTMessageOutbuffer  m_MessageOutbuffer; // Outgoing messages are copied here for easy access. 
+	OTMessageOutbuffer  m_MessageOutbuffer; // Outgoing messages are copied here for easy access.
 
 	bool m_bRunningAsScript; // This is used to determine whether to activate certain messages automatically in
 	// the client based on various server replies to previous requests (based on what mode it's being used in...
@@ -200,16 +196,16 @@ public:
 	/// -2 instead, and then another function can be called that returns lMostRecentRequestNumber
 	/// in string form, or whatever is easiest.
 	///
-	long m_lMostRecentRequestNumber;
+	int64_t m_lMostRecentRequestNumber;
 	// ---------------------------------------------
-	int  CalcReturnVal(const long & lRequestNumber);
+	int32_t  CalcReturnVal(const int64_t & lRequestNumber);
 	// ---------------------------------------------
 	bool IsRunningAsScript() const { return m_bRunningAsScript; }
 	void SetRunningAsScript()      { m_bRunningAsScript = true; } // (default is false.)
 	// ------------------------
-	enum OT_CLIENT_CMD_TYPE 
+	enum OT_CLIENT_CMD_TYPE
 	{
-		checkServerID, // Your public key is sent along with this message so the server can reply to 
+		checkServerID, // Your public key is sent along with this message so the server can reply to
                        // you even without your being a registered user. Other than these top two commands,
                        // all other commands can only be executed by registered users.
                        //
@@ -237,7 +233,7 @@ public:
 		sendUserMessage, // Send a message to another user, encrypted to his public key and dropped into his nymbox.
 		getRequest, // Get the next request number from the server (for this user). Most requests must be
                     // accompanied by a request number, which increments for each Nym with each request.
-		issueAssetType, // Upload a currency contract to the server and create an asset ID from a hash of that. 
+		issueAssetType, // Upload a currency contract to the server and create an asset ID from a hash of that.
 		                // contract. Also creates an issuer account for that asset ID. This ONLY works if public
 		                // key of the user matches the contract key found in the currency contract, AND if the
 		                // contract is signed by the same key.
@@ -246,7 +242,7 @@ public:
 		                // types. Account files are stored on user's computer, signed by notary server.
 		                // Server also maintains its own copy. Users can create an unlimited number of accounts
 		                // for any asset type that they choose.
-		issueBasket, // Create a basket account, which is like an issuer account, but based on a basket of 
+		issueBasket, // Create a basket account, which is like an issuer account, but based on a basket of
                      // other asset types. This way, users can trade with what is apparently a single currency,
                      // when in fact the issuence is delegated and distributed across multiple issuers.
 		exchangeBasket, // Use this to exchange assets in and out of a basket currency.
@@ -338,14 +334,14 @@ public:
 	// ------------------------------------------------------------
 	// These functions are for command processing:
 
-	EXPORT int ProcessUserCommand(
+	EXPORT int32_t ProcessUserCommand(
 		OT_CLIENT_CMD_TYPE requestedCommand,
 		OTMessage & theMessage,
 		OTPseudonym & theNym,
 		// OTAssetContract & theContract,
 		OTServerContract & theServer,
 		OTAccount * pAccount=NULL,
-		long lTransactionAmount = 0,
+		int64_t lTransactionAmount = 0,
 		OTAssetContract * pMyAssetContract=NULL,
 		OTIdentifier * pHisNymID=NULL,
 		OTIdentifier * pHisAcctID=NULL
@@ -361,23 +357,23 @@ public:
 //  void AcceptEntireNymbox(OTLedger & theNymbox, OTServerConnection & theConnection);
 
 	bool AcceptEntireInbox(
-		OTLedger & theInbox, 
+		OTLedger & theInbox,
 		const OTIdentifier & theServerID,
-		OTServerContract & theServerContract, 
+		OTServerContract & theServerContract,
 		OTPseudonym & theNym,
 		OTMessage & theMessage,
 		OTAccount & theAccount
 		);
 
 	bool AcceptEntireNymbox(
-		OTLedger & theNymbox, 
+		OTLedger & theNymbox,
 		const OTIdentifier & theServerID,
-		OTServerContract & theServerContract, 
+		OTServerContract & theServerContract,
 		OTPseudonym & theNym,
 		OTMessage & theMessage
 		);
 
-	// void HarvestTransactionNumbers(OTTransaction & theTransaction, OTPseudonym & theNym); 
+	// void HarvestTransactionNumbers(OTTransaction & theTransaction, OTPseudonym & theNym);
 
 };
 
