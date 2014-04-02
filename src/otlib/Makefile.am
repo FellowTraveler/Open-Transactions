@@ -150,6 +150,7 @@ otlib_headers_ext	=	$(top_builddir)/include/otlib/ot_config.h    \
 				$(otlib_headers_dir)/OTBylaw.hpp		\
 				$(otlib_headers_dir)/OTCachedKey.hpp		\
 				$(otlib_headers_dir)/OTCheque.hpp		\
+				$(otlib_headers_dir)/OTCommon.hpp		\
 				$(otlib_headers_dir)/OTContract.hpp		\
 				$(otlib_headers_dir)/OTCredential.hpp		\
 				$(otlib_headers_dir)/OTCron.hpp			\
