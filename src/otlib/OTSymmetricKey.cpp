@@ -149,18 +149,6 @@ extern "C"
 }
 
 
-
-//// ------------------------------------------------------------------------
-
-//#ifdef _WIN32
-//#include <WinsockWrapper.h>
-//#else
-//
-//#if defined (OPENTXS_HAVE_SYS_TYPES_H)
-//#include <sys/types.h>
-//#endif
-
-
 // ------------------------------------------------------------------------
 
 // This class stores the iteration count, the salt, and the encrypted key.

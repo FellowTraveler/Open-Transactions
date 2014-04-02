@@ -1,4 +1,4 @@
-/************************************************************************************
+/************************************************************
 
 OTMadeEasy.cpp   --	A C++ wrapper class (named OTMadeEasy)
 
@@ -138,11 +138,6 @@ This is a wrapper for OT_ME
 
 #include <OT_ME.hpp>
 #include <OTAPI.hpp>
-
-#include "OTMadeEasy.hpp"
-
-#include <OT_ME.hpp>
-#include "OTAPI.hpp"
 
 
 OTMadeEasy::OTMadeEasy() : m_pME(new OT_ME)

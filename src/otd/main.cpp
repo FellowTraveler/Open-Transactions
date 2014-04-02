@@ -153,6 +153,7 @@
 
 #include <anyoption.hpp>
 
+#include "ot_me_switch.hpp"
 
 #ifdef __APPLE__
 #include "TargetConditionals.h"
@@ -742,7 +743,8 @@ int main(int argc, char* argv[])
 
 		return 0;
 	}
-	else // Else a command WAS provided at the command line, so we execute a single time, once just for that command.
+
+	// Otherwise a command WAS provided at the command line, so we execute a single time, once just for that command.
 	{
 		OTWallet * pWallet = NULL;
 		OTServerContract * pServerContract = NULL;
@@ -1314,7 +1316,7 @@ int main(int argc, char* argv[])
 #if USE_OLD_CHAISCRIPT == 0
             if (strFilename.find("scripts\\opentxs") != string::npos || strFilename.find("scripts/opentxs") != string::npos)
             {
-                return OT_ME::opentxs_main_loop();
+                return madeEasy.opentxs_main_loop();
             }
 #endif
             return madeEasy.ExecuteScript_ReturnInt(results, strFilename);

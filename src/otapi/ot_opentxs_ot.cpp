@@ -4,7 +4,7 @@
 
 #include "ot_utility_ot.hpp"
 #include "ot_otapi_ot.hpp"
-#include "ot_command_ot.hpp"
+#include "ot_commands_ot.hpp"
 
 using std::string;
 
@@ -126,6 +126,7 @@ MapCategory map_categories[] =
     { "sendvoucher", catOtherUsers },
     { "showaccounts", catWallet },
     { "showacct", catAccounts },
+    { "showactive", catInstruments },
     { "showassets", catWallet },
     { "showbasket", catBaskets },
     { "showcred", catNyms },
@@ -237,6 +238,7 @@ MapHelp map_help[] =
     { "sendvoucher", "withdraw a voucher and then send it to the recipient." },
     { "showaccounts", "show the asset accounts in the wallet." },
     { "showacct", "show account stats for a single account." },
+    { "showactive", "show the active cron item IDs, or the details of one by ID." },
     { "showassets", "show the currency contracts in the wallet." },
     { "showbasket", "show basket currencies available in the wallet." },
     { "showcred", "show a specific credential in detail." },
@@ -348,6 +350,7 @@ MapFunction map_functions[] =
     { "sendvoucher", main_sendvoucher },            // withdraw a voucher and then send it to the recipient.
     { "showaccounts", stat_accounts },              // show the asset accounts in the wallet.
     { "showacct", main_stat_acct },                 // show account stats for a single account.
+    { "showactive", main_show_active },             // show the active cron item IDs, or the details of one by ID.
     { "showassets", stat_assets },                  // show the currency contracts in the wallet.
     { "showbasket", main_show_basket },             // show basket currencies available in the wallet.
     { "showcred", main_show_credential },           // show a specific credential in detail.
@@ -378,7 +381,7 @@ MapFunction map_functions[] =
 
 int OT_OPENTXS_OT main_not_coded_yet()
 {
-    print("\n\n  Congratulations, you've been selected to add that option to this script! \n It's real easy: just edit scripts/ot/ot_commands.ot, and copy some code\ninto it based on whichever sample script is appropriate.\nThen edit the opentxs script, and add your new main\nfunction to the list map_functions near the bottom. Done!\n\n");
+    print("\n\n  Congratulations, you've been selected to add that option to this program! \n It's real easy: just edit ot_commands_ot.cpp, and copy some code\ninto it based on whichever sample script is appropriate.\nThen edit the opentxs script, and add your new main\nfunction to the list map_functions near the bottom. Done!\n\n");
 
     return 0;
 }
@@ -516,16 +519,15 @@ int OT_OPENTXS_OT interpret_command(const string & strInput)
 
 int OT_OPENTXS_OT OT_ME::opentxs_main_loop()
 {
-    OT_ME me;
     OTVariable *pVar;
-    if ((pVar = me.FindVariable("Args")) != NULL) Args = pVar->GetValueString();
-    if ((pVar = me.FindVariable("HisAcct")) != NULL) HisAcct = pVar->GetValueString();
-    if ((pVar = me.FindVariable("HisNym")) != NULL) HisNym = pVar->GetValueString();
-    if ((pVar = me.FindVariable("HisPurse")) != NULL) HisPurse = pVar->GetValueString();
-    if ((pVar = me.FindVariable("MyAcct")) != NULL) MyAcct = pVar->GetValueString();
-    if ((pVar = me.FindVariable("MyNym")) != NULL) MyNym = pVar->GetValueString();
-    if ((pVar = me.FindVariable("MyPurse")) != NULL) MyPurse = pVar->GetValueString();
-    if ((pVar = me.FindVariable("Server")) != NULL) Server = pVar->GetValueString();
+    Args     = (pVar = FindVariable("Args"    )) == NULL ? "" : pVar->GetValueString();
+    HisAcct  = (pVar = FindVariable("HisAcct" )) == NULL ? "" : pVar->GetValueString();
+    HisNym   = (pVar = FindVariable("HisNym"  )) == NULL ? "" : pVar->GetValueString();
+    HisPurse = (pVar = FindVariable("HisPurse")) == NULL ? "" : pVar->GetValueString();
+    MyAcct   = (pVar = FindVariable("MyAcct"  )) == NULL ? "" : pVar->GetValueString();
+    MyNym    = (pVar = FindVariable("MyNym"   )) == NULL ? "" : pVar->GetValueString();
+    MyPurse  = (pVar = FindVariable("MyPurse" )) == NULL ? "" : pVar->GetValueString();
+    Server   = (pVar = FindVariable("Server"  )) == NULL ? "" : pVar->GetValueString();
 
     // See if the command was passed in on the command line.
     if (VerifyExists("Args", false))
@@ -539,25 +541,6 @@ int OT_OPENTXS_OT OT_ME::opentxs_main_loop()
         }
     }
 
-    // Otherwise, drop into the OT high-level prompt.
-    else
-    {
-        OTAPI_Wrap::Output(0, ".\n..\n...\n....\n.....\n\n");
-
-        while (true)
-        {
-            OTAPI_Wrap::Output(0, "opentxs> ");
-            string strInput = OT_CLI_ReadLine();
-            int nInterpreted = interpret_command(strInput);
-            if (VerifyIntVal(nInterpreted) && ((-2) == nInterpreted))
-            {
-                break;
-            }
-
-            OTAPI_Wrap::Output(0, ".\n..\n...\n....\n.....\n\n");
-
-        } // while
-    }
-
-    return 0;
+    // Otherwise, show list.
+    return interpret_command("list");
 }

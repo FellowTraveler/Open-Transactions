@@ -19,7 +19,7 @@ inline void heapsink(T*array, s32 element, s32 max)
 	while ((element<<1) < max)	// there is a left child
 	{
 		s32 j = (element<<1);
-
+	
 		if (j+1 < max && array[j] < array[j+1])
 			j = j+1;							// take right child
 
@@ -50,12 +50,12 @@ inline void heapsort(T* array_, s32 size)
 
 	// build heap
 
-	for (i=((size-1)/2); i>=0; --i)
+	for (i=((size-1)/2); i>=0; --i)	
 		heapsink(virtualArray, i+1, virtualSize-1);
 
 	// sort array
 
-	for (i=size-1; i>=0; --i)
+	for (i=size-1; i>=0; --i)	
 	{
 		T t = array_[0];
 		array_[0] = array_[i];

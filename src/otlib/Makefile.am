@@ -235,6 +235,11 @@ DISTCLEANFILES			= 	$(top_builddir)/include/otlib/ot_config.h
 
 ## Extra to package containers headers
 
+pkginclude_containersdir	=	$(pkgincludedir)/containers
+pkginclude_containers_HEADERS	=	$(containers_headers)
+
+## Extra to package simpleini headers
+
 simpleini_headers_dir		=	$(top_srcdir)/include/simpleini
 
 simpleini_headers		=	$(simpleini_headers_dir)/ConvertUTF.h  				\

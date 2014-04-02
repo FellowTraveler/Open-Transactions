@@ -73,7 +73,7 @@ inline char* fast_atof_move(char* c, float& out)
 
 	if (inv)
 		f *= -1.0f;
-
+	
 	out = f;
 	return c;
 }
@@ -108,18 +108,18 @@ inline const char* fast_atof_move_const(const char* c, float& out)
 
 		c = t;
 
-		if (*c == 'e')
-		{
-			++c;
-			f32 exp = (f32)strtol(c, &t, 10);
-			f *= (f32)powf(10.0f, exp);
-			c = t;
+		if (*c == 'e') 
+		{ 
+			++c; 
+			f32 exp = (f32)strtol(c, &t, 10); 
+			f *= (f32)powf(10.0f, exp); 
+			c = t; 
 		}
 	}
 
 	if (inv)
 		f *= -1.0f;
-
+	
 	out = f;
 	return c;
 }

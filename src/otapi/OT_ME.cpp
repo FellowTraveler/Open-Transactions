@@ -153,7 +153,7 @@ This could be wrapped by OTAPI_Basic, just as OTAPI was.
 #include <OTStorage.hpp>
 #include <OTPaths.hpp>
 
-#include <ot_command_ot.hpp>
+#include <ot_commands_ot.hpp>
 #include <ot_made_easy_ot.hpp>
 #include <ot_otapi_ot.hpp>
 #include <ot_utility_ot.hpp>
@@ -170,17 +170,18 @@ This could be wrapped by OTAPI_Basic, just as OTAPI was.
 #endif
 // ---------------------------------------------------
 
-// no use in initializing the script multiple times since it takes prohibitively long
-_SharedPtr<OTScript> OT_ME::m_pScript;
+OT_ME * OT_ME::s_pMe = NULL;
 
 
-OT_ME::OT_ME(const std::string & _scriptName)
-: scriptName(_scriptName)
+OT_ME::OT_ME() : r_pPrev(NULL)
 {
+    r_pPrev = s_pMe;
+    s_pMe = this;
 }
 
 OT_ME::~OT_ME()
 {
+    s_pMe = r_pPrev;
 }
 
 
@@ -1820,7 +1821,12 @@ void OT_ME::AddVariable(const std::string & str_var_name, OTVariable & theVar)
 }
 
 
-std::string OT_ME::ExecuteScript_ReturnString(const std::string & str_Code,std::string str_DisplayName/*="<BLANK>"*/)
+OTVariable * OT_ME::FindVariable2(const std::string & str_var_name)
+{
+    return s_pMe->FindVariable(str_var_name);
+}
+
+std::string OT_ME::ExecuteScript_ReturnString(const std::string & str_Code, std::string str_DisplayName/*="<BLANK>"*/)
 {
    std::string  str_Return("");
     bool    bHaveWorkingScript = HaveWorkingScript();    
@@ -1914,20 +1920,18 @@ bool OT_ME::SetupScriptObject()
 
 bool OT_ME::Register_OTDB_With_Script()
 {
-    // -------------------------------------------------
+#ifdef OT_USE_SCRIPT_CHAI
     // See if it's ChaiScript.
     //
-	OTScriptChai * pScript = dynamic_cast<OTScriptChai *> (m_pScript.get());
+    OTScriptChai * pScript = dynamic_cast<OTScriptChai *> (m_pScript.get());
 
-	if (NULL != pScript)
-	{
-		return Register_OTDB_With_Script_Chai(*pScript);
-	}
+    if (NULL != pScript)
+    {
+        return Register_OTDB_With_Script_Chai(*pScript);
+    }
+#endif // OT_USE_SCRIPT_CHAI
     // -------------------------------------------------
-	else
-	{
-		OTLog::vError("%s: Failed dynamic casting OTScript to OTScriptChai \n", __FUNCTION__);
-	}
+    OTLog::vError("%s: Failed dynamic casting OTScript to OTScriptChai \n", __FUNCTION__);
     // -------------------------------------------------
 	return false;
 }
@@ -1936,39 +1940,35 @@ bool OT_ME::Register_OTDB_With_Script()
 bool OT_ME::Register_CLI_With_Script()
 {
     // -------------------------------------------------
+#ifdef OT_USE_SCRIPT_CHAI
     // See if it's ChaiScript.
     //
 	OTScriptChai * pScript = dynamic_cast<OTScriptChai *> (m_pScript.get());
 
-	if (NULL != pScript)
-	{
-		return Register_CLI_With_Script_Chai(*pScript);
-	}
+    if (NULL != pScript)
+    {
+        return Register_CLI_With_Script_Chai(*pScript);
+    }
+#endif // OT_USE_SCRIPT_CHAI
     // -------------------------------------------------
-	else
-	{
-		OTLog::vError("%s: Failed dynamic casting OTScript to OTScriptChai \n", __FUNCTION__);
-	}
-    // -------------------------------------------------
-	return false;
+    OTLog::vError("%s: Failed dynamic casting OTScript to OTScriptChai \n", __FUNCTION__);
+    return false;
 }
 
 bool OT_ME::Register_API_With_Script()
 {
-    // -------------------------------------------------
+#ifdef OT_USE_SCRIPT_CHAI
     // See if it's ChaiScript.
     //
-	OTScriptChai * pScript = dynamic_cast<OTScriptChai *> (m_pScript.get());
+    OTScriptChai * pScript = dynamic_cast<OTScriptChai *> (m_pScript.get());
 
-	if (NULL != pScript)
-	{
-		return Register_API_With_Script_Chai(*pScript);
-	}
-    // -------------------------------------------------
-	else
-	{
-		OTLog::vError("%s: Failed dynamic casting OTScript to OTScriptChai \n", __FUNCTION__);
-	}
+    if (NULL != pScript)
+    {
+        return Register_API_With_Script_Chai(*pScript);
+    }
+#endif // OT_USE_SCRIPT_CHAI
+    
+    OTLog::vError("%s: Failed dynamic casting OTScript to OTScriptChai \n", __FUNCTION__);
     // -------------------------------------------------
 	return false;
 }
@@ -1976,21 +1976,19 @@ bool OT_ME::Register_API_With_Script()
 bool OT_ME::Register_Headers_With_Script()
 {
     // -------------------------------------------------
+#ifdef OT_USE_SCRIPT_CHAI
     // See if it's ChaiScript.
     //
 	OTScriptChai * pScript = dynamic_cast<OTScriptChai *> (m_pScript.get());
 
-	if (NULL != pScript)
-	{
-		return Register_Headers_With_Script_Chai(*pScript);
-	}
-    // -------------------------------------------------
-	else
-	{
-		OTLog::vError("%s: Failed dynamic casting OTScript to OTScriptChai \n", __FUNCTION__);
-	}
-    // -------------------------------------------------
-	return false;
+    if (NULL != pScript)
+    {
+        return Register_Headers_With_Script_Chai(*pScript);
+    }
+#endif // OT_USE_SCRIPT_CHAI
+
+    OTLog::vError("%s: Failed dynamic casting OTScript to OTScriptChai \n", __FUNCTION__);
+    return false;
 }
 
 
@@ -1999,7 +1997,6 @@ bool OT_ME::Register_Headers_With_Script()
 
 
 // ----------------------------------------------------------------------
-
 
 
 
@@ -2106,49 +2103,49 @@ bool OT_ME::Register_OTDB_With_Script_Chai(OTScriptChai & theScript)
         // ADD STORAGE FUNCTIONS
         theScript.chai->add(fun(&OTDB::CreateObject), "OTDB_CreateObject");
 
-        //      theScript.chai->add(fun(&OTDB::Exists),           "OTDB_Exists");
+//      theScript.chai->add(fun(&OTDB::Exists),           "OTDB_Exists");
         theScript.chai->add(fun<bool(std::string, std::string, std::string, std::string)>(&OTDB::Exists), "OTDB_Exists");
 //      theScript.chai->add(fun<bool (std::string, std::string, std::string)>(&OTDB::Exists), "OTDB_Exists");
 //      theScript.chai->add(fun<bool (std::string, std::string)>(&OTDB::Exists), "OTDB_Exists");
 //      theScript.chai->add(fun<bool (std::string)>(&OTDB::Exists), "OTDB_Exists");
 
 
-        //      theScript.chai->add(fun(&OTDB::StoreString),      "OTDB_StoreString");
+//      theScript.chai->add(fun(&OTDB::StoreString),      "OTDB_StoreString");
         theScript.chai->add(fun<bool(std::string, std::string, std::string, std::string, std::string)>(&OTDB::StoreString), "OTDB_StoreString");
 //      theScript.chai->add(fun<bool (std::string, std::string, std::string, std::string)>(&OTDB::StoreString), "OTDB_StoreString");
 //      theScript.chai->add(fun<bool (std::string, std::string, std::string)>(&OTDB::StoreString), "OTDB_StoreString");
 //      theScript.chai->add(fun<bool (std::string, std::string)>(&OTDB::StoreString), "OTDB_StoreString");
 
 
-        //      theScript.chai->add(fun(&OTDB::QueryString),      "OTDB_QueryString");
+//      theScript.chai->add(fun(&OTDB::QueryString),      "OTDB_QueryString");
         theScript.chai->add(fun<std::string(std::string, std::string, std::string, std::string)>(&OTDB::QueryString), "OTDB_QueryString");
 //      theScript.chai->add(fun<std::string (std::string, std::string, std::string)>(&OTDB::QueryString), "OTDB_QueryString");
 //      theScript.chai->add(fun<std::string (std::string, std::string)>(&OTDB::QueryString), "OTDB_QueryString");
 //      theScript.chai->add(fun<std::string (std::string)>(&OTDB::QueryString), "OTDB_QueryString");
 
 
-        //      theScript.chai->add(fun(&OTDB::StorePlainString), "OTDB_StorePlainString");
+//      theScript.chai->add(fun(&OTDB::StorePlainString), "OTDB_StorePlainString");
         theScript.chai->add(fun<bool(std::string, std::string, std::string, std::string, std::string)>(&OTDB::StorePlainString), "OTDB_StorePlainString");
 //      theScript.chai->add(fun<bool (std::string, std::string, std::string, std::string)>(&OTDB::StorePlainString), "OTDB_StorePlainString");
 //      theScript.chai->add(fun<bool (std::string, std::string, std::string)>(&OTDB::StorePlainString), "OTDB_StorePlainString");
 //      theScript.chai->add(fun<bool (std::string, std::string)>(&OTDB::StorePlainString), "OTDB_StorePlainString");
 
 
-        //      theScript.chai->add(fun(&OTDB::QueryPlainString), "OTDB_QueryPlainString");
+//      theScript.chai->add(fun(&OTDB::QueryPlainString), "OTDB_QueryPlainString");
         theScript.chai->add(fun<std::string(std::string, std::string, std::string, std::string)>(&OTDB::QueryPlainString), "OTDB_QueryPlainString");
 //      theScript.chai->add(fun<std::string (std::string, std::string, std::string)>(&OTDB::QueryPlainString), "OTDB_QueryPlainString");
 //      theScript.chai->add(fun<std::string (std::string, std::string)>(&OTDB::QueryPlainString), "OTDB_QueryPlainString");
 //      theScript.chai->add(fun<std::string (std::string)>(&OTDB::QueryPlainString), "OTDB_QueryPlainString");
 
 
-        //      theScript.chai->add(fun(&OTDB::StoreObject),      "OTDB_StoreObject");
+//      theScript.chai->add(fun(&OTDB::StoreObject),      "OTDB_StoreObject");
         theScript.chai->add(fun<bool(OTDB::Storable &, std::string, std::string, std::string, std::string)>(&OTDB::StoreObject), "OTDB_StoreObject");
 //      theScript.chai->add(fun<bool (OTDB::Storable &, std::string, std::string, std::string)>(&OTDB::StoreObject), "OTDB_StoreObject");
 //      theScript.chai->add(fun<bool (OTDB::Storable &, std::string, std::string)>(&OTDB::StoreObject), "OTDB_StoreObject");
 //      theScript.chai->add(fun<bool (OTDB::Storable &, std::string)>(&OTDB::StoreObject), "OTDB_StoreObject");
 
 
-        //      theScript.chai->add(fun(&OTDB::QueryObject),      "OTDB_QueryObject");
+//      theScript.chai->add(fun(&OTDB::QueryObject),      "OTDB_QueryObject");
         theScript.chai->add(fun<OTDB::Storable * (OTDB::StoredObjectType, std::string, std::string, std::string, std::string)>(&OTDB::QueryObject), "OTDB_QueryObject");
 //      theScript.chai->add(fun<OTDB::Storable * (OTDB::StoredObjectType, std::string, std::string, std::string)>(&OTDB::QueryObject), "OTDB_QueryObject");
 //      theScript.chai->add(fun<OTDB::Storable * (OTDB::StoredObjectType, std::string, std::string)>(&OTDB::QueryObject), "OTDB_QueryObject");
@@ -2305,8 +2302,8 @@ bool OT_ME::Register_CLI_With_Script_Chai(OTScriptChai & theScript)
     using namespace chaiscript;
     {
         // ADD THE OT CLI FUNCTIONS
-        theScript.chai->add(fun(&OT_CLI_ReadLine), "OT_CLI_ReadLine");			// String OT_CLI_ReadLine()		// Reads from cin until Newline.
-        theScript.chai->add(fun(&OT_CLI_ReadUntilEOF), "OT_CLI_ReadUntilEOF");	// String OT_CLI_ReadUntilEOF()	// Reads from cin until EOF or ~ on a line by itself.
+        theScript.chai->add(fun(&OT_CLI_ReadLine), "OT_CLI_ReadLine");   // String OT_CLI_ReadLine()  // Reads from cin until Newline.
+        theScript.chai->add(fun(&OT_CLI_ReadUntilEOF), "OT_CLI_ReadUntilEOF"); // String OT_CLI_ReadUntilEOF() // Reads from cin until EOF or ~ on a line by itself.
         // For command-line option (for SCRIPTS):  ot --script <filename> [--args "key value key value ..."]
         theScript.chai->add(fun(&OT_CLI_GetArgsCount), "OT_CLI_GetArgsCount");	// Get a count of key/value pairs from a string. Returns int.
         theScript.chai->add(fun(&OT_CLI_GetValueByKey), "OT_CLI_GetValueByKey");	// Returns a VALUE as string, BY KEY, from a map of key/value pairs (stored in a string.)
@@ -2725,8 +2722,8 @@ bool OT_ME::Register_API_With_Script_Chai(OTScriptChai & theScript)
 //
 bool NewScriptExists(const OTString & strScriptFilename, bool bIsHeader, OTString & out_ScriptFilepath)
 {
-    //
-    // "so $(prefix)/lib/opentxs for the headers,
+    //            
+    // "so $(prefix)/lib/opentxs for the headers, 
     // and others:
     // 1st priorty: $(data_dir)/scripts
     // 2nd priorty: $(prefix)/lib/opentxs/scripts
@@ -2816,7 +2813,7 @@ bool OT_ME::Register_Headers_With_Script_Chai(OTScriptChai & theScript)
         // both the C++ functions, as well as the below script functions, grows together as one
         // and will be seen as one from inside the scripts, where script programmers can
         // pick and choose which level of abstraction that they need.
-        //
+        // 
         // ******************************************************************
         //
         //  SCRIPT HEADERS
